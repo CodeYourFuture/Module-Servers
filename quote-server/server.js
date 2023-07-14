@@ -18,6 +18,24 @@ app.get("/", function (request, response) {
 
 //START OF YOUR CODE...
 
+app.get("/quotes", function (request, response) {
+  response.send({quotes});
+});
+
+app.get("/quotes/random", function (request, response) {
+  
+   // Pick a random quote from the array using the pickFromArray function
+   const randomQuote = pickFromArray(quotes);
+ 
+   // Send the random quote as the response
+   response.send(randomQuote);
+});
+
+app.get("/quotes/search", function (request, response) {
+  let searchQuery = req.query.search;
+  response.send({searchQuery});
+});
+
 //...END OF YOUR CODE
 
 //You can use this function to pick one element at random from a given array
@@ -32,3 +50,21 @@ function pickFromArray(arr) {
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
+
+
+// ## Level 2 Challenge - allow quote _searches_!
+
+// ### Overview
+
+// In this level of the challenge you will allow the user of your quotes API to _search_ your list of quotes.
+
+// It should work with requests like this one:
+
+// - `/quotes/search?term=life`
+// - `/quotes/search?term=success`
+// - `/quotes/search?term=miss`
+
+// Extra (bonus) requirements:
+
+// - bonus: make your search case-insensitive
+// - bonus: make the search return matches on quote OR author text.
