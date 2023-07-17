@@ -5,6 +5,7 @@
 const express = require("express");
 const app = express();
 
+
 //load the quotes JSON
 const quotes = require("./quotes.json");
 
@@ -13,7 +14,7 @@ const quotes = require("./quotes.json");
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/", function (request, response) {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send("Saliha's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
 
 //START OF YOUR CODE...
@@ -31,10 +32,31 @@ app.get("/quotes/random", function (request, response) {
    response.send(randomQuote);
 });
 
+//  http://localhost:62297/quotes/search?term=life/success/miss
+// app.get("/quotes/search", function (request, response) {
+//   // let term = request.query.term
+//   // response.send(term);
+// });
+
+// advance
 app.get("/quotes/search", function (request, response) {
-  let searchQuery = req.query.search;
-  response.send({searchQuery});
+  const term = request.query.term;
+  const searchResults = searchQuotes(term);
+  response.send({searchResults});
 });
+
+
+// ## Level 2 Challenge - allow quote _searches_!
+function searchQuotes(term) {
+  const results = quotes.filter(
+    (quote) =>
+      quote.quote.toLowerCase().includes(term.toLowerCase()) ||
+      quote.author.toLowerCase().includes(term.toLowerCase()) ||
+      quote === ""
+  );
+  return results;
+}
+
 
 //...END OF YOUR CODE
 
@@ -52,19 +74,3 @@ const listener = app.listen(process.env.PORT, function () {
 });
 
 
-// ## Level 2 Challenge - allow quote _searches_!
-
-// ### Overview
-
-// In this level of the challenge you will allow the user of your quotes API to _search_ your list of quotes.
-
-// It should work with requests like this one:
-
-// - `/quotes/search?term=life`
-// - `/quotes/search?term=success`
-// - `/quotes/search?term=miss`
-
-// Extra (bonus) requirements:
-
-// - bonus: make your search case-insensitive
-// - bonus: make the search return matches on quote OR author text.
