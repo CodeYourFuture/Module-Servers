@@ -79,10 +79,6 @@ app.delete("/messages/:id", function (request, response) {
   }
 });
 
-// app.listen(port, () => {
-//   console.log(`listening on PORT ${port}...`);
-// });
-
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
