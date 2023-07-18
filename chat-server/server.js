@@ -1,9 +1,8 @@
-process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const port = 4000;
+// const port = process.env.PORT;
 app.use(cors());
 app.use(express.json());
 
@@ -21,19 +20,38 @@ const messages = [welcomeMessage];
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
+
 //create a new message
 app.post("/messages", function (request, response) {
   let newMessage = request.body;
+  //simple validation
+  if (!newMessage.text || !newMessage.from) {
+    response.status(400).json({ error: "Missing text or from property" });
+  }
   messages.push(newMessage);
-  console.log(
-    `New message has been added ==> id: ${newMessage.id} from: ${newMessage.from} text: ${newMessage.text}`
-  );
   response.json(newMessage);
 });
 
 //read all messages
 app.get("/messages", function (request, response) {
   response.json(messages);
+});
+
+//Level 3 - more "read" functionality
+
+// Read only messages whose text contains a given substring
+app.get("/messages/search", function (request, response) {
+  let searchedQuery = request.query.text.toLowerCase();
+  let searchResults = messages.filter((message) =>
+    message.text.toLowerCase().includes(searchedQuery)
+  );
+  response.json(searchResults);
+});
+
+//Read only the most recent 10 messages
+app.get("/messages/latest", function (request, response) {
+  let lastTenMessages = messages.slice(-10);
+  response.send(lastTenMessages);
 });
 
 //Read one message specified by an ID
@@ -43,7 +61,7 @@ app.get("/messages/:id", function (request, response) {
   if (messageToFind) {
     response.json(messageToFind);
   } else {
-    response.json(`Message with id ${idToFind} not found!`);
+    response.json({ error: `Message with id ${idToFind} not found!` });
   }
 });
 
@@ -57,9 +75,14 @@ app.delete("/messages/:id", function (request, response) {
     messages.splice(messageIndex, 1);
     response.send(`The message with ID ${messageIdToDelete} has been deleted!`);
   } else {
-    response.send(`Message with ID ${messageIdToDelete} not found!`);
+    response.send({ error: `Message with ID ${messageIdToDelete} not found!` });
   }
 });
-app.listen(port, () => {
-  console.log(`listening on PORT ${port}...`);
+
+// app.listen(port, () => {
+//   console.log(`listening on PORT ${port}...`);
+// });
+
+const listener = app.listen(process.env.PORT, function () {
+  console.log("Your app is listening on port " + listener.address().port);
 });
