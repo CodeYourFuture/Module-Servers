@@ -9,6 +9,9 @@ const app = express();
 // load the quotes JSON
 const quotes = require("./quotes.json");
 
+// load the lodash library
+const _ = require("lodash");
+
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
 //   /quotes            - Should return all quotes (json)
@@ -17,7 +20,7 @@ app.get("/", function (request, response) {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
 
-//START OF YOUR CODE...
+// START OF YOUR CODE...
 
 // Route to get all quotes
 app.get("/quotes", function (request, response) {
@@ -26,7 +29,7 @@ app.get("/quotes", function (request, response) {
 
 // Route to get random quote
 app.get("/quotes/random", function (request, response) {
-  const randomQuote = pickFromArray(quotes);
+  const randomQuote = _.sample(quotes); // using lodash sample function
   response.json(randomQuote);
 });
 
@@ -42,14 +45,6 @@ app.get("/quotes/search", function (request, response) {
 });
 
 // ...END OF YOUR CODE
-
-// You can use this function to pick one element at random from a given array
-// example: pickFromArray([1,2,3,4]), or
-// example: pickFromArray(myContactsArray)
-//
-function pickFromArray(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
 
 // Start our server so that it listens for HTTP requests!
 const listener = app.listen(process.env.PORT || 3000, function () {
