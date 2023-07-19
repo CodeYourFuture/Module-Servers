@@ -2,11 +2,11 @@
 
 // This is where your node app starts
 
-//load the 'express' module which makes writing webservers easy
+// load the 'express' module which makes writing webservers easy
 const express = require("express");
 const app = express();
 
-//load the quotes JSON
+// load the quotes JSON
 const quotes = require("./quotes.json");
 
 // Now register handlers for some routes:
@@ -30,17 +30,28 @@ app.get("/quotes/random", function (request, response) {
   response.json(randomQuote);
 });
 
-//...END OF YOUR CODE
+// Route to get quotes based on a term in the query string
+app.get("/quotes/search", function (request, response) {
+  let term = request.query.term.toLowerCase();
+  let filteredQuotes = quotes.filter(
+    (quote) =>
+      quote.quote.toLowerCase().includes(term) ||
+      quote.author.toLowerCase().includes(term)
+  );
+  response.json(filteredQuotes);
+});
 
-//You can use this function to pick one element at random from a given array
-//example: pickFromArray([1,2,3,4]), or
-//example: pickFromArray(myContactsArray)
+// ...END OF YOUR CODE
+
+// You can use this function to pick one element at random from a given array
+// example: pickFromArray([1,2,3,4]), or
+// example: pickFromArray(myContactsArray)
 //
 function pickFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-//Start our server so that it listens for HTTP requests!
+// Start our server so that it listens for HTTP requests!
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
