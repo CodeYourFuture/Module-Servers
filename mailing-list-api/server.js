@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
-const lists = require("./mailing-lists.js");
 
+app.disable("x-powered-by");
+
+const lists = require("./mailing-lists.js");
 const listsMap = new Map(Object.entries(lists));
 
 app.use(express.json());
