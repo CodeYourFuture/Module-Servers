@@ -33,13 +33,17 @@ app.delete("/lists/:name", (req, res) => {
 
 // PUT /lists/:name
 app.put("/lists/:name", (req, res) => {
-  const list = listsMap.get(req.params.name);
-  if (list) {
-    listsMap.set(req.params.name, req.body.members);
-    res.status(200).send("List updated successfully");
+  if (req.params.name !== req.body.name) {
+    res.status(400).send("Error: Name in URL path and JSON body do not match");
   } else {
-    listsMap.set(req.params.name, req.body.members);
-    res.status(201).send("List created successfully");
+    const list = listsMap.get(req.params.name);
+    if (list) {
+      listsMap.set(req.params.name, req.body.members);
+      res.status(200).send("List updated successfully");
+    } else {
+      listsMap.set(req.params.name, req.body.members);
+      res.status(201).send("List created successfully");
+    }
   }
 });
 
