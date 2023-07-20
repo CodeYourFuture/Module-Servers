@@ -30,6 +30,31 @@ app.get("/messages", (req, res) => {
   });
 });
 
+app.get("/messages/latest", (req, res) => {
+  const returnLatestMessages = messages.slice(-10);
+  res.status(200).json({
+    data: returnLatestMessages,
+    message: "ok",
+  });
+});
+
+app.get("/messages/search", (req, res) => {
+  console.log("hi");
+  const textForSearch = req.query.text.toLowerCase();
+  console.log(textForSearch);
+  const allMessagesBasedOnSearch = searchText(textForSearch);
+  if (allMessagesBasedOnSearch.length === 0) {
+    return res.status(404).json({
+      data: null,
+      message: "There is no messages including search content...",
+    });
+  }
+  res.status(200).json({
+    data: allMessagesBasedOnSearch,
+    message: "ok",
+  });
+});
+
 app.get("/messages/:id", (req, res) => {
   const desiredMessageId = req.params.id;
   const desiredMessage = messages.find(
@@ -50,8 +75,14 @@ app.get("/messages/:id", (req, res) => {
 app.post(
   "/messages",
   [
-    body("from", "form can not be empty").notEmpty(),
-    body("text", "text can not be empty").notEmpty(),
+    body("from", "form can not be empty and should be string")
+      .notEmpty()
+      .isString()
+      .trim(),
+    body("text", "text can not be empty and should be string")
+      .notEmpty()
+      .isString()
+      .trim(),
   ],
   (req, res) => {
     // errors is an object
@@ -63,8 +94,13 @@ app.post(
         message: "Validation error",
       });
     }
+    const currentTime = new Date().toLocaleString();
     const newMessage = req.body;
-    messages.push({ id: messages.length, ...newMessage });
+    messages.push({
+      id: messages.length,
+      timeSent: currentTime,
+      ...newMessage,
+    });
     res.status(201).json({
       data: messages,
       messages: "The new message was added...",
@@ -75,8 +111,14 @@ app.post(
 app.put(
   "/messages/:id",
   [
-    body("from", "form can not be empty").notEmpty(),
-    body("text", "text can not be empty").notEmpty(),
+    body("from", "form can not be empty and should be string")
+      .notEmpty()
+      .isString()
+      .trim(),
+    body("text", "text can not be empty and should be string")
+      .notEmpty()
+      .isString()
+      .trim(),
   ],
   (req, res) => {
     const messageId = req.params.id;
@@ -129,6 +171,13 @@ app.delete("/messages/:id", (req, res) => {
     messages: "The message was deleted.",
   });
 });
+
+function searchText(text) {
+  const messagesBasedOnText = messages.filter((message) =>
+    message.text.toLowerCase().includes(text)
+  );
+  return messagesBasedOnText;
+}
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
