@@ -55,8 +55,10 @@ app.post("/messages", (req, res) => {
   if(result.from === "" || result.text === ""){
     res.sendStatus(400)
   } else {
+    result.timeSent = Date();
     messages.push(result);
-    res.sendStatus(200);
+    // res.sendStatus(200);
+    res.send(result);
   }
   
 });
