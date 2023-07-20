@@ -23,6 +23,24 @@ app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
 
+
+app.get("/messages/search", function (request, response) {
+  const inputText = request.query.text;
+  if (inputText) {
+    const searchMessages = messages.filter((msg) => msg.text.includes(inputText));
+    if (searchMessages.length > 0) {
+      response.json(searchMessages);
+    } else {
+      response.status(404).send("record not found");
+    }
+  }
+});
+
+app.get("/messages/latest", function (request, response) {
+  const latestMessages = messages.slice(0, 10);
+  response.json(latestMessages);
+});
+
 app.get("/messages/:id", function (request, response) {
   const inputId = request.params.id;
   if (inputId) {
