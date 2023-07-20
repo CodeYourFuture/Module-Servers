@@ -60,7 +60,7 @@ app.get("/messages/:id", function (request, response) {
   if (messageToFind) {
     response.json(messageToFind);
   } else {
-    response.json({ error: `Message with id ${idToFind} not found!` });
+    response.status(400).json({ error: `Message not found!` });
   }
 });
 
@@ -72,9 +72,9 @@ app.delete("/messages/:id", function (request, response) {
   );
   if (messageIndex !== -1) {
     messages.splice(messageIndex, 1);
-    response.send(`The message with ID ${messageIdToDelete} has been deleted!`);
+    response.send(`The message has been deleted!`);
   } else {
-    response.send({ error: `Message with ID ${messageIdToDelete} not found!` });
+    response.status(400).send({ error: `Message not found!` });
   }
 });
 
