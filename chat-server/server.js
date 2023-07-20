@@ -67,6 +67,7 @@ app.post("/messages", function (request, response) {
     newRec.id = maxVal + 1;
     newRec.from = request.body.from;
     newRec.text = request.body.text;
+    newRec.timeSent = new Date();
     messages.push(newRec);
     response.status(200).send("record added");
   }
