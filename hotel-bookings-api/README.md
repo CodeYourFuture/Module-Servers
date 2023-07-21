@@ -123,7 +123,7 @@ In this level, bookings should also be rejected if:
 ## Level 5 (Optional, easy) - free-text search
 
 For this level your API must also allow a client to:
-
+da
 Search for bookings which match a given search term.
 
 It should accept requests of the following format:
