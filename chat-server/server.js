@@ -26,6 +26,14 @@ app.get("/", function (request, response) {
 // Endpoint to create a new message
 app.post("/messages", function (request, response) {
   const newMessage = request.body;
+
+  // validation check
+
+  if (!newMessage.from || !newMessage.text) {
+    response.status(400).json({ error: "from and text are required fields" });
+    return;
+  }
+
   newMessage.id = messages.length;
   messages.push(newMessage);
   response.json(newMessage);
