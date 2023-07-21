@@ -10,7 +10,8 @@
     "start": "nodemon server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "moment": "^2.29.4"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
