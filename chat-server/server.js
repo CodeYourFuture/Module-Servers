@@ -18,9 +18,27 @@ const welcomeMessage = {
 const messages = [welcomeMessage];
 
 app.get("/", function (request, response) {
+  console.log("knocking on / endpoint door");
   response.sendFile(__dirname + "/index.html");
 });
 
-app.listen(process.env.PORT,() => {
+app.get("/messages", function (request, response) {
+  response.json(messages);
+});
+
+app.get("/messages/:id", (request, response) => {
+  response.send(`This is message with ID ${request.params.id}`);
+});
+
+app.post("/messages", (request, response) => {
+  console.log(request.body);
+  const newMessage = request.body;
+
+  messages.push(newMessage);
+
+  response.status(201).send({ newMessage });
+});
+
+app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
