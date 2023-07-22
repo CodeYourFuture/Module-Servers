@@ -18,7 +18,6 @@ const welcomeMessage = {
 const messages = [welcomeMessage];
 
 app.get("/", function (request, response) {
-  console.log("knocking on / endpoint door");
   response.sendFile(__dirname + "/index.html");
 });
 
