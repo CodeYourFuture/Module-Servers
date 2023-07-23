@@ -25,7 +25,7 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
-app.get("/messages/show", (req, res) => {
+app.get("/messages/showAll", function (req, res) {
   res.send(messages);
 });
 
@@ -37,7 +37,7 @@ app.get("/messages/:id", (req, res) => {
   res.send(findByID);
 });
 
-app.post("/messages", (req, res) => {
+app.post("/messages/addNew", (req, res) => {
   if (!req.body.from || req.body.from.length < 3 || req.body.text.length > 500);
   res.status(400)
     .send(
@@ -53,6 +53,8 @@ app.post("/messages", (req, res) => {
   messages.push(newMessages);
   res.json(messages);
 });
+
+
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);

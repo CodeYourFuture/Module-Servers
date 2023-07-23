@@ -10,7 +10,7 @@
     <h2>
       Send a message
     </h2>
-    <form action="/messages" method="post">
+    <form action="/messages/addNew" method="post">
       <p>
         Name: <input type="text" name="from" placeholder="Your Name" /> <br />
         Message: <input type="text" name="text" placeholder="The message..." />
@@ -21,6 +21,6 @@
       </button>
     </form>
 
-    <a href="/messages">See all messages</a>
+    <a href="/messages/showAll" action="/messages/showAll" method="get">See all messages</a>
   </body>
 </html>
