@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const app = express();
 
+app.use(express.json());
 app.use(cors());
 
 const welcomeMessage = {
@@ -30,12 +31,22 @@ app.get("/messages/:id", (request, response) => {
 });
 
 app.post("/messages", (request, response) => {
-  console.log(request.body);
-  const newMessage = request.body;
+  let user = request.body.from;
+  let msgText = request.body.text;
 
+  const calculateNewID = () => {
+    let newID = Math.max(...messages.map((message) => message.id)) + 1;
+    return newID;
+  };
+
+  const newMessage = {
+    id: calculateNewID(),
+    from: user,
+    text: msgText,
+  };
   messages.push(newMessage);
 
-  response.status(201).send({ newMessage });
+  response.status(201).send(`"${msgText}" sent by ${user}`);
 });
 
 app.listen(process.env.PORT, () => {
