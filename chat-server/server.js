@@ -52,6 +52,7 @@ app.get("/messages/latest", (req, res) => {
 
 app.post("/messages", (req, res) => {
   let result = req.body;
+  console.log(req.body)
   if(result.from === "" || result.text === ""){
     res.sendStatus(400)
   } else {
