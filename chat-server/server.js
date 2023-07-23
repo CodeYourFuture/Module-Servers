@@ -24,11 +24,11 @@ const messages = [welcomeMessage];
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
-
-app.get("/messages/showAll", function (req, res) {
+// show all
+app.get("/messages", function (req, res) {
   res.send(messages);
 });
-
+// find by id
 app.get("/messages/:id", (req, res) => {
   const getById = Number(req.params.id);
   const findByID = messages.find((message) => message.id === getById);
@@ -36,13 +36,12 @@ app.get("/messages/:id", (req, res) => {
     return res.status(404).send("messages with the ID given was not found");
   res.send(findByID);
 });
-
-app.post("/messages/addNew", (req, res) => {
-  if (!req.body.from || req.body.from.length < 3 || req.body.text.length > 500);
-  res.status(400)
-    .send(
-      "Name is required & should be at least 3 characters & Text should be less then 500 characters"
-    );
+// create new
+app.post("/messages/cerate", (req, res) => {
+  if (!req.body.from || req.body.from.length < 3)
+    return res
+      .status(400)
+      .send("Name is required & should be at least 3 characters");
 
   const newMessages = {
     id: messages.length + 1,
@@ -53,8 +52,18 @@ app.post("/messages/addNew", (req, res) => {
   messages.push(newMessages);
   res.json(messages);
 });
+// delete by id
+app.delete("/messages/:id", (req, res) => {
+  const getById = Number(req.params.id);
+  const findByID = messages.find((message) => message.id === getById);
+  const index = messages.indexOf(findByID);
 
+  if (!findByID)
+    return res.status(404).send("messages with the ID given was not found")
 
+  messages.splice(index, 1);
+  res.status(200).send(messages);
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
