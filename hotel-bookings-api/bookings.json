@@ -58,5 +58,15 @@
     "checkInDate": "2017-09-30",
     "checkOutDate": "2017-11-02",
     "id": 6
+  },
+  {
+    "title": "Ms",
+    "firstName": "Doe",
+    "surname": "Den",
+    "email": "Den@example.com",
+    "roomId": 7,
+    "checkInDate": "2017-09-30",
+    "checkOutDate": "2017-11-02",
+    "id": 7
   }
 ]
