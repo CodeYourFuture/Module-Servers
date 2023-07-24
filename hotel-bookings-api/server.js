@@ -48,6 +48,9 @@ app.get("/bookings", function (request, response) {
 app.get("/bookings/search", function (request, response) {
   const searchDate = request.query.date;
   console.log(searchDate);
+  if (!moment(searchDate, "YYYY-MM-DD", true).isValid()) {
+    response.status(400).send("please enter the correct format: YYYY-MM-DD");
+  }
   const searchResult = bookings.filter((booking) => {
     return moment(searchDate).isBetween(
       booking.checkInDate,
