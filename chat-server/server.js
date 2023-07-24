@@ -23,14 +23,18 @@ app.get("/", function (request, response) {
 
 // show messages whit get api
 app.get("/messages", function (req, res) {
+  if(messages.length === 0){
+    return res.status(404).json({error : "no messages found"})
+  }
   res.send({messages});
 });
 
 
 // create a new message
 app.post("/messages", function (req,res) {
+
   messages.push(req.body);
-  res.json(messages);
+  res.json({messages});
 })
 
 // Read one message specified by an ID
