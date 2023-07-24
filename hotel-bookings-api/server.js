@@ -44,6 +44,18 @@ app.post("/bookings", function (request, response) {
 app.get("/bookings", function (request, response) {
   response.send({ bookings });
 });
+//search by date
+app.get("/bookings/search", function (request, response) {
+  const searchDate = request.query.date;
+  console.log(searchDate);
+  const searchResult = bookings.filter((booking) => {
+    return moment(searchDate).isBetween(
+      booking.checkInDate,
+      booking.checkOutDate
+    );
+  });
+  response.send(searchResult);
+});
 //search by text
 app.get("/bookings/search", function (request, response) {
   const searchQuery = request.query.term.toLocaleLowerCase();
