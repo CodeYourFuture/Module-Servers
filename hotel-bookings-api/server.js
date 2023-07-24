@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const uuid = require("uuid");
+const moment = require("moment");
 const app = express();
 
 app.use(express.json());
@@ -43,6 +44,19 @@ app.post("/bookings", function (request, response) {
 app.get("/bookings", function (request, response) {
   response.send({ bookings });
 });
+//search by text
+app.get("/bookings/search", function (request, response) {
+  const searchQuery = request.query.term.toLocaleLowerCase();
+  console.log("search this", searchQuery);
+  const searchResults = bookings.filter(
+    (el) =>
+      el.firstName.toLowerCase().includes(searchQuery) ||
+      el.surname.toLowerCase().includes(searchQuery) ||
+      el.email.toLowerCase().includes(searchQuery)
+  );
+  response.send(searchResults);
+});
+
 //Read one booking by  id
 app.get("/bookings/:id", function (request, response) {
   const bookingIdToFind = request.params.id;
@@ -55,6 +69,7 @@ app.get("/bookings/:id", function (request, response) {
     response.status(404).send();
   }
 });
+
 //Delete a booking by Id
 app.delete("/bookings/:id", function (request, response) {
   const bookingIdToDelete = request.params.id;
