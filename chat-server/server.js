@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
+app.use(express.json());
 app.use(cors());
 
 const welcomeMessage = {
@@ -20,6 +20,18 @@ const messages = [welcomeMessage];
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
+
+// show messages whit get api
+app.get("/messages", function (req, res) {
+  res.send({messages});
+});
+
+
+// create a new message
+app.post("/messages", function (req,res) {
+  messages.push(req.body);
+  res.json(messages);
+})
 
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
