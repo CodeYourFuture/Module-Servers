@@ -46,7 +46,7 @@ app.post("/messages", function (request, response) {
     from: newMessage.from,
     text: newMessage.text,
   });
-  response.status(201).send(newMessage);
+  response.status(201).json(newMessage);
 });
 
 app.delete("/messages/:id", function (request, response) {
