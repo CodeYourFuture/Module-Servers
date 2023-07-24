@@ -33,6 +33,21 @@ app.post("/messages", function (req,res) {
   res.json(messages);
 })
 
+// Read one message specified by an ID
+app.get("/messages/:id", function (req, res) {
+  const messageId = parseInt(req.params.id);
+  const message = messages.find((m) => m.id === messageId);
+
+  if (!message) {
+    return res.status(404).send({ error: "This id doesn't exist" });
+  }
+  res.status(200).send({ message });
+});
+
+
+// Delete a message, by ID
+app.delete()
+
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
