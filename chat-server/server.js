@@ -6,6 +6,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json()); //express.json() middleware to parse request body
+app.use(express.urlencoded({ extended: true }));
 
 const welcomeMessage = {
   id: 0,
@@ -17,6 +18,34 @@ const messages = [welcomeMessage];
 
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
+});
+
+//level 3 - query parameters
+//Q:Why does the request query function need to be written before the request parameter function?
+app.get("/messages/search", (req, res) => {
+  const searchFrom = req.query.from;
+  const searchText = req.query.text;
+  const filteredFrom = messages.filter((m) => m.from === searchFrom);
+  const filteredText = messages.filter((m) => m.text === searchText);
+
+  if (filteredFrom.length == 1) {
+    const filteredMessage = filteredFrom;
+    res.send(filteredMessage);
+  } else if (filteredText.length == 1) {
+    const filteredMessage = filteredText;
+    res.send(filteredMessage);
+  }
+});
+
+app.get("/messages/latest", (req, res) => {
+  const latestMessages =
+    messages.length > 10 ? messages.slice(messages.length - 10) : messages;
+  res.send(latestMessages);
+});
+
+app.get("/messages", (req, res) => {
+  console.log(messages);
+  res.json(messages);
 });
 
 //level 1
@@ -63,6 +92,8 @@ app.delete("/messages/:id", (req, res) => {
   const index = messages.indexOf(messageDelete);
   messages.splice(index, 1);
 });
+
+
 
 //listen
 app.listen(port, () => {
