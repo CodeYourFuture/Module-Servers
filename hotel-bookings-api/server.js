@@ -38,7 +38,7 @@ app.post("/bookings", function (request, response) {
       .send("Booking object must not have missing or empty properties.");
   }
   bookings.push(newBooking);
-  response.send(newBooking);
+  response.send({ newBooking });
 });
 //Read all bookings
 app.get("/bookings", function (request, response) {
