@@ -55,14 +55,17 @@ app.post("/messages/cerate", (req, res) => {
 // delete by id
 app.delete("/messages/:id", (req, res) => {
   const getById = Number(req.params.id);
+  console.log("ID to be deleted:", getById);
   const findByID = messages.find((message) => message.id === getById);
+  console.log("Message found:", findByID);
   const index = messages.indexOf(findByID);
-
+  console.log("Index to be deleted:", index);
+  
   if (!findByID)
-    return res.status(404).send("messages with the ID given was not found")
-
+    return res.status(404).send("messages with the ID given was not found");
+    
   messages.splice(index, 1);
-  res.status(200).send(messages);
+  res.status(200).send("messages with the ID has been deleted");
 });
 
 
