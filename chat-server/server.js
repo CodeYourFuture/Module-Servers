@@ -1,7 +1,7 @@
-process.env.PORT = process.env.PORT || 9090;
+process.env.PORT = process.env.PORT || 3001;
 const express = require("express");
 const cors = require("cors");
-
+app.use(express.urlencoded({ extended: true }));
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -20,11 +20,8 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 app.get("/messages", function (request, response) {
-  response.send({ messages });
+  response.json({ messages });
 });
-// app.get("/messages/:messageId", (req, res) => {
-//   res.send(messages.filter((item) => item["id"] == req.params.messageId));
-// });
 app.get("/messages/:id", function (request, response) {
   let messageId = Number(request.params.id);
   const filteredMessages = messages.filter(
@@ -38,10 +35,22 @@ app.post("/messages", function (request, response) {
     from: request.body.from,
     text: request.body.text,
   };
-  messages.push(newMessage);
-  response.json(messages);
-  console.log(messages);
+
+  if (request.body.from && request.body.text) {
+    messages.push(newMessage);
+    response.json(messages);
+  } else response.status(400).send("Please check the fields have been correctly filled in");
 });
+app.delete("/messages/:id", function (request, response) {
+  const id = Number(request.params.id);
+  const numberId = messages.findIndex((message) => message.id === id);
+  if (!numberId) {
+    response.status(400).send("Please check ID");
+  } else {
+    response.json(messages.splice(numberId, 1));
+  }
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
