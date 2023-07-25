@@ -43,14 +43,11 @@ app.get("/messages/latest", (req, res) => {
   res.send(latestMessages);
 });
 
-app.get("/messages", (req, res) => {
-  console.log(messages);
-  res.json(messages);
-});
+
 
 //level 1
 app.get("/messages", (req, res) => {
-  res.send({ messages });
+  res.json(messages); //res.json({messages})
 });
 
 app.post("/messages", (req, res) => {
