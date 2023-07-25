@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
+const moment = require("moment");
 app.use(express.json());
 app.use(cors());
 const port = 3000;
@@ -13,6 +13,15 @@ const bookings = require("./bookings.json");
 app.get("/", function (request, response) {
   response.send("Hotel booking server.  Ask for /bookings, etc.");
 });
+
+app.get("/bookings/search/", function (request, response) {
+  let checkDate = request.query.date;
+  let matchedBookings = bookings.filter((aBooking) => {
+    return moment(checkDate).isBetween(aBooking.checkInDate, aBooking.checkOutDate);
+  });
+  response.send(matchedBookings);
+});
+
 
 app.get("/bookings/:id", function (request, response) {
   let checkId = Number(request.params.id);
