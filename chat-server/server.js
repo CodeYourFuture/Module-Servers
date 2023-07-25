@@ -27,8 +27,8 @@ app.get("/messages", function (request, response) {
 });
 
 app.get("/messages/:id", (request, response) => {
-  let requestedID = Number(request.params.id);
-  response.json(messages.filter((message) => message.id === requestedID));
+  let id = Number(request.params.id);
+  response.json(messages.filter((message) => message.id === id));
 });
 
 app.post("/messages", (request, response) => {
@@ -48,6 +48,18 @@ app.post("/messages", (request, response) => {
   messages.push(newMessage);
 
   response.status(201).json(`"${msgText}" sent by ${user}`);
+});
+
+app.delete("/messages/:id", (request, response) => {
+  const id = Number(request.params.id);
+
+  const messageToDelete = messages.find((message) => message.id === id);
+
+  // get the index of the message object that we want to delete
+  const index = messages.indexOf(messageToDelete);
+
+  // use splice to delete -- messages array will be mutated
+  messages.splice(index, 1);
 });
 
 app.listen(process.env.PORT, () => {
