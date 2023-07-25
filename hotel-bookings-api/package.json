@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "is-email": "^1.0.2",
+    "isemail": "^3.2.0",
     "moment": "^2.29.4"
   },
   "repository": {

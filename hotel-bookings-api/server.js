@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const app = express();
 const moment = require("moment");
+const isemail = require("isemail");
 app.use(express.json());
 app.use(cors());
 const port = 3000;
@@ -22,7 +23,6 @@ app.get("/bookings/search/", function (request, response) {
   response.send(matchedBookings);
 });
 
-
 app.get("/bookings/:id", function (request, response) {
   let checkId = Number(request.params.id);
   let aBooking = bookings.find((booking) => {
@@ -38,6 +38,10 @@ app.post("/bookings", function (request, response) {
 
   if (!request.body.title || !request.body.firstName || !request.body.surname || !request.body.email || !request.body.roomId || !request.body.checkInDate || !request.body.checkOutDate) {
     response.status(400).send("data missing");
+  } else if (moment(request.body.checkOutDate).isBefore(request.body.checkInDate)) {
+    response.status(400).send("check out date must be after check in date");
+  } else if (!isemail.validate(request.body.email)) {
+    response.status(400).send("invalid email address");
   } else {
     newBooking.id = maxVal + 1;
     newBooking.title = request.body.title;
