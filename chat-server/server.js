@@ -24,14 +24,23 @@ app.get("/messages", function (request, response) {
 });
 
 //[ ] Create a new message
+//[ ] _reject_ requests to create messages if the message objects have an empty or missing `text` or `from` property.
+//[ ] In this case your server should return a status code of `400`.
+
 app.post("/messages", function (request, response) {
-  const messegeFromUser = {
-    id: messages.length,
-    from: request.body.from,
-    text: request.body.text,
-  };
-  messages.push(messegeFromUser);
-  response.send(messages);
+  if (request.body.from.length > 0 && request.body.text.length > 0) {
+    const messegeFromUser = {
+      id: messages.length,
+      from: request.body.from,
+      text: request.body.text,
+    };
+
+    messages.push(messegeFromUser);
+    response.send(messages);
+  } else {
+    // throw new Error("Error, all fields must be filled");
+    response.status(400).send("Error, all fields must be filled!");
+  }
 });
 
 //- [ ] Read one message specified by an ID
