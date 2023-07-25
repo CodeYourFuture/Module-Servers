@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 const welcomeMessage = {
@@ -55,6 +55,7 @@ app.post("/messages/cerate", (req, res) => {
 // delete by id
 app.delete("/messages/delete/:id", (req, res) => {
   const getById = Number(req.params.id);
+  console.log(getById);
   const findByID = messages.find((message) => message.id === getById);
   const index = messages.indexOf(findByID);
 
