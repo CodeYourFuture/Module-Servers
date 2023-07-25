@@ -16,11 +16,25 @@ app.get("/", function (request, response) {
 });
 
 app.get("/bookings/search/", function (request, response) {
-  let checkDate = request.query.date;
-  let matchedBookings = bookings.filter((aBooking) => {
-    return moment(checkDate).isBetween(aBooking.checkInDate, aBooking.checkOutDate);
-  });
-  response.send(matchedBookings);
+  if (request.query.date) {
+    let checkDate = request.query.date;
+    let matchedBookings = bookings.filter((aBooking) => {
+      return moment(checkDate).isBetween(aBooking.checkInDate, aBooking.checkOutDate);
+    });
+    response.send(matchedBookings);
+  }
+  if (request.query.term) {
+    let searchTerm = request.query.term;
+    let matchedBookings = bookings.filter((aBooking) => {
+      let answer = false;
+      if (aBooking.email.toUpperCase().includes(searchTerm.toUpperCase())) answer = true;
+      if (aBooking.firstName.toUpperCase().includes(searchTerm.toUpperCase())) answer = true;
+      if (aBooking.surname.toUpperCase().includes(searchTerm.toUpperCase())) answer = true;
+      return answer;
+    });
+    response.send(matchedBookings);
+  }
+  
 });
 
 app.get("/bookings/:id", function (request, response) {
