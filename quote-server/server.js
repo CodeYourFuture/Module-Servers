@@ -1,13 +1,15 @@
 // server.js
 // This is where your node app starts
-
+const cors = require("cors");
+const lodash = require("lodash");
 //load the 'express' module which makes writing webservers easy
 const express = require("express");
 const app = express();
 
 //load the quotes JSON
 const quotes = require("./quotes.json");
-
+// middleware
+app.use(cors());
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
 app.get("/", function (request, response) {
@@ -20,8 +22,8 @@ app.get("/quotes", (req, res) => {
 });
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/quotes/random", (req, res) => {
-  const randomQuote = pickFromArray(quotes);
-  res.json(randomQuote);
+  const randomQuote = lodash.sample(quotes);
+  res.json([randomQuote]);
 });
 
 //START OF YOUR CODE...
