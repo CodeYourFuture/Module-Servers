@@ -47,6 +47,16 @@ if(!errors.isEmpty()){
   res.json({messages});
 })
 
+// Read only messages whose text contains a given substring: /messages/search?text=express
+app.get("/messages/search", function (req, res) {
+  const searchText = req.query.text;
+  const filteredMessages = messages.filter((message) =>
+    message.text.includes(searchText)
+  );
+  res.json(filteredMessages);
+});
+
+
 // Read one message specified by an ID
 app.get("/messages/:id", function (req, res) {
   const messageId = parseInt(req.params.id);
@@ -63,7 +73,7 @@ app.get("/messages/:id", function (req, res) {
 app.delete("/messages/:id",function(req,res){
   const message = messages.find((m) => m.id == req.params.id);
 if(!message){
-  return res.status(404).res.send({
+  return res.status(404).json({
     error: "This id doesn't exist" 
   })
 }
