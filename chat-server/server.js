@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
-// const {body,vaidationResult} = require(express-validator);
+ const {body,validationResult} = require("express-validator");
 
  const welcomeMessage = {
   id: 0,
@@ -32,8 +32,17 @@ app.get("/messages", function (req, res) {
 
 
 // create a new message
-app.post("/messages", function (req,res) {
- 
+app.post("/messages", [
+
+body("text","text can't be empty").notEmpty(),
+body("from","text can't be empty").notEmpty()
+],function (req,res) {
+const errors = validationResult(req);
+if(!errors.isEmpty()){
+  return res.status(400).send({
+    error : errors.array()
+  });
+}
   messages.push(req.body);
   res.json({messages});
 })
