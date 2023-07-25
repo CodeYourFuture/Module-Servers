@@ -68,7 +68,7 @@ app.delete("/messages/delete/:id", (req, res) => {
     return res.status(404).json("message with the ID given was not found");
 
   messages.splice(index, 1);
-  res.status(200).json("message with the ID has been deleted");
+  res.json("message with the ID has been deleted");
 });
 
 //search
@@ -84,7 +84,7 @@ app.get("/messages/search", (req, res) => {
     const searchResult = messages.filter((text) =>
       text.text.toLowerCase().includes(message.toLowerCase())
     );
-  res.json(searchResult);
+  res.status(200).json(searchResult);
 });
 
 app.listen(process.env.PORT, () => {
