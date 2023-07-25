@@ -5,8 +5,9 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
+// const {body,vaidationResult} = require(express-validator);
 
-const welcomeMessage = {
+ const welcomeMessage = {
   id: 0,
   from: "Bart",
   text: "Welcome to CYF chat system!",
@@ -32,7 +33,7 @@ app.get("/messages", function (req, res) {
 
 // create a new message
 app.post("/messages", function (req,res) {
-
+ 
   messages.push(req.body);
   res.json({messages});
 })
