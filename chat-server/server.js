@@ -12,6 +12,7 @@ const welcomeMessage = {
   id: 0,
   from: "Bart",
   text: "Welcome to CYF chat system!",
+  timeSent: new Date(),
 };
 
 const messages = [welcomeMessage];
@@ -55,6 +56,7 @@ app.post("/messages", (req, res) => {
     id: messages.length,
     from: req.body.from,
     text: req.body.text,
+    timeSent: new Date(),
   };
 
   if (!newMessage.from || !newMessage.text) {
