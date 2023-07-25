@@ -10,7 +10,7 @@ app.use(cors());
 const welcomeMessage = {
   id: 0,
   from: "Bart",
-  text: "Welcome to CYF chat system!",
+  text: "Eat my shorts!",
 };
 
 //This array is our "data store".
@@ -27,7 +27,8 @@ app.get("/messages", function (request, response) {
 });
 
 app.get("/messages/:id", (request, response) => {
-  response.send(`This is message with ID ${request.params.id}`);
+  let requestedID = Number(request.params.id);
+  response.json(messages.filter((message) => message.id === requestedID));
 });
 
 app.post("/messages", (request, response) => {
@@ -46,7 +47,7 @@ app.post("/messages", (request, response) => {
   };
   messages.push(newMessage);
 
-  response.status(201).send(`"${msgText}" sent by ${user}`);
+  response.status(201).json(`"${msgText}" sent by ${user}`);
 });
 
 app.listen(process.env.PORT, () => {
