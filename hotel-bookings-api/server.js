@@ -6,7 +6,7 @@ const moment = require("moment");
 const isemail = require("isemail");
 app.use(express.json());
 app.use(cors());
-const port = 3000;
+const port = 3001;
 
 //Use this array as your (in-memory) data store.
 const bookings = require("./bookings.json");
@@ -34,7 +34,6 @@ app.get("/bookings/search/", function (request, response) {
     });
     response.send(matchedBookings);
   }
-  
 });
 
 app.get("/bookings/:id", function (request, response) {
@@ -66,7 +65,7 @@ app.post("/bookings", function (request, response) {
     newBooking.checkInDate = request.body.checkInDate;
     newBooking.checkOutDate = request.body.checkOutDate;
     bookings.push(newBooking);
-    response.status(200).send("record added");
+    response.status(200).json(bookings);
   }
 });
 
