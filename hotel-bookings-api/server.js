@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
+ const { body, validationResult } = require("express-validator");
 app.use(express.json());
 app.use(cors());
 
@@ -16,17 +16,37 @@ app.get("/", function (request, response) {
 app.get("/bookings",function (req,res){
   if(bookings.length===0){
     return res.status(404).json({
-      error:"there is no booking"
+      error:"there is no bookings"
     })
   }
 res.json({bookings}); 
 })
 
 //create new booking
-app.post("/bookings",function (req,res) {
-  bookings.push(req.body);
-  res.json({bookings});
-})
+app.post(
+  "/bookings",
+  [
+    body("title").notEmpty(),
+    body("firstName","the firstName shouldn't empty").notEmpty(),
+    body("surname","the surname shouldn't empty").notEmpty(),
+    body("email","the email should be in a correct format").isEmail(),
+    body("email","the email shouldn't empty").notEmpty(),
+    body("id").notEmpty(),
+    body("roomId").notEmpty(),
+    body("checkInDate").notEmpty(),
+    body("checkOutDate").notEmpty(),
+  ],
+  function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({
+        error: errors.array()
+      });
+    }
+    bookings.push(req.body);
+    res.json({ bookings });
+  }
+);
 
 //Read one booking, specified by an ID
 app.get("/bookings/:id",function (req,res) {
