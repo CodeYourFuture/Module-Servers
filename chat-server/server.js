@@ -18,8 +18,8 @@ const welcomeMessage = {
 //This array is our "data store".
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
-
-const messages = [welcomeMessage];
+const messages = []
+messages.push(welcomeMessage);
 
 
 app.get("/", function (request, response) {
@@ -28,6 +28,12 @@ app.get("/", function (request, response) {
 
 app.get("/messages", (request, response) => {
   response.json(messages)
+})
+
+app.get("/messages/:id", (request, response) => {
+  const search = Number(request.params.id);
+  const messageWithSpecificId = messages.find((e) => e.id === search)
+  response.json(messageWithSpecificId)
 })
 
 app.post("/messages", (request, response) => {
