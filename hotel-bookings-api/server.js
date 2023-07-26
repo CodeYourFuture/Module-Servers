@@ -22,7 +22,7 @@ app.get("/bookings",function (req,res){
 res.json({bookings}); 
 })
 
-//create new message
+//create new booking
 app.post("/bookings",function (req,res) {
   bookings.push(req.body);
   res.json({bookings});
@@ -37,6 +37,21 @@ app.get("/bookings/:id",function (req,res) {
     })
   }
   res.json({choosedBooking});
+})
+
+//Delete a booking, specified by an ID
+app.delete("/bookings/:id",function (req,res) {
+  const choosedBooking = bookings.find(
+    (booking) => booking.id == req.params.id
+  );
+  if (!choosedBooking) {
+    return res.status(404).json({
+      error: "booking with this id wasn't found",
+    });
+  }
+  const index = bookings.indexOf(choosedBooking);
+  bookings.splice(index,1);
+  res.json({bookings});
 })
 
 const listener = app.listen(process.env.PORT, function () {
