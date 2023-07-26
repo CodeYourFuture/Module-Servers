@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
+const moment = require("moment");
 const app = express();
 
 app.use(express.json());
@@ -19,6 +19,35 @@ app.get("/", function (request, response) {
 
 app.get("/bookings", (req, res) => {
   res.status(200).json(bookings);
+});
+
+app.get("/bookings/search", (req, res) => {
+  const date = req.query.date;
+  console.log("Queried date: ", date);
+
+  if (!date) {
+    return res.status(400).send("Missing date in query");
+  }
+
+  const bookingsOnDate = bookings.filter((booking) => {
+    const checkInDate = moment(booking.checkInDate, "YYYY-MM-DD");
+    const checkOutDate = moment(booking.checkOutDate, "YYYY-MM-DD");
+    const queriedDate = moment(date, "YYYY-MM-DD");
+
+    console.log("Check in date: ", checkInDate.format("YYYY-MM-DD"));
+    console.log("Check out date: ", checkOutDate.format("YYYY-MM-DD"));
+    console.log("Queried date: ", queriedDate.format("YYYY-MM-DD"));
+
+    return queriedDate.isBetween(checkInDate, checkOutDate, null, "[]");
+  });
+
+  console.log("Bookings on date: ", bookingsOnDate);
+
+  if (bookingsOnDate.length === 0) {
+    return res.status(404).send("No bookings found for this date");
+  }
+
+  return res.status(200).json(bookingsOnDate);
 });
 
 app.get("/bookings/:id", (req, res) => {
