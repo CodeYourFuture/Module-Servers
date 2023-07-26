@@ -36,6 +36,15 @@ app.get("/messages/:id", (request, response) => {
   response.json(messageWithSpecificId)
 })
 
+app.delete("/messages/:id", (request, response) => {
+  const newMessageId = messages.findIndex(
+    (e) => e.id === Number(request.params.id)
+  );
+  if (newMessageId >= 0) {
+   response.json(messages.splice(newMessageId, 1))
+  }
+})
+
 app.post("/messages", (request, response) => {
   const newMessage = {
     id: messages.length + 1,
@@ -45,6 +54,8 @@ app.post("/messages", (request, response) => {
   messages.push(newMessage)
   response.send(messages)
 })
+
+
 
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
