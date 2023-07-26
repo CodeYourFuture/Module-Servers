@@ -43,7 +43,14 @@ if(!errors.isEmpty()){
     error : errors.array()
   });
 }
-  messages.push(req.body);
+//add a timeSent
+const newMessage={
+  id:req.body.id,
+  from:req.body.from,
+  text:req.body.text,
+  timeSent:new Date().toISOString()
+}
+  messages.push(newMessage);
   res.json({messages});
 })
 
