@@ -49,7 +49,7 @@ app.post("/messages/cerate", (req, res) => {
       );
 
   const newMessages = {
-    id: messages.length + 1,
+    id: messages.length,
     from: req.body.from,
     text: req.body.text,
   };
@@ -63,7 +63,7 @@ app.delete("/messages/delete/:id", (req, res) => {
   const getById = Number(req.params.id);
   const findByID = messages.find((message) => message.id === getById);
   const index = messages.indexOf(findByID);
-
+  
   if (!findByID)
     return res.status(404).json("message with the ID given was not found");
 
