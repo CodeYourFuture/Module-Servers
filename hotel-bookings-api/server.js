@@ -59,6 +59,34 @@ app.get("/bookings/:id",function (req,res) {
   res.json({choosedBooking});
 })
 
+//search by date with for exampale in this format : /bookings/search?date=2019-05-20
+
+app.get("/bookings/search",function (req,res) {
+  const clientDate = req.query.date;
+
+  console.log(clientDate);
+  if(!clientDate || !moment(clientDate , "YYYY-MM-DD" , true).isValid()){
+    return res.status(404).json({
+      error:"date should be in YYYY-MM-DD format"
+    })
+  }
+  const chosedBooking = bookings.filter((booking) => {
+    return (
+      moment(booking.checkInDate).isSameOrBefore(clientDate) &&
+      moment(booking.checkOutDate).isSameOrAfter(clientDate)
+    );
+   
+    
+  })
+  res.json({booking:chosedBooking});
+});
+
+
+
+
+
+
+
 //Delete a booking, specified by an ID
 app.delete("/bookings/:id",function (req,res) {
   const choosedBooking = bookings.find(
