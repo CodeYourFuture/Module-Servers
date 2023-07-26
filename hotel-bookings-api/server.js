@@ -34,6 +34,31 @@ app.get("/bookings/:id", (req, res) => {
 
 app.post("/bookings", (req, res) => {
   const booking = req.body;
+  const {
+    title,
+    firstName,
+    surname,
+    email,
+    roomId,
+    checkInDate,
+    checkOutDate,
+  } = booking;
+
+  if (
+    !title ||
+    !firstName ||
+    !surname ||
+    !email ||
+    !roomId ||
+    !checkInDate ||
+    !checkOutDate
+  ) {
+    res
+      .status(400)
+      .send("Invalid booking. Some properties are missing or empty");
+    return;
+  }
+
   booking.id = bookings.length > 0 ? bookings[bookings.length - 1].id + 1 : 1;
   bookings.push(booking);
 
