@@ -34,13 +34,29 @@ app.post("/messages", (req, res) => {
     res.json({ statusCode: 400, error: "form fied empty" });
   }
 });
+
 app.get("/messages", (req, res) => {
   res.json(messages);
+});
+app.get("messages/latest", (req, res) => {
+  if (messages.length >= 10) {
+    const message = messages.slice(-10);
+    res.json(message);
+  } else {
+    res.json(messages);
+  }
+});
+app.get("/messages/search", (req, res) => {
+  const message = messages.filter((el) =>
+    el.text.toLowerCase().includes(req.query.text.toLowerCase())
+  );
+  res.json(message);
 });
 app.get("/messages/:Id", (req, res) => {
   const message = messages.filter((el) => el.id == req.params.Id);
   res.json(message);
 });
+
 app.delete("messages/:Id", (req, res) => {
   const message = messages.filter((el) => el.id !== req.params.Id);
   res.send("Message deleted");
