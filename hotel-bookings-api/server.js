@@ -22,35 +22,56 @@ app.get("/", function (request, response) {
 app.get("/bookings", (req, res) => {
   res.status(200).json(bookings);
 });
-
 app.get("/bookings/search", (req, res) => {
-  const date = req.query.date;
-  console.log("Queried date: ", date);
+  const term = req.query.term.toLowerCase();
 
-  if (!date) {
-    return res.status(400).send("Missing date in query");
+  if (!term) {
+    return res.status(400).send("Missing term in query");
   }
 
-  const bookingsOnDate = bookings.filter((booking) => {
-    const checkInDate = moment(booking.checkInDate, "YYYY-MM-DD");
-    const checkOutDate = moment(booking.checkOutDate, "YYYY-MM-DD");
-    const queriedDate = moment(date, "YYYY-MM-DD");
+  const matchingBookings = bookings.filter((booking) => {
+    const emailMatch = booking.email.toLowerCase().includes(term);
+    const firstNameMatch = booking.firstName.toLowerCase().includes(term);
+    const surnameMatch = booking.surname.toLowerCase().includes(term);
 
-    console.log("Check in date: ", checkInDate.format("YYYY-MM-DD"));
-    console.log("Check out date: ", checkOutDate.format("YYYY-MM-DD"));
-    console.log("Queried date: ", queriedDate.format("YYYY-MM-DD"));
-
-    return queriedDate.isBetween(checkInDate, checkOutDate, null, "[]");
+    return emailMatch || firstNameMatch || surnameMatch;
   });
 
-  console.log("Bookings on date: ", bookingsOnDate);
-
-  if (bookingsOnDate.length === 0) {
-    return res.status(404).send("No bookings found for this date");
+  if (matchingBookings.length === 0) {
+    return res.status(404).send("No bookings found for this term");
   }
 
-  return res.status(200).json(bookingsOnDate);
+  return res.status(200).json(matchingBookings);
 });
+// Level 4 - advanced validation
+// app.get("/bookings/search", (req, res) => {
+//   const date = req.query.date;
+//   console.log("Queried date: ", date);
+
+//   if (!date) {
+//     return res.status(400).send("Missing date in query");
+//   }
+
+//   const bookingsOnDate = bookings.filter((booking) => {
+//     const checkInDate = moment(booking.checkInDate, "YYYY-MM-DD");
+//     const checkOutDate = moment(booking.checkOutDate, "YYYY-MM-DD");
+//     const queriedDate = moment(date, "YYYY-MM-DD");
+
+//     console.log("Check in date: ", checkInDate.format("YYYY-MM-DD"));
+//     console.log("Check out date: ", checkOutDate.format("YYYY-MM-DD"));
+//     console.log("Queried date: ", queriedDate.format("YYYY-MM-DD"));
+
+//     return queriedDate.isBetween(checkInDate, checkOutDate, null, "[]");
+//   });
+
+//   console.log("Bookings on date: ", bookingsOnDate);
+
+//   if (bookingsOnDate.length === 0) {
+//     return res.status(404).send("No bookings found for this date");
+//   }
+
+//   return res.status(200).json(bookingsOnDate);
+// });
 
 app.get("/bookings/:id", (req, res) => {
   const id = parseInt(req.params.id);
