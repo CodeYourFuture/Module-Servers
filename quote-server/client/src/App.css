@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* font-family: 'Dancing Script', cursive; */
+  font-family: 'Edu SA Beginner', cursive;
+    font-family: 'Handlee', cursive;
+ font-size: 3rem;
+}
+
+.App {
+  /* text-align: center;
+  align-content: center; */
+  padding: 5rem 20rem;
+  background-color: rgb(197, 197, 197);
+  color: rgb(0, 0, 0);
+
+
+}
