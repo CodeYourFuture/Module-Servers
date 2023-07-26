@@ -31,7 +31,7 @@ app.post("/messages", (req, res) => {
     messages.push(newMessage);
     res.send("Your message was sent successfully");
   } else {
-    res.sendFile(__dirname + "/empty.html");
+    res.json({ statusCode: 400, error: "form fied empty" });
   }
 });
 app.get("/messages", (req, res) => {
