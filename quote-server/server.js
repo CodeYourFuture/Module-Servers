@@ -1,6 +1,13 @@
 const express = require("express");
 const app = express();
 const lodash = require("lodash");
+const path = require("path");
+
+var cors = require("cors");
+
+app.use(cors());
+
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 //load the quotes JSON
 const quotes = require("./quotes.json");
