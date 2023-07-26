@@ -62,6 +62,10 @@ app.delete("messages/:Id", (req, res) => {
   const message = messages.filter((el) => el.id !== req.params.Id);
   res.send("Message deleted");
 });
+app.put("messages/:Id", (req, res) => {
+  const message = messages.filter((el) => el.id === req.params.Id);
+  res.send("Message updated");
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
