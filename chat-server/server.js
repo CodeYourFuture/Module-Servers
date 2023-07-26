@@ -28,8 +28,9 @@ app.post("/messages", (req, res) => {
     newMessage.id = messages.length;
     newMessage.from = req.body.from;
     newMessage.text = req.body.text;
+    newMessage.timeSent = new Date();
     messages.push(newMessage);
-    res.send("Your message was sent successfully");
+    res.send(messages);
   } else {
     res.json({ statusCode: 400, error: "form fied empty" });
   }
