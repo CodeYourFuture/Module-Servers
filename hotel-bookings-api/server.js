@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const moment = require("moment");
+const validator = require("validator");
+
 const app = express();
 
 app.use(express.json());
@@ -85,6 +87,22 @@ app.post("/bookings", (req, res) => {
     res
       .status(400)
       .send("Invalid booking. Some properties are missing or empty");
+    return;
+  }
+
+  // email validation
+  if (!validator.isEmail(email)) {
+    res.status(400).send("Invalid booking. Email is not valid");
+    return;
+  }
+
+  // date validation
+  const checkIn = moment(checkInDate, "YYYY-MM-DD");
+  const checkOut = moment(checkOutDate, "YYYY-MM-DD");
+  if (!checkOut.isAfter(checkIn)) {
+    res
+      .status(400)
+      .send("Invalid booking. Checkout date must be after checkin date");
     return;
   }
 
