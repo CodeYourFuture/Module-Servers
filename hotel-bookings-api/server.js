@@ -37,6 +37,15 @@ app.post('/api/hotel/booking', (req, res) => {
   });
 })
 
+// find by ID
+app.get('/api/hotel/booking/:id', (req, res) => {
+  const getById = Number(req.params.id);
+  const findBookingById = bookings.find((book) => book.id === getById)
+  if (!findBookingById)
+    return res.status(404).send(`message: booking for ID requested is not found`);
+  res.status(200).send(findBookingById)
+})
+
 
 const port = process.env.PORT || 5099;
 app.listen(port, () => console.log(`listen on port ${port} .....!!`));
