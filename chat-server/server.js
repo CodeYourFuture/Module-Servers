@@ -62,6 +62,17 @@ app.get("/messages/:id", function (request, response) {
   response.json({ messageWithMatchingId });
 });
 
+// Delete one message specified by an ID using params 
+
+app.delete("/messages/:id", (request, response) => {
+  const messageId = Number(request.params.id);
+  const messageWithMatchingId = messages.find((message) => message.id === messageId);
+  const indexOfMessageToBeDeleted = messages.indexOf(messageWithMatchingId);
+  messages.splice(indexOfMessageToBeDeleted, 1);
+  response.status(200).json({ messages })
+});
+
+
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
