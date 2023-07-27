@@ -34,6 +34,16 @@ app.post("/messages", function (request, response) {
   response.send({ messages });
 });
 
+app.get("/messages/:id", function (request, response) {
+  const messageId = Number(request.params.id);
+  console.log(messageId);
+  const messageWithMatchingId = messages.find(
+    (message) => message.id === messageId
+  );
+  console.log(messageWithMatchingId);
+  response.json({ messageWithMatchingId });
+});
+
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
