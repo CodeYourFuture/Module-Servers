@@ -34,6 +34,24 @@ app.post("/messages", function (request, response) {
   response.send({ messages });
 });
 
+// Find one message specified by an ID using query
+
+function getMatchingMessage(idNum) {
+  console.log(idNum, "<--- idNum");
+  console.log(typeof idNum);
+  return messages.filter((message) => message.id === idNum);
+}
+
+app.get("/messages/id", (request, response) => {
+  const idQuery = Number(request.query.number);
+  console.log(idQuery, "<--- idQuery");
+  const matchingMessage = getMatchingMessage(idQuery);
+  console.log(matchingMessage);
+  response.json(matchingMessage)
+});
+
+// Find one message specified by an ID using params
+
 app.get("/messages/:id", function (request, response) {
   const messageId = Number(request.params.id);
   console.log(messageId);
