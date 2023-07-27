@@ -16,11 +16,26 @@ app.get("/", function (request, response) {
 });
 
 // show all bookings
-app.get('/api/hotel', (req, res) => {
-  res.send(bookings)
-})
+app.get('/api/hotel/booking', (req, res) => {
+  res.send(bookings);
+});
 
 // TODO add your routes and helper functions here
+
+//post 
+app.post('/api/hotel/booking', (req, res) => {
+  const newId = bookings[bookings.length - 1].id + 1;
+  const newBooking = Object.assign({ id: newId }, req.body);
+
+  bookings.push(newBooking);
+  fs.writeFile("./bookings.json", JSON.stringify(bookings), () => {
+    res.status(201).send({
+      bookings: {
+        newBooking,
+      },
+    });
+  });
+})
 
 
 const port = process.env.PORT || 5099;
