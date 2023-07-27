@@ -29,13 +29,26 @@ app.get("/messages", function (request, response) {
   response.status(200).send(messages);
 });
 
+app.get("/messages/latest", function (request, response) {
+  const latestMessages = _.takeRight(messages, 10); // same as -> messages.slice(-10);
+  response.status(200).send(latestMessages);
+});
+
 app.get("/messages/:id", function (request, response) {
   const messageIdSearch = parseInt(request.params.id);
   console.log(request.params.id);
   const foundMessage = messages.find(
     (message) => message.id === messageIdSearch
   );
-  response.send(foundMessage);
+  response.status(200).send(foundMessage);
+});
+
+app.get("/messages/search", function (request, response) {
+  const searchQuery = request.query.term.toLowerCase();
+  const filteredMessages = messages.filter((messageObject) =>
+    messageObject.message.toLowerCase().includes(searchQuery)
+  );
+  response.status(200).send(filteredMessages);
 });
 
 app.post("/messages", function (request, response) {
