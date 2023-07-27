@@ -1,9 +1,11 @@
 process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
-
+const bodyParser = require("body-parser");
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 
 const welcomeMessage = {
@@ -21,6 +23,38 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
-app.listen(process.env.PORT,() => {
+let nextMessageId = 1;
+
+app.post("/messages", function (request, response) {
+  const newMessage = {
+    id: nextMessageId++,
+    from: request.body.from,
+    text: request.body.text,
+  };
+
+  messages.push(newMessage);
+  response.status(201).json(newMessage);
+});
+
+app.get("/messages", function (request, response) {
+  response.json(messages);
+});
+
+app.get("/messages/:id", function (request, response) {
+  const messageId = parseInt(request.params.id);
+  let message = null;
+  messages.forEach((singleMsg) => {
+    if (singleMsg.id === messageId) {
+      message = singleMsg;
+    }
+  });
+  if (!message) {
+    response.status(404).json({ error: "Message not found." });
+  } else {
+    response.json(message);
+  }
+});
+
+app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
