@@ -1,6 +1,7 @@
 process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
+const _ = require("lodash");
 
 const app = express();
 
@@ -41,12 +42,23 @@ app.post("/messages", function (request, response) {
   let newMessage = request.body;
   newMessage.id = messageIdCounter++;
 
-  messages.push({
-    id: newMessage.id,
-    from: newMessage.from,
-    text: newMessage.text,
-  });
-  response.status(201).json(newMessage);
+  if (
+    _.isString(newMessage.from) &&
+    _.isString(newMessage.text) &&
+    newMessage.from.length > 0 &&
+    newMessage.text.length > 0
+  ) {
+    messages.push({
+      id: newMessage.id,
+      from: newMessage.from,
+      text: newMessage.text,
+    });
+    response.status(201).json(newMessage);
+  } else {
+    response.json({
+      error: "Invalid Input",
+    });
+  }
 });
 
 app.delete("/messages/:id", function (request, response) {
