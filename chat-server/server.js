@@ -42,12 +42,8 @@ app.get("/messages", function (request, response) {
 
 app.get("/messages/:id", function (request, response) {
   const messageId = parseInt(request.params.id);
-  let message = null;
-  messages.forEach((singleMsg) => {
-    if (singleMsg.id === messageId) {
-      message = singleMsg;
-    }
-  });
+  const message = messages.find((singleMsg) => singleMsg.id === messageId);
+
   if (!message) {
     response.status(404).json({ error: "Message not found." });
   } else {
