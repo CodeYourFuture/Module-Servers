@@ -1,6 +1,6 @@
 const express = require("express");
 const fs = require("fs");
-const bookings = JSON.parse(fs.readFileSync("./bookings.json"))
+const bookings = JSON.parse(fs.readFileSync("./bookings.json"));
 const cors = require("cors");
 
 const app = express();
@@ -16,14 +16,14 @@ app.get("/", function (request, response) {
 });
 
 // show all bookings
-app.get('/api/hotel/booking', (req, res) => {
+app.get("/api/hotel/booking", (req, res) => {
   res.send(bookings);
 });
 
 // TODO add your routes and helper functions here
 
-//post 
-app.post('/api/hotel/booking', (req, res) => {
+//post
+app.post("/api/hotel/booking", (req, res) => {
   const newId = bookings[bookings.length - 1].id + 1;
   const newBooking = Object.assign({ id: newId }, req.body);
 
@@ -35,17 +35,40 @@ app.post('/api/hotel/booking', (req, res) => {
       },
     });
   });
-})
+});
 
 // find by ID
-app.get('/api/hotel/booking/:id', (req, res) => {
+app.get("/api/hotel/booking/:id", (req, res) => {
   const getById = Number(req.params.id);
-  const findBookingById = bookings.find((book) => book.id === getById)
+  const findBookingById = bookings.find((book) => book.id === getById);
   if (!findBookingById)
-    return res.status(404).send(`message: booking for ID requested is not found`);
-  res.status(200).send(findBookingById)
-})
+    return res
+      .status(404)
+      .send(`message: booking for ID requested is not found`);
+  res.status(200).send(findBookingById);
+});
 
+// Delete
+app.delete("/api/hotel/booking/:id", (req, res) => {
+  const getById = Number(req.params.id);
+  const deleteBookingById = bookings.find((book) => book.id === getById);
+  const index = bookings.indexOf(deleteBookingById);
+
+  if (!deleteBookingById)
+    return res
+      .status(404)
+      .send(`message: booking for ID requested is not found`);
+
+  bookings.splice(index, 1);
+
+  fs.writeFile("./bookings.json", JSON.stringify(bookings), () => {
+    res.status(200).send({
+      bookings: {
+        Message: "Booking with id has been deleted successfully"
+      }
+    });
+  });
+});
 
 const port = process.env.PORT || 5099;
 app.listen(port, () => console.log(`listen on port ${port} .....!!`));
