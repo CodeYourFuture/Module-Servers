@@ -33,6 +33,7 @@ app.get("/messages", function (req, res) {
 // find by id
 app.get("/messages/:id", (req, res) => {
   const getById = Number(req.params.id);
+  console.log(getById);
   const findByID = messages.find((message) => message.id === getById);
   if (!findByID)
     return res.status(404).json("messages with the ID given was not found");
