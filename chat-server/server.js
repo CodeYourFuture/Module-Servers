@@ -23,7 +23,6 @@ app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
 
-
 app.get("/messages/search", function (request, response) {
   const inputText = request.query.text;
   if (inputText) {
@@ -59,6 +58,9 @@ app.get("/messages", function (request, response) {
 
 app.post("/messages", function (request, response) {
   let maxVal = Math.max(...messages.map((message) => message.id));
+  if (!maxVal || maxVal === 0) {
+    maxVal = 0;
+  }
   let newRec = {};
 
   if (!request.body.from || !request.body.text) {
@@ -69,7 +71,7 @@ app.post("/messages", function (request, response) {
     newRec.text = request.body.text;
     newRec.timeSent = new Date();
     messages.push(newRec);
-    response.status(200).send("record added");
+    response.status(200).json(messages);
   }
 });
 
@@ -79,7 +81,7 @@ app.delete("/messages/:id", function (request, response) {
   let removeIndex = messages.map((message) => message.id).indexOf(inMessageId);
   if (removeIndex >= 0) {
     messages.splice(removeIndex, 1);
-    response.status(200).send("deleted");
+    response.status(200).json(messages);
   } else {
     response.status(404).send("record not found");
   }
