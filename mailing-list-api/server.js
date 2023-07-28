@@ -7,25 +7,22 @@ app1.use(express.json());
 
 app1.use(express.urlencoded({ extended: true }));
 const mailingListObj = require("./mailing-lists");
-// const mailingList = Object.keys(mailingListObj).map((key) => [key, mailingListObj[key]]);
-// console.log(mailingList);
 
 app1.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
 
 app1.get("/lists", function (request, response) {
-  //   lists = Object.keys(mailingListObj);
   let mailingList = Object.entries(mailingListObj).map(([key, value]) => ({ [key]: value }));
-  lists = mailingList.map((list) => Object.keys(list)[0]);
+  const lists = mailingList.map((list) => Object.keys(list)[0]);
   response.status(200).json(lists);
 });
 
 app1.get("/lists/:name", function (request, response) {
   const listName = request.params.name;
-  let listIndex = -1;
+
   if (listName) {
-    listIndex = Object.keys(mailingListObj).indexOf(listName);
+    const listIndex = Object.keys(mailingListObj).indexOf(listName);
     if (listIndex > -1) {
       let newObj = {};
       newObj[listName] = mailingListObj[listName];
@@ -44,9 +41,8 @@ app1.put("/lists/:name", function (request, response) {
   if (listName != bodyName) {
     response.sendStatus(400);
   } else {
-    let listIndex = -1;
     if (listName) {
-      listIndex = Object.keys(mailingListObj).indexOf(listName);
+      const listIndex = Object.keys(mailingListObj).indexOf(listName);
       if (listIndex > -1) {
         mailingListObj[bodyName] = bodyMembers;
         response.sendStatus(200);
@@ -60,13 +56,10 @@ app1.put("/lists/:name", function (request, response) {
 
 app1.delete("/lists/:name", function (request, response) {
   const listName = request.params.name;
-  console.log(listName);
-  let listIndex = -1;
   if (listName) {
     const listIndex = Object.keys(mailingListObj).indexOf(listName);
     if (listIndex > -1) {
       delete mailingListObj[listName];
-      console.log(mailingListObj);
       response.sendStatus(200);
     } else {
       response.sendStatus(404);
