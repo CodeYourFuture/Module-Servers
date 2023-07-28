@@ -1,4 +1,3 @@
-process.env.PORT = process.env.PORT;
 const express = require("express");
 
 const app = express();
@@ -9,10 +8,6 @@ app.use(express.urlencoded({ extended: true }));
 const mailingListObj = require("./mailing-lists");
 // const mailingList = Object.keys(mailingListObj).map((key) => [key, mailingListObj[key]]);
 // console.log(mailingList);
-
-app.listen(process.env.PORT, () => {
-  console.log(`listening on PORT ${process.env.PORT}...`);
-});
 
 app.get("/lists", function (request, response) {
   //   lists = Object.keys(mailingListObj);
@@ -72,4 +67,8 @@ app.delete("/lists/:name", function (request, response) {
       response.sendStatus(404);
     }
   }
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`listening on PORT ${process.env.PORT}...`);
 });
