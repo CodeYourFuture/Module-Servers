@@ -41,15 +41,19 @@ app.put("/lists/:name", function (request, response) {
   const listName = request.params.name;
   const bodyName = request.body.name;
   const bodyMembers = request.body.members;
-  let listIndex = -1;
-  if (listName) {
-    listIndex = Object.keys(mailingListObj).indexOf(listName);
-    if (listIndex > -1) {
-      mailingListObj[bodyName] = bodyMembers;
-      response.sendStatus(200);
-    } else {
-      mailingListObj[bodyName] = bodyMembers;
-      response.sendStatus(201);
+  if (listName != bodyName) {
+    response.sendStatus(400);
+  } else {
+    let listIndex = -1;
+    if (listName) {
+      listIndex = Object.keys(mailingListObj).indexOf(listName);
+      if (listIndex > -1) {
+        mailingListObj[bodyName] = bodyMembers;
+        response.sendStatus(200);
+      } else {
+        mailingListObj[bodyName] = bodyMembers;
+        response.sendStatus(201);
+      }
     }
   }
 });
