@@ -1,22 +1,27 @@
+process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 
-const app = express();
+const app1 = express();
 
-app.use(express.json());
+app1.use(express.json());
 
-app.use(express.urlencoded({ extended: true }));
+app1.use(express.urlencoded({ extended: true }));
 const mailingListObj = require("./mailing-lists");
 // const mailingList = Object.keys(mailingListObj).map((key) => [key, mailingListObj[key]]);
 // console.log(mailingList);
 
-app.get("/lists", function (request, response) {
+app1.listen(process.env.PORT, () => {
+  console.log(`listening on PORT ${process.env.PORT}...`);
+});
+
+app1.get("/lists", function (request, response) {
   //   lists = Object.keys(mailingListObj);
   let mailingList = Object.entries(mailingListObj).map(([key, value]) => ({ [key]: value }));
   lists = mailingList.map((list) => Object.keys(list)[0]);
   response.status(200).json(lists);
 });
 
-app.get("/lists/:name", function (request, response) {
+app1.get("/lists/:name", function (request, response) {
   const listName = request.params.name;
   let listIndex = -1;
   if (listName) {
@@ -32,7 +37,7 @@ app.get("/lists/:name", function (request, response) {
   }
 });
 
-app.put("/lists/:name", function (request, response) {
+app1.put("/lists/:name", function (request, response) {
   const listName = request.params.name;
   const bodyName = request.body.name;
   const bodyMembers = request.body.members;
@@ -53,7 +58,7 @@ app.put("/lists/:name", function (request, response) {
   }
 });
 
-app.delete("/lists/:name", function (request, response) {
+app1.delete("/lists/:name", function (request, response) {
   const listName = request.params.name;
   console.log(listName);
   let listIndex = -1;
@@ -67,8 +72,4 @@ app.delete("/lists/:name", function (request, response) {
       response.sendStatus(404);
     }
   }
-});
-
-app.listen(process.env.PORT, () => {
-  console.log(`listening on PORT ${process.env.PORT}...`);
 });
