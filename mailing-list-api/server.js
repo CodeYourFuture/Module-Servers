@@ -1,10 +1,10 @@
 process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
-const cors = require("cors");
+
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
 app.use(express.urlencoded({ extended: true }));
 const mailingListObj = require("./mailing-lists");
 // const mailingList = Object.keys(mailingListObj).map((key) => [key, mailingListObj[key]]);
