@@ -58,7 +58,7 @@ app.get("/messages", function (request, response) {
 
 app.post("/messages", function (request, response) {
   let maxVal = Math.max(...messages.map((message) => message.id));
-  if (!maxVal || maxVal === 0) {
+  if (maxVal === null) {
     maxVal = 0;
   }
   let newRec = {};
