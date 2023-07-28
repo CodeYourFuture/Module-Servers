@@ -26,13 +26,30 @@ app.get("/messages", function (request, response) {
   response.json({ messages });
 });
 
+/*
+Level 2 - simple validation
+For this level, your server must:
+ reject requests to create messages if the message objects have an empty or missing text or from property.
+ In this case your server should return a status code of 400.
+(Advanced note: people don't actually agree on the best status code for this situation.)
+*/
+
 app.post("/messages", function (request, response) {
   const newMessage = request.body;
-  console.log(request.body);
-  console.log(newMessage);
-  messages.push(newMessage);
-  response.send({ messages });
+  console.log(newMessage.from, "<--- newMessage.from");
+  console.log(typeof newMessage.id, "<--- newMessage.id");
+  console.log(typeof newMessage.from, "<--- newMessage.from");
+  console.log(typeof newMessage.text, "<--- newMessage.text");
+  console.log(newMessage.from !== "", "<--- newMessage.from not empty string");
+  if ((newMessage.from !== "") && (newMessage.text !== "")) {
+    messages.push(newMessage);
+    response.send({ messages });
+  } else {
+    response.status(400);
+    response.send("Please provide the missing information");
+  }
 });
+
 
 // Find one message specified by an ID using query
 
@@ -44,6 +61,7 @@ function getMatchingMessage(idNum) {
 
 app.get("/messages/id", (request, response) => {
   const idQuery = Number(request.query.number);
+  console.log(typeof idQuery);
   console.log(idQuery, "<--- idQuery");
   const matchingMessage = getMatchingMessage(idQuery);
   console.log(matchingMessage);
