@@ -2,6 +2,7 @@ const express = require("express");
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const mailListObject = require("./mailing-lists");
 
@@ -42,7 +43,22 @@ app.delete("/lists/:name", function (request, response) {
     response.sendStatus(404);
   }
 });
+//put or update the list
 
+app.put("/lists/:name", function (request, response) {
+  const listName = request.params.name;
+  const bodyName = request.body.name;
+  const bodyMembers = request.body.members;
+  if (listName !== bodyName) {
+    response.sendStatus(400);
+  } else if (mailListObject.hasOwnProperty(listName)) {
+    mailListObject[listName] = bodyMembers;
+    response.sendStatus(200);
+  } else {
+    mailListObject[bodyName] = bodyMembers;
+    response.sendStatus(201);
+  }
+});
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
