@@ -14,6 +14,21 @@ app.get("/lists", (req, res) => {
   res.status(200).json(lists);
 });
 
+app.get("/lists/:name", (req, res) => {
+  //const keys = Object.keys(lists);
+  //Object.values() static method returns an array of a given object's own enumerable string-keyed property values
+  //const memebersArray = Object.values(lists);
+  //some important info but werent used!
+  const name = {
+    name: req.params.name,
+    members: lists[req.params.name],
+  };
+  if (!name) {
+    res.status(404).send("name is not found");
+  }
+  res.status(200).send(name);
+});
+
 app.listen(3007, () => {
   console.log("server started on the port 3007");
 });
