@@ -45,6 +45,17 @@ app.get('/messages', (req, res) => {
   res.json(messages);
 });
 
+// Route to read only messages whose text contains a given substring
+app.get('/messages/search', (req, res) => {
+  const searchText = req.query.text.toLowerCase();
+  if (!searchText) {
+    return res.status(400).json({ message: "Search text parameter is required." });
+  }
+
+  const filteredMessages = messages.filter(msg => msg.text.toLowerCase().includes(searchText));
+  res.json(filteredMessages);
+});
+
 // Route to read one message specified by an ID
 app.get('/messages/:id', (req, res) => {
   // console.log(req.params.id, "<----req.params");
@@ -59,7 +70,7 @@ app.get('/messages/:id', (req, res) => {
 
 // Route to delete a message by ID
 app.delete('/messages/:id', (req, res) => {
-  // console.log(req.params.id, "<----req.params");
+  console.log(req.params.id, "<----req.params.delete");
   const messageId = parseInt(req.params.id);
   const index = messages.findIndex(msg => msg.id === messageId);
   if (index !== -1) {
@@ -70,16 +81,6 @@ app.delete('/messages/:id', (req, res) => {
   }
 });
 
-// Route to read only messages whose text contains a given substring
-app.get('/messages/search', (req, res) => {
-  const searchText = req.query.text;
-  if (!searchText) {
-    return res.status(400).json({ message: "Search text parameter is required." });
-  }
-
-  const filteredMessages = messages.filter(msg => msg.text.includes(searchText));
-  res.json(filteredMessages);
-});
 
 // Route to read only the most recent 10 messages
 app.get('/messages/latest', (req, res) => {
