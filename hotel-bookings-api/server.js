@@ -14,7 +14,76 @@ app.get("/", function (request, response) {
 });
 
 // TODO add your routes and helper functions here
+//process.env.PORT
+const listener = app.listen(9090, function () {
+  console.log("Your app is listening on port ");
+});
 
-const listener = app.listen(process.env.PORT, function () {
-  console.log("Your app is listening on port " + listener.address().port);
+// 1- Read all bookings
+
+app.get("/booking", function (request, response) {
+  response.send(bookings);
+});
+
+// 2- Read one booking, specified by an ID
+////If the booking to be read cannot be found by id, return a 404.
+app.get("/booking/:id", function (request, response) {
+  const id = Number(request.params.id);
+  const searched = bookings.filter((booking) => booking.id === id);
+  if (searched.length < 1) {
+    response.status(404).send("id not found");
+  } else {
+    console.log(searched);
+    response.send(searched);
+  }
+});
+
+//3- Delete a booking, specified by an ID
+//If the booking for deletion cannot be found by id, return a 404.
+app.delete("/booking/:id", function (request, response) {
+  const id = Number(request.params.id);
+  const indexToDelete = bookings.findIndex((booking) => booking.id === id);
+  if (indexToDelete !== -1) {
+    bookings.splice(indexToDelete, 1);
+  } else {
+    response.status(404).send("id to be deleted not found");
+  }
+  response.send(bookings);
+});
+
+// 4- Create a new booking
+//For this level, your server must reject requests to create bookings if:
+
+// - any property of the booking object is missing or empty.
+
+// In this case your server should return a status code of 400, and should NOT store the booking in the bookings array.
+app.post("/booking", function (request, response) {
+  const body = request.body;
+
+  if (
+    !request.body.id ||
+    !request.body.title ||
+    !request.body.firstName ||
+    !request.body.surname ||
+    !request.body.email ||
+    !request.body.roomId ||
+    !request.body.checkInDate ||
+    !request.body.checkOutDate
+  ) {
+    response.status(404).send("some fields are missing.");
+  } else {
+    const newBooking = {
+      id: request.body.id,
+      title: request.body.title,
+      firstName: request.body.firstName,
+      surname: request.body.surname,
+      email: request.body.email,
+      roomId: request.body.roomId,
+      checkInDate: request.body.checkInDate,
+      checkOutDate: request.body.checkOutDate,
+    };
+
+    bookings.push(newBooking);
+    response.status(200).send(bookings);
+  }
 });

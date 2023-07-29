@@ -1,4 +1,5 @@
 process.env.PORT = process.env.PORT || 9090;
+
 const express = require("express");
 const cors = require("cors");
 
@@ -15,12 +16,13 @@ const welcomeMessage = {
 //This array is our "data store".
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
+
 const messages = [welcomeMessage];
 
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
-app.listen(process.env.PORT,() => {
+app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
