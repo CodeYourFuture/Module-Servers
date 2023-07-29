@@ -5,13 +5,18 @@ app.use(express.urlencoded({ extended: true }));
 var bodyParser = require("body-parser");
 
 const lists = require("./mailing-lists");
+console.log(lists);
 
 app.get("/lists", (req, res) => {
   //200 and empty array if none exist
+  listNames = [];
+  for (const property in lists) {
+    listNames.push(property)
+  }
   if (Object.keys(lists).length == 0) {
     res.status(200).send([]);
   }
-  res.status(200).json(lists);
+  res.status(200).json(listNames);
 });
 
 app.get("/lists/:name", (req, res) => {
@@ -30,9 +35,13 @@ app.get("/lists/:name", (req, res) => {
 });
 
 app.delete("/lists/:name", (req, res) => {
-    const property = req.params.name
-    delete lists[property]
-})
+  const pro = req.params.name;
+  if (!(pro in lists)) {
+    res.status(404).send("property not found to delete");
+  }
+  delete lists[pro];
+  res.status(200).send("successfully deleted");
+});
 
 app.listen(3007, () => {
   console.log("server started on the port 3007");
