@@ -2,6 +2,7 @@ process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 
 const app1 = express();
+app1.disable("x-powered-by");
 
 app1.use(express.json());
 
