@@ -51,6 +51,17 @@ app.get("/messages/:id", function (request, response) {
   }
 });
 
+app.delete("/messages/:id", function (request, response) {
+  const messageId = parseInt(request.params.id);
+  const singleMessage = messages.find(
+    (singleMsg) => singleMsg.id === messageId
+  );
+  if (singleMessage) {
+    messages.splice(singleMessage, 1);
+  }
+  response.send(messages);
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
