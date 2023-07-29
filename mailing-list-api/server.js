@@ -29,7 +29,7 @@ app.get("/lists/:name", function (request, response) {
     };
     response.status(200).send(singleObject);
   } else {
-    response.status(404).json({ error: "List not found" });
+    response.sendStatus(404);
   }
 });
 
