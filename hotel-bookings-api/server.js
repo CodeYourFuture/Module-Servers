@@ -51,7 +51,7 @@ const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
 
-
+// function for deleting
 const deleteBookingID = (bookings, id) => {
   let bookingInd = bookings.findIndex((booking) => booking.id == id);
 
