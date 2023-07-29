@@ -13,6 +13,21 @@ app.get("/", function (request, response) {
   response.send("Hotel booking server.  Ask for /bookings, etc.");
 });
 
+app.get("/bookings", function (request, response) {
+  response.send(bookings);
+});
+
+app.post("/bookings", function (request, response) {
+  let newBooking = request.body;
+  //   if (newBooking.from === "" || newBooking.text === "") {
+  //     throw new Error("400");
+  //   } else {
+
+  bookings.push(newBooking);
+  response.json(newBooking);
+});
+
+
 // TODO add your routes and helper functions here
 
 const listener = app.listen(process.env.PORT, function () {
