@@ -52,19 +52,38 @@ app.delete("/booking/:id", function (request, response) {
 });
 
 // 4- Create a new booking
+//For this level, your server must reject requests to create bookings if:
+
+// - any property of the booking object is missing or empty.
+
+// In this case your server should return a status code of 400, and should NOT store the booking in the bookings array.
 app.post("/booking", function (request, response) {
   const body = request.body;
-  const newBooking = {
-    id: request.body.id,
-    title: request.body.title,
-    firstName: request.body.firstName,
-    surname: request.body.surname,
-    email: request.body.email,
-    roomId: request.body.roomId,
-    checkInDate: request.body.checkInDate,
-    checkOutDate: request.body.checkOutDate,
-  };
 
-  bookings.push(newBooking);
-  response.status(200).send(bookings);
+  if (
+    !request.body.id ||
+    !request.body.title ||
+    !request.body.firstName ||
+    !request.body.surname ||
+    !request.body.email ||
+    !request.body.roomId ||
+    !request.body.checkInDate ||
+    !request.body.checkOutDate
+  ) {
+    response.status(404).send("some fields are missing.");
+  } else {
+    const newBooking = {
+      id: request.body.id,
+      title: request.body.title,
+      firstName: request.body.firstName,
+      surname: request.body.surname,
+      email: request.body.email,
+      roomId: request.body.roomId,
+      checkInDate: request.body.checkInDate,
+      checkOutDate: request.body.checkOutDate,
+    };
+
+    bookings.push(newBooking);
+    response.status(200).send(bookings);
+  }
 });
