@@ -19,7 +19,7 @@ const welcomeMessage = {
 //Note: messages will be lost when Glitch restarts our server.
 const messages = [welcomeMessage];
 
-app.get("/", function (request, response) {
+app.get("/", function (request, response, next) {
   response.sendFile(__dirname + "/index.html");
 });
 
@@ -31,9 +31,20 @@ app.post("/messages", function (request, response) {
     from: request.body.from,
     text: request.body.text,
   };
+  try {
+    if (!request.body.from || !request.body.text) {
+      throw new Error("Unable to add a message");
+    } else {
+      messages.push(newMessage);
+      response.json(newMessage);
+    }
+  } catch (error) {
+    console.log(error);
+    response.status(400);
+  }
 
-  messages.push(newMessage);
-  response.status(201).json(newMessage);
+  
+  response.json({message: "Something went wrong"});
 });
 
 app.get("/messages", function (request, response) {
