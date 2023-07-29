@@ -29,6 +29,26 @@ app.get("/messages", (request, response) => {
   response.json(messages);
 });
 
+app.get("/messages/search", (request, response) => {
+  const search = request.query.text.toUpperCase();
+  const filteredMessages = messages.filter(
+    (e) =>
+      e.text.toUpperCase().includes(search) ||
+      e.from.toUpperCase().includes(search)
+  );
+  response.json(filteredMessages);
+});
+
+app.get("/messages/latest", (request, response) => {
+  if(messages.length <= 10) {
+    response.json(messages)
+  } else {
+   const lastestMessages = (messages.slice(-10))
+    response.json(lastestMessages)
+  }
+  
+})
+
 app.get("/messages/:id", (request, response) => {
   const search = Number(request.params.id);
   const messageWithSpecificId = messages.find((e) => e.id === search);
@@ -43,6 +63,8 @@ app.delete("/messages/:id", (request, response) => {
     response.json(messages.splice(newMessageId, 1));
   }
 });
+
+
 
 app.post("/messages", (request, response) => {
   const newMessage = {
