@@ -21,6 +21,10 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
+app.get("", function (request,response){
+  console.log(response);
+});
+
 // Route to create a new message
 app.post('/messages', (req, res) => {
   // console.log(req.body, "<----req.body")
