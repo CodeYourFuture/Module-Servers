@@ -32,6 +32,17 @@ app.get("/lists/:name", function (request, response) {
   }
 });
 
+//DELETE single list
+app.delete("/lists/:name", function (request, response) {
+  const listNameToDel = request.params.name;
+  if (listNameToDel) {
+    delete mailListObject[listNameToDel];
+    response.sendStatus(200);
+  } else {
+    response.sendStatus(404);
+  }
+});
+
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
