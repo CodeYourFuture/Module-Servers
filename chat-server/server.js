@@ -22,9 +22,32 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
+
+// get all messages
+
 app.get("/messages", function (request, response) {
   response.json({ messages });
 });
+
+// get messages that contains a word in the text (eg. express)
+
+function getMatchingMessageByText(text) {
+  return messages.filter((message) => message.text.toLowerCase().indexOf(text) >= 0);
+}
+
+app.get("/messages/search", (req, res) => {
+  const searchQuery = req.query.text;
+  console.log(searchQuery, "<---searchQuery");
+  const matchingMessage = getMatchingMessageByText(searchQuery);
+  console.log(matchingMessage, "<---matching message");
+  res.json(matchingMessage);
+});
+
+// get latest 10 messages
+
+app.get("/messages/latest", (req, res) => {
+  res.json(messages.slice(-10));
+})
 
 /*
 Level 2 - simple validation
@@ -41,7 +64,7 @@ app.post("/messages", function (request, response) {
   console.log(typeof newMessage.from, "<--- newMessage.from");
   console.log(typeof newMessage.text, "<--- newMessage.text");
   console.log(newMessage.from !== "", "<--- newMessage.from not empty string");
-  if ((newMessage.from !== "") && (newMessage.text !== "")) {
+  if (newMessage.from !== "" && newMessage.text !== "") {
     messages.push(newMessage);
     response.send({ messages });
   } else {
@@ -50,23 +73,6 @@ app.post("/messages", function (request, response) {
   }
 });
 
-
-// Find one message specified by an ID using query
-
-function getMatchingMessage(idNum) {
-  console.log(idNum, "<--- idNum");
-  console.log(typeof idNum);
-  return messages.filter((message) => message.id === idNum);
-}
-
-app.get("/messages/id", (request, response) => {
-  const idQuery = Number(request.query.number);
-  console.log(typeof idQuery);
-  console.log(idQuery, "<--- idQuery");
-  const matchingMessage = getMatchingMessage(idQuery);
-  console.log(matchingMessage);
-  response.json(matchingMessage)
-});
 
 // Find one message specified by an ID using params
 
@@ -80,17 +86,18 @@ app.get("/messages/:id", function (request, response) {
   response.json({ messageWithMatchingId });
 });
 
-// Delete one message specified by an ID using params 
+// Delete one message specified by an ID using params
 
 app.delete("/messages/:id", (request, response) => {
   const messageId = Number(request.params.id);
-  const messageWithMatchingId = messages.find((message) => message.id === messageId);
+  const messageWithMatchingId = messages.find(
+    (message) => message.id === messageId
+  );
   const indexOfMessageToBeDeleted = messages.indexOf(messageWithMatchingId);
   messages.splice(indexOfMessageToBeDeleted, 1);
-  response.status(200).json({ messages })
+  response.status(200).json({ messages });
 });
 
-
-app.listen(process.env.PORT,() => {
+app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
