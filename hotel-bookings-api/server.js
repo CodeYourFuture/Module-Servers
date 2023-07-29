@@ -19,8 +19,13 @@ app.get("/bookings", (req, res) => {
 
 app.post("/bookings", (req, res) => {
   let newBooking = req.body
-  bookings && bookings.push(newBooking)
-  res.send(newBooking)
+  if (newBooking.title === "" || newBooking.firstName === "" || newBooking.surname === "" || newBooking.email === "" || newBooking.roomId === "" || newBooking.checkInDate === "" || newBooking.checkOutDate === "") {
+    bookings && bookings.push(newBooking)
+    res.send(newBooking)
+  } else {
+    res.status(400).send("Didn't store the booking in the bookings array");
+  }
+
 })
 
 app.get("/bookings/:id", (req, res) => {
