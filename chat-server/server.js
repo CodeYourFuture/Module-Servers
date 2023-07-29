@@ -6,6 +6,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+
 const welcomeMessage = {
   id: 0,
   from: "Bart",
