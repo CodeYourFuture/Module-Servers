@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script src="./server.js" defer></script>
   <head>
     <title>Welcome to CYF Chat</title>
   </head>
@@ -14,6 +15,18 @@
       <p>
         Name: <input type="text" name="from" placeholder="Your Name" /> <br />
         Message: <input type="text" name="text" placeholder="The message..." />
+        <br />
+      </p>
+      <button type="submit">
+        Send
+      </button>
+    </form>
+    <h2>
+      Get a message by id
+    </h2>
+    <form action="/messages/:id" method="get">
+      <p>
+        id: <input type="number" name="from" placeholder="Message id" /> <br />
         <br />
       </p>
       <button type="submit">
