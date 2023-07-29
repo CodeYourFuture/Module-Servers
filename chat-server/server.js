@@ -4,8 +4,14 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+// app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST",
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 const welcomeMessage = {
   id: 0,
@@ -36,7 +42,7 @@ app.post("/messages", function (request, response) {
     from: request.body.from,
     text: request.body.text,
   };
-
+  console.log(newMessage);
   if (request.body.from && request.body.text) {
     messages.push(newMessage);
     response.json(messages);
