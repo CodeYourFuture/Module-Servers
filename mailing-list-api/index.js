@@ -29,6 +29,11 @@ app.get("/lists/:name", (req, res) => {
   res.status(200).send(name);
 });
 
+app.delete("/lists/:name", (req, res) => {
+    const property = req.params.name
+    delete lists[property]
+})
+
 app.listen(3007, () => {
   console.log("server started on the port 3007");
 });
