@@ -41,10 +41,12 @@ app.get("/messages/:id", function (request, response) {
   response.send(filteredMessages);
 });
 app.post("/messages", function (request, response) {
+  const timeUTC = new Date().toUTCString();
   let newMessage = {
     id: messages.length,
     from: request.body.from,
     text: request.body.text,
+    timeSent: timeUTC,
   };
   console.log(newMessage);
   if (request.body.from && request.body.text) {
