@@ -41,7 +41,7 @@ app.get("/messages/:id", function (request, response) {
   response.send(filteredMessages);
 });
 app.post("/messages", function (request, response) {
-  const timeUTC = new Date().toUTCString();
+  const timeUTC = new Date().toLocaleTimeString();
   let newMessage = {
     id: messages.length,
     from: request.body.from,
