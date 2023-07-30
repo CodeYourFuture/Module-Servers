@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: "GET,POST",
+    methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
 );
@@ -28,6 +28,10 @@ app.get("/", function (request, response) {
 });
 app.get("/messages", function (request, response) {
   response.json({ messages });
+});
+app.get("/messages/latest", function (request, response) {
+  const latestMessages = messages.slice(0, 10);
+  response.send(latestMessages);
 });
 app.get("/messages/:id", function (request, response) {
   let messageId = Number(request.params.id);
