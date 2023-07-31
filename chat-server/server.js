@@ -26,9 +26,11 @@ app.get("/messages", function (request, response) {
 });
 
 app.post("/messages", function (request, response) {
-  messages.push();
   console.log(request.body);
-  response.json(request.body);
+
+  messages.push();
+  //console.log(JSON.stringify(request));
+  response.json({ hello: "hello" });
 });
 
 app.listen(process.env.PORT, () => {

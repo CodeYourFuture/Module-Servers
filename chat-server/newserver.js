@@ -12,7 +12,6 @@ const welcomeMessage = {
   from: "Bart",
   text: "Welcome to CYF chat system!",
 };
-
 const messages = [welcomeMessage];
 
 app.get("/", function (request, response) {
@@ -24,6 +23,7 @@ app.get("/messages", function (request, response) {
 });
 
 app.post("/messages", function (request, response) {
+  console.log(request.body);
   const newMessage = {
     id: messages.length, // Generate an id based on the current number of messages
     from: request.body.from,
@@ -33,7 +33,7 @@ app.post("/messages", function (request, response) {
   messages.push(newMessage); // Push the new message to the array
   console.log("New message added:", newMessage);
 
-  response.json(newMessage);
+  response.json(messages);
 });
 
 app.listen(process.env.PORT, () => {
