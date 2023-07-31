@@ -18,7 +18,11 @@ app.get("/bookings", (req, res) => {
   res.send(bookings)
 })
 
+let counter = 5
+let roomIdCounter = 6
+
 app.post("/bookings", (req, res) => {
+
   let newBooking = req.body
 
   let a = moment(newBooking.checkOutDate)
@@ -31,11 +35,20 @@ app.post("/bookings", (req, res) => {
     res.status(400).send("Check out date should be after Check in date");
   } else if (emailRegexp.test(emailToValidate) == false) {
     res.status(400).send("Please provide a valid email address.")
-  } else if (newBooking.title === "" || newBooking.firstName === "" || newBooking.surname === "" || newBooking.email === "" || newBooking.roomId === "" || newBooking.checkInDate === "" || newBooking.checkOutDate === "" ||
-    !newBooking.title || !newBooking.firstName || !newBooking.surname || !newBooking.email || !newBooking.roomId || !newBooking.checkInDate || !newBooking.checkOutDate
+  } else if (newBooking.title === "" || newBooking.firstName === "" || newBooking.surname === "" || newBooking.email === "" || newBooking.checkInDate === "" || newBooking.checkOutDate === "" ||
+    !newBooking.title || !newBooking.firstName || !newBooking.surname || !newBooking.email || !newBooking.checkInDate || !newBooking.checkOutDate
   ) {
     res.status(400).send("Didn't store the booking in the bookings array");
   } else {
+    newBooking.id = counter + 1
+    newBooking.roomId = roomIdCounter + 2
+    newBooking.title = req.body.title
+    newBooking.firstName = req.body.firstName
+    newBooking.surname = req.body.surname
+    newBooking.email = req.body.email
+    newBooking.checkInDate = req.body.checkInDate
+    newBooking.checkOutDate = req.body.checkOutDate
+
     bookings && bookings.push(newBooking)
     res.send(newBooking)
   }
