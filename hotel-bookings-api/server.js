@@ -10,21 +10,11 @@ app.use(cors());
 //Use this array as your (in-memory) data store.
 const bookings = require("./bookings.json");
 
-// At this first level, your API must allow a client to:
-//  POST -> Create a new booking
-//  GET -> Read all bookings
-//  GET -> Read one booking, specified by an ID
-//  DELETE -> Delete a booking, specified by an ID
-
-// If the booking to be read cannot be found by id, return a 404.
-// If the booking for deletion cannot be found by id, return a 404.
-// All booking content should be passed as JSON.
+let bookingIdCounter = 6; // How do I start this from last object id from json?
 
 app.get("/", function (request, response) {
   response.send("Hotel booking server.  Ask for /bookings, etc.");
 });
-
-// TODO add your routes and helper functions here
 
 app.get("/bookings", function (request, response) {
   response.json(bookings);
@@ -41,17 +31,31 @@ app.post("/bookings", function (request, response) {
   let newBooking = request.body;
   newBooking.id = bookingIdCounter++; // increment booking id number
 
-  bookings.push({
-    id: newBooking.id,
-    title: newBooking.title,
-    firstName: newBooking.firstName,
-    surname: newBooking.surname,
-    email: newBooking.email,
-    roomId: newBooking.roomId,
-    checkInDate: newBooking.checkInDate,
-    checkOutDate: newBooking.checkOutDate,
-  });
-  response.status(201).send(newBooking);
+  if (
+    newBooking.title.length === 0 || // could also use !newBooking.title etc.
+    newBooking.firstName.length === 0 ||
+    newBooking.surname.length === 0 ||
+    newBooking.email.length === 0 ||
+    newBooking.roomId.length === 0 ||
+    newBooking.checkInDate.length === 0 ||
+    newBooking.checkOutDate.length === 0
+  ) {
+    response.status(400).json({
+      error: "Booking not created",
+    });
+  } else {
+    bookings.push({
+      id: newBooking.id,
+      title: newBooking.title,
+      firstName: newBooking.firstName,
+      surname: newBooking.surname,
+      email: newBooking.email,
+      roomId: newBooking.roomId,
+      checkInDate: newBooking.checkInDate,
+      checkOutDate: newBooking.checkOutDate,
+    });
+    response.status(201).send(newBooking);
+  }
 });
 
 app.delete("bookings/:id", function (request, response) {
