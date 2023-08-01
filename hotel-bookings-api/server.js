@@ -40,15 +40,16 @@ app.post("/bookings", (req, res) => {
   ) {
     res.status(400).send("Didn't store the booking in the bookings array");
   } else {
-    newBooking.id = counter + 1
-    newBooking.roomId = roomIdCounter + 2
+    counter = counter + 1
+    roomIdCounter = roomIdCounter + 1
+    newBooking.id = counter
+    newBooking.roomId = roomIdCounter
     newBooking.title = req.body.title
     newBooking.firstName = req.body.firstName
     newBooking.surname = req.body.surname
     newBooking.email = req.body.email
     newBooking.checkInDate = req.body.checkInDate
     newBooking.checkOutDate = req.body.checkOutDate
-
     bookings && bookings.push(newBooking)
     res.send(newBooking)
   }
