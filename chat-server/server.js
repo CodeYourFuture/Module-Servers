@@ -28,32 +28,21 @@ app.get("", function (request,response){
 });
 
 // Route to create a new message
-app.post("/messages", function (request,response){
-
-  const newMessage ={
-    id: messages.length + 1,
-    form: request.body.form,
-    text: request.body.text
-  };
+app.post('/messages', (req, res) => {
+  //console.log(req.body, "<----req.body")
+  // Check if 'text' and 'from' properties are present and not empty
+  const newMessage = req.body;
+  if (!newMessage || !newMessage.text || !newMessage.from) {
+    return res.status(400).json({ message: "Both text and from properties are required. " });
+  }
+  newMessage.id = messages.length + 1;
   messages.push(newMessage);
-  response.send(messages);
+  res.status(201).json(newMessage);
 });
-
-// app.post('/messages', (req, res) => {
-//   //console.log(req.body, "<----req.body")
-//   // Check if 'text' and 'from' properties are present and not empty
-//   const newMessage = req.body;
-//   if (!newMessage || !newMessage.text || !newMessage.from) {
-//     return res.status(400).json({ message: "Both text and from properties are required. " });
-//   }
-//   newMessage.id = messages.length + 1;
-//   messages.push(newMessage);
-//   res.status(201).json(newMessage);
-// });
 
 // Route to read all messages
 app.get('/messages', (req, res) => {
-  console.log(req.json, "<----req.json");
+  // console.log(req.json, "<----req.json");
   res.json(messages);
 });
 
