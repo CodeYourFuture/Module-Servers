@@ -1,10 +1,11 @@
 process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
-const cors = require("cors");
+//const cors = require("cors");
 
 const app = express();
+app.use(express.json());
 
-app.use(cors());
+//app.use(cors());
 
 const welcomeMessage = {
   id: 0,
@@ -21,6 +22,16 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
-app.listen(process.env.PORT,() => {
+app.get("/messages", function (request, response) {
+  response.json(messages);
+});
+
+app.post("/messages", function (request, response) {
+  const newMessage = request.body;
+  messages.push({ from: newMessage.from, text: newMessage.text });
+  response.json(newMessage);
+});
+
+app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
