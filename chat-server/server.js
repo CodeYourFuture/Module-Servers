@@ -1,10 +1,9 @@
 process.env.PORT = process.env.PORT || 3001;
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -51,7 +50,7 @@ app.post("/messages", function (request, response) {
   console.log(newMessage);
   if (request.body.from && request.body.text) {
     messages.push(newMessage);
-    response.json(messages);
+    // response.json(messages);
   } else response.status(400).send("Please check the fields have been correctly filled in");
 });
 app.delete("/messages/:id", function (request, response) {
