@@ -90,7 +90,22 @@ res.send({
   messages
 })
 })
-
+//update a text message
+app.put("/messages/:id",function (req,res) {
+  const message = messages.find((m) => m.id == req.params.id);
+  if (!message) {
+    return res.status(404).json({
+      error: "This id doesn't exist",
+    });
+  }
+ const newMessages = messages.map(message => {
+    if(message.id==req.params.id){
+      return {...message,...req.body}
+    }
+    return message;
+  })
+  res.json({data:newMessages})
+})
 
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
