@@ -25,14 +25,7 @@ const findBookingById = (id) => {
   return bookings.find((booking) => booking.id === id);
 };
 
-// Create a new booking
-// app.post("/bookings", (req, res) => {
-//   const newBooking = req.body;
-//   newBooking.id = bookings.length > 0 ? bookings[bookings.length - 1].id + 1 : 1;
-//   bookings.push(newBooking);
-//   saveBookingsToFile();
-//   res.json(newBooking);
-// });
+
 
 app.post("/bookings", (req, res) => {
   const newBooking = req.body;
