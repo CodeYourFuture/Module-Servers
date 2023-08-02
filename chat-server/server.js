@@ -39,7 +39,22 @@ app.post("/messages", function (request, response) {
 app.get("/messages/:id", function (request, response) {
   const id = parseInt(request.params.id);
   const foundMessage = messages.find((item) => item.id === id);
-  response.send(foundMessage);
+  if (!foundMessage) {
+    response.send("Invalid ID!");
+  } else {
+    response.send(foundMessage);
+  }
+});
+
+app.delete("/messages/:id", function (request, response) {
+  const id = parseInt(request.params.id);
+  const foundMessage = messages.findIndex((item) => item === id);
+  if (!foundMessage) {
+    response.send({ message: "Invalid ID!" });
+  } else {
+    messages.splice(foundMessage, 1);
+    response.send({ message: "Message deleted", messages });
+  }
 });
 
 app.listen(process.env.PORT, () => {
