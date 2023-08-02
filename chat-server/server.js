@@ -17,6 +17,8 @@ const welcomeMessage = {
   text: "Welcome to my chat server!",
 };
 
+let nextMsgId = 1;
+
 //This array is our "data store".
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
@@ -29,16 +31,19 @@ app.get("/", function (request, response) {
 //send messages
 
 app.post("/messages", function (request, response) {
-  let newMessage = request.body;
-  if (newMessage.from === "" || newMessage.text === "") {
-    throw new Error("400");
-  } else {
-    messages.push(newMessage);
-    response.json(newMessage);
-    console.log(newMessage);
-  }
-});
+  const time = new Date().toLocaleTimeString();
+  let newMessage = {
+    id: messages.length,
+    from: request.body.from,
+    text: request.body.text,
+    timeSent: time,
+  };
 
+  if (request.body.from && request.body.text) {
+    messages.push(newMessage);
+    // response.json(messages);
+  } else response.status(400).send("Please check all details");
+});
 //read all messages
 
 app.get("/messages", function (request, response) {
@@ -53,12 +58,14 @@ app.get("/messages/:id", function (request, response) {
 });
 
 //delete  messages
-
 app.delete("/messages/:id", function (request, response) {
-  const idToFind = Number(request.params.id);
-  const message = messages.find((message) => message.id === idToFind);
-  console.log(message);
-  response.json(message);
+  const id = Number(request.params.id);
+  const numberId = messages.findIndex((message) => message.id === id);
+  if (!numberId) {
+    response.status(400).send("Please check ID");
+  } else {
+    response.json(messages.splice(numberId, 1));
+  }
 });
 
 //latest messages
@@ -75,4 +82,4 @@ app.get("/messages/search", (req, res) => {
   res.send(result);
 });
 
-app.listen(process.env.PORT);
+app.listen(3000);
