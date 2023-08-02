@@ -28,8 +28,18 @@ app.get("/messages", function (request, response) {
 
 app.post("/messages", function (request, response) {
   const newMessage = request.body;
-  messages.push({ from: newMessage.from, text: newMessage.text });
+  messages.push({
+    id: messages.length + 1,
+    from: newMessage.from,
+    text: newMessage.text,
+  });
   response.json(newMessage);
+});
+
+app.get("/messages/:id", function (request, response) {
+  const id = parseInt(request.params.id);
+  const foundMessage = messages.find((item) => item.id === id);
+  response.send(foundMessage);
 });
 
 app.listen(process.env.PORT, () => {
