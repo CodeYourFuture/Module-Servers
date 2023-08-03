@@ -13,8 +13,6 @@ const quotes = require("./quotes.json");
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/", function (request, response) {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
-
-  console.log("hello world");
 });
 
 // Return all quotes as JSON
@@ -26,6 +24,17 @@ app.get("/quotes", function (request, response) {
 app.get("/quotes/random", function (request, response) {
   const randomQuote = pickFromArray(quotes);
   response.json(randomQuote);
+});
+
+// Search for quotes based on a search term
+app.get("/quotes/search", function (request, response) {
+  const searchTerm = request.query.term.toLowerCase(); // Case-insensitive search
+  const matchingQuotes = quotes.filter(
+    (quote) =>
+      quote.quote.toLowerCase().includes(searchTerm) ||
+      quote.author.toLowerCase().includes(searchTerm)
+  );
+  response.json(matchingQuotes);
 });
 
 // Function to pick one element at random from a given array
