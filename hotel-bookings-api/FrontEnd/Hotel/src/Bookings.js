@@ -63,12 +63,12 @@ function NewBookings({ props }) {
     });
 
   return (
-    <form>
+    <form className="form">
       <div>
-        <label className="name">
+        <label className="label">
           Title
           <input
-            className="title"
+            className="input"
             type="text"
             value={title}
             onChange={handletitleChange}
@@ -77,10 +77,10 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <label className="first">
-          Text:
+        <label className="label">
+          First Name:
           <input
-            className=""
+            className="input"
             type="text"
             value={firstName}
             onChange={handleFirstNameChange}
@@ -89,10 +89,10 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <label className="first">
-          Text:
+        <label className="label">
+          Surname:
           <input
-            className=""
+            className="input"
             type="text"
             value={surname}
             onChange={handlesurNameChange}
@@ -101,10 +101,10 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <label className="first">
-          Text:
+        <label className="label">
+          Email:
           <input
-            className=""
+            className="input"
             type="text"
             value={email}
             onChange={handleEmailChange}
@@ -113,10 +113,10 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <label className="first">
-          Text:
+        <label className="label">
+          Room Id:
           <input
-            className=""
+            className="input"
             type="text"
             value={roomId}
             onChange={handleRoomIdChange}
@@ -125,10 +125,10 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <label className="first">
-          Text:
+        <label className="label">
+          Check-In-Date:
           <input
-            className=""
+            className="input"
             type="text"
             value={checkInDate}
             onChange={handlecheckInDateChange}
@@ -137,10 +137,10 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <label className="first">
-          Text:
+        <label className="label">
+          Check-Out-Date:
           <input
-            className=""
+            className="input"
             type="text"
             value={checkOutDate}
             onChange={handlecheckOutDateChange}
