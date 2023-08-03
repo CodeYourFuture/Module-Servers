@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import NewBookings from "./Bookings";
-import Delete from "./Delete";
+
+
 
 const ShowNewBookings = () => {
   const [bookings, setBookings] = useState([]);
+
+
 
   useEffect(() => {
     fetch("https://hotel-bookings-server.onrender.com/bookings")
@@ -11,12 +14,14 @@ const ShowNewBookings = () => {
       .then((data) => {
         setBookings(data);
       })
-
+      .catch((error) => console.error("Error fetching messages:", error));
   }, []);
 
   const handleNewBooking = (newBooking) => {
     setBookings((prevBookins) => [...prevBookins, newBooking]);
   };
+
+   
 
   return (
     <div>
@@ -33,8 +38,7 @@ const ShowNewBookings = () => {
               <p>Room Id:{booking.roomId}</p>
               <p>check-in-Date:{booking.checkInDate}</p>
               <p>Check-Out-Date{booking.checkOutDate}</p>
-              <Delete  deleteBookings={booking.id}/>
-            </li>
+          </li>
           );
         })}
       </ul>
