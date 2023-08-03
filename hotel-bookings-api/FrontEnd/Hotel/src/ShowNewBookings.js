@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import NewBookings from "./Bookings";
+import Item from "./Delete";
 
 
 
@@ -21,6 +22,10 @@ const ShowNewBookings = () => {
     setBookings((prevBookins) => [...prevBookins, newBooking]);
   };
 
+   const handleDelete = (id) => {
+     setBookings(bookings.filter((item) => item.id !== id));
+   };
+
    
 
   return (
@@ -38,6 +43,7 @@ const ShowNewBookings = () => {
               <p>Room Id:{booking.roomId}</p>
               <p>check-in-Date:{booking.checkInDate}</p>
               <p>Check-Out-Date{booking.checkOutDate}</p>
+              <Item onDelete={handleDelete} />
           </li>
           );
         })}

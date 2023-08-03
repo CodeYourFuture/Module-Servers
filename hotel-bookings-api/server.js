@@ -41,7 +41,7 @@ app.post("/bookings", function (req, res) {
   ) {
     bookings.push(booking);
     res.status(200).json(booking);
-  } else res.status(400).send("error");
+  } else res.status(404).send("error");
 });
 
 app.get("/bookings/:id", function (req, res) {
