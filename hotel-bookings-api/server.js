@@ -56,16 +56,14 @@ app.get("/bookings/:id", function (req, res) {
 
 app.delete("/bookings/:id", function (req, res) {
   const id = Number(req.params.id);
-  const bookingID = bookings.findIndex((booking) => booking.id === id);
-  if (bookingID > 0) {
+  const bookingId = bookings.findIndex((booking) => booking.id === id);
+  if (bookingId > 0) {
     bookings.splice(bookingID, 1);
     res.status(200).send("deleted");
   } else {
     res.status(404).send("Please check Id");
   }
 });
-
-
 
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);

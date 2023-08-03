@@ -1,6 +1,5 @@
-
-import './App.css';
-import ShowNewBookings from './ShowNewBookings';
+import "./App.css";
+import ShowNewBookings from "./ShowNewBookings";
 
 function App() {
   return (

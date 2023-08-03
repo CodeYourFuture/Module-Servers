@@ -1,14 +1,12 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import NewBookings from "./Bookings";
 
-const ShowNewBookings  = () => {
-    const [bookings,setBookings] = useState([]);
+const ShowNewBookings = () => {
+  const [bookings, setBookings] = useState([]);
 
-
-
-    useEffect(() =>{
-        fetch("https://hotel-bookings-server.onrender.com/bookings")
-        .then((res) => res.json())
+  useEffect(() => {
+    fetch("https://hotel-bookings-server.onrender.com/bookings")
+      .then((res) => res.json())
       .then((data) => {
         setBookings(data);
       })
@@ -38,11 +36,8 @@ const ShowNewBookings  = () => {
           );
         })}
       </ul>
-
- 
     </div>
   );
-    }
+};
 
 export default ShowNewBookings;
-    
