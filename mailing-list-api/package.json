@@ -4,7 +4,9 @@
   "license": "CC-BY-SA-4.0",
   "description": "You must update this package",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,6 +17,7 @@
   },
   "homepage": "https://github.com/CodeYourFuture/CYF-Coursework-Template#readme",
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "nodemon": "^3.0.1"
   }
 }
