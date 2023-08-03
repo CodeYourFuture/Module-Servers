@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
@@ -18,7 +20,7 @@ app.post("/bookings", (request, response) => {
   const { firstName, surname, title, email, roomId, checkInDate, checkOutDate} = request.body; 
 
   if (!firstName|| !surname|| !title || !email || !roomId || !checkInDate || !checkOutDate) {
-    return response.status(400).send("Please provide valid 'from' and 'text' fields in the form.");
+    return response.status(400).json({ error: "Name, email, or date is missing." });
   }
   const newBooking = {
     id: bookings.length +1, 
@@ -33,6 +35,26 @@ app.post("/bookings", (request, response) => {
   bookings.push(newBooking);
   console.log(bookings); 
   response.redirect("/"); 
+});
+
+//Route to reject insufficient requests
+app.post("/bookings", function (request, response) {
+  const booking = request.body;
+  if(!firstName|| !surname|| !title || !email || !roomId || !checkInDate || !checkOutDate)
+  return response.status(400).json({ error: "Name, email, or date is empty." });
+
+  const rejectedBooking = {
+    id: bookings.length +1, 
+      title,
+      firstName,
+      surname,
+      email,
+      roomId,
+      checkInDate,
+      checkOutDate
+  };
+  bookings.push(rejectedBooking);
+  return response.status(200).send({message: "Booking created successfully!", booking});
 });
 
 //Route to get all bookings
