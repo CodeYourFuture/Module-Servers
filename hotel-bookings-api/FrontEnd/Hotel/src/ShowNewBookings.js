@@ -19,30 +19,29 @@ const ShowNewBookings  = () => {
     setBookings((prevBookins) => [...prevBookins, newBooking]);
   };
 
-  return( 
+  return (
     <div>
-    <h2>Latest Bookings</h2>
-    <ul>
-        {bookings.map((booking) =>{
-            return(
-                <li key ={booking.id}>
-                {booking.title}
-                {booking.firstName}
-                {booking.surname}
-                {booking.email}
-                {booking.roomId}
-                {booking.checkInDate}
-                {booking.checkOutDate}
-                </li>
-            )
-        }
-        )}
-    </ul>
-   
-    <NewBookings props = {handleNewBooking} />
-    </div>
+      <NewBookings props={handleNewBooking} />
+      <h2>Latest Bookings</h2>
+      <ul>
+        {bookings.map((booking) => {
+          return (
+            <li key={booking.id}>
+              <p>Title:{booking.title}</p>
+              <p>FirstName:{booking.firstName}</p>
+              <p>Surname:{booking.surname}</p>
+              <p>Email:{booking.email}</p>
+              <p>Room Id:{booking.roomId}</p>
+              <p>check-in-Date:{booking.checkInDate}</p>
+              <p>Check-Out-Date{booking.checkOutDate}</p>
+            </li>
+          );
+        })}
+      </ul>
 
-  )
+ 
+    </div>
+  );
     }
 
 export default ShowNewBookings;

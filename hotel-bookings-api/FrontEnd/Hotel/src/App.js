@@ -5,7 +5,7 @@ import ShowNewBookings from './ShowNewBookings';
 function App() {
   return (
     <div className="App">
-      <h1>Latest Bookings</h1>
+      <h1>New Bookings</h1>
       <ShowNewBookings />
     </div>
   );
