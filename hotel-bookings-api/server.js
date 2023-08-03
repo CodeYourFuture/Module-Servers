@@ -15,7 +15,7 @@ app.get("/", function (request, response) {
 });
 
 app.get("/bookings", function (request, response) {
-  response.send({ bookings });
+  response.send(bookings);
 });
 
 app.post("/bookings", function (req, res) {
@@ -31,11 +31,11 @@ app.post("/bookings", function (req, res) {
     checkOutDate: req.body.checkOutDate,
   };
   if (
-    req.body.roomId &&
     req.body.title &&
     req.body.firstName &&
     req.body.surname &&
     req.body.email &&
+    req.body.roomId &&
     req.body.checkInDate &&
     req.body.checkOutDate
   ) {
