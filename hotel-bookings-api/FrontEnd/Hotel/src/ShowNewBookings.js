@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import NewBookings from "./Bookings";
-import Item from "./Delete";
+import DeleteMessageButton from "./Delete";
 
 
 
 const ShowNewBookings = () => {
   const [bookings, setBookings] = useState([]);
+ 
 
 
 
@@ -14,6 +15,7 @@ const ShowNewBookings = () => {
       .then((res) => res.json())
       .then((data) => {
         setBookings(data);
+        
       })
       .catch((error) => console.error("Error fetching messages:", error));
   }, []);
@@ -22,8 +24,10 @@ const ShowNewBookings = () => {
     setBookings((prevBookins) => [...prevBookins, newBooking]);
   };
 
-   const handleDelete = (id) => {
-     setBookings(bookings.filter((item) => item.id !== id));
+   const handleDeleteMessage = (id) => {
+     setBookings((prevMessages) =>
+       prevMessages.filter((message) => message.id !== id)
+     );
    };
 
    
@@ -31,7 +35,9 @@ const ShowNewBookings = () => {
   return (
     <div>
       <NewBookings props={handleNewBooking} />
-      <h2>Latest Bookings</h2>
+      <h2>Latest Bookings</h2>{
+        
+      }
       <ul>
         {bookings.map((booking) => {
           return (
@@ -43,7 +49,7 @@ const ShowNewBookings = () => {
               <p>Room Id:{booking.roomId}</p>
               <p>check-in-Date:{booking.checkInDate}</p>
               <p>Check-Out-Date{booking.checkOutDate}</p>
-              <Item onDelete={handleDelete} />
+              <DeleteMessageButton messageId={booking.id} onDelete={handleDeleteMessage} />
           </li>
           );
         })}

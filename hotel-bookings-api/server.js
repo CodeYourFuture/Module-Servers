@@ -41,7 +41,7 @@ app.post("/bookings", function (req, res) {
   ) {
     bookings.push(booking);
     res.status(200).json(booking);
-  } else res.status(404).send("error");
+  } else res.status(404).send(error);
 });
 
 app.get("/bookings/:id", function (req, res) {
@@ -50,7 +50,7 @@ app.get("/bookings/:id", function (req, res) {
   if (filteredBooking.length > 0) {
     res.send(filteredBooking);
   } else {
-    res.status(404).send("error");
+    res.status(404).send(error);
   }
 });
 
@@ -58,7 +58,7 @@ app.delete("/bookings/:id", function (req, res) {
   const id = Number(req.params.id);
   const bookingId = bookings.findIndex((booking) => booking.id === id);
   if (bookingId > 0) {
-    bookings.splice(bookingID, 1);
+    bookings.splice(bookingId, 1);
     res.status(200).send("deleted");
   } else {
     res.status(404).send("Please check Id");

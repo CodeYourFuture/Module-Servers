@@ -1,49 +1,18 @@
-import React, { useState } from 'react';
-function Item({ id, onDelete }) {
-  const [message, setMessage] = useState('');
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`https://hotel-bookings-server.onrender.com/bookings/${id}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        onDelete(id);
-        setMessage('Item deleted successfully.');
-      } else {
-        setMessage('Error deleting item.');
+import React from "react";
+
+function DeleteMessageButton({ messageId, onDelete }) {
+  const handleDelete = () => {
+    fetch(`https://hotel-bookings-server.onrender.com/bookings/${messageId}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.status === 200) {
+        onDelete(messageId);
       }
-    } catch (error) {
-      setMessage('Error deleting item.');
-    }
+    });
+    console.log({ messageId });
   };
-  return (
-    <div>
-      <button onClick={handleDelete}>Delete Item</button>
-      <p>{message}</p>
-    </div>
-  );
+
+  return <button onClick={handleDelete}>Delete</button>;
 }
-export default Item;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default DeleteMessageButton;
