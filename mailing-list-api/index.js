@@ -52,7 +52,7 @@ app.put("/lists/:name", (req, res) => {
   }
 
   lists[name] = updatedMembers;
-  res.json(updatedMembers);
+  res.status(200).json(updatedMembers);
 });
 
 

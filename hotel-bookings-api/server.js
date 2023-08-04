@@ -36,6 +36,20 @@ app.post("/bookings", (req, res) => {
   res.json(bookings);
 });
 
+//
+app.get("/bookings/search", (req, res) => {
+  const searchDate = req.query.date;
+  const filteredDate = bookings.filter(
+    (m) => m.checkInDate === searchDate || m.checkOutDate === searchDate
+  );
+
+  if (filteredDate) {
+    res.send(filteredDate);
+  } else {
+    res.send("Bookings not found with the date");
+  }
+});
+
 app.get("/bookings/:id", (req, res) => {
   const id = req.params.id;
   const booking = bookings.find((booking) => booking.id == id);
