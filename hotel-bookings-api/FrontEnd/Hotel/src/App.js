@@ -1,4 +1,5 @@
 import "./App.css";
+import NewBookings from "./Bookings";
 import ShowNewBookings from "./ShowNewBookings";
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <div className="App">
       <h1>New Bookings</h1>
       <ShowNewBookings />
+    
     </div>
   );
 }
