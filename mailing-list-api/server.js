@@ -16,10 +16,10 @@ server.get("/", function (request, response) {
 server.get("/lists", function (request, response) {
   let mailingListKeys = Object.keys(mailingListObject);
   if (mailingListKeys) {
-    response.status(200).send(mailingListKeys);
-    // response.status(200).send(JSON.stringify(mailingList)); // HELP!! Instructions say response should be "a JSON body of all the existing list names". Do I need to stringify?
+    response.status(200).json(mailingListKeys);
+    // response.status(200).send(JSON.stringify(mailingList)); // both are correct
   } else {
-    response.status(200).send([]);
+    response.status(200).json([]);
   }
 });
 
@@ -28,10 +28,13 @@ server.get("/lists/:name", function (request, response) {
   console.log(request.params.name);
 
   const foundList = mailingListObject[nameSearch]; // find nameSearch key in mailingListObject
+  let singleList = {
+    name: nameSearch,
+    members: foundList,
+  };
+
   if (foundList) {
-    response
-      .status(200)
-      .send("List Name: " + nameSearch + "\n" + " List Emails: " + foundList); // HELP!! How to make the answer into a key,value pair?
+    response.status(200).json(singleList);
   } else {
     response.status(404).json("List not found");
   }
@@ -43,33 +46,26 @@ server.delete("/lists/:name", function (request, response) {
 
   if (foundName) {
     delete mailingListObject[foundName]; // .splice does not work on objects
-    response.status(200).send(mailingListObject); // HELP!! Why is this not working?
+    response.status(200).json(mailingListObject); // HELP!! Why is this not working?
   } else {
     response.status(404).json({ message: "List not found." });
   }
 });
 
-// PUT - update single list // HELP!! Only use PUT or POST and PUT?
-// /lists/:name - add or update a list with the given name
-// Response
-// 200 if it updated a list that already existed
-// 201 if it created a new list
-
 server.put("/lists/:name", function (request, response) {
-  // update existing
   const listName = request.params.name;
-  const updatedList = request.body;
+  const newOrUpdatedList = request.body;
 
-  const foundList = mailingListObject[listName]; // HELP! Lost.
+  const foundList = mailingListObject[listName];
   if (foundList) {
-    response.status(200).send("Updated");
+    // if list is found in object, update the existing
+    mailingListObject[listName] = newOrUpdatedList;
+    response.status(200).end();
   } else {
-    response.status(201).json("New list created"); // Do I have to go to server.post here?
+    // if list is NOT found in object, create new
+    mailingListObject[listName] = newOrUpdatedList;
+    response.status(201).end();
   }
-});
-
-server.post("/lists/:name", function (request, response) {
-  // add new list
 });
 
 const listener = server.listen(process.env.PORT, function () {
