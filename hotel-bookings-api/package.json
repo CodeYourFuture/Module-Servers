@@ -10,7 +10,8 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "moment": "^2.29.4"
   },
   "engines": {
     "node": "8.x"

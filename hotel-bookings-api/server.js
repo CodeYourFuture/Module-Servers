@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const moment = require("moment");
 
 const app = express();
 
@@ -10,12 +11,13 @@ app.use(cors());
 
 //Use this array as your (in-memory) data store.
 const bookings = require("./bookings.json");
+const { request } = require("express");
 
 app.get("/", function (request, response) {
   response.send("Hotel booking server.  Ask for /bookings, etc.");
 });
 
-// Route to post new booking
+//Route to reject insufficient requests
 app.post("/bookings", (request, response) => {
   const { firstName, surname, title, email, roomId, checkInDate, checkOutDate} = request.body; 
 
@@ -37,7 +39,7 @@ app.post("/bookings", (request, response) => {
   response.redirect("/"); 
 });
 
-//Route to reject insufficient requests
+// Route to post new booking
 app.post("/bookings", function (request, response) {
   const booking = request.body;
   if(!firstName|| !surname|| !title || !email || !roomId || !checkInDate || !checkOutDate)
@@ -61,6 +63,26 @@ app.post("/bookings", function (request, response) {
 app.get("/bookings", function(request, response) {
   response.json({bookings});
 });
+
+// Route to get searching result for booking by date
+  app.get("/bookings/search", function (request, response) {
+    console.log(request.query.date, "<----Searching date")
+    const date = request.query.date;
+    const searchResults = searchDate(date);
+    response.send({ searchResults });
+  });
+
+  function searchDate(date) {
+    const targetDate = moment(date, "YYYY-MM-DD");
+  
+    const matchingBooking = bookings.find((booking) => {
+      const checkInDate = moment(booking.checkInDate, "YYYY-MM-DD");
+      const checkOutDate = moment(booking.checkOutDate, "YYYY-MM-DD");
+      return targetDate.isBetween(checkInDate, checkOutDate, null, "[]");
+    });
+    return matchingBooking || [];
+  }
+
 
 // route to get booking by id
 app.get("/bookings/:id", function(request, response) {
