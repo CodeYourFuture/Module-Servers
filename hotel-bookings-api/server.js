@@ -61,7 +61,7 @@ app.delete("/bookings/:id", function (req, res) {
   const id = Number(req.params.id);
   const bookingId = bookings.findIndex((booking) => booking.id === id);
   if (bookingId > 0) {
-    bookings.splice(bookingId, 1);
+    bookings.splice(bookingId, -1);
     res.status(200).send("deleted");
   } else {
     res.status(404).send("Please check Id");

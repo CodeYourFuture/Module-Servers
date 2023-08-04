@@ -1,5 +1,5 @@
 import "./App.css";
-import NewBookings from "./Bookings";
+
 import ShowNewBookings from "./ShowNewBookings";
 
 function App() {
