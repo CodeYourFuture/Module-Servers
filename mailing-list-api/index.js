@@ -11,7 +11,7 @@ app.get("/lists", (req, res) => {
   //200 and empty array if none exist
   listNames = [];
   for (const property in lists) {
-    listNames.push(property)
+    listNames.push(property);
   }
   if (Object.keys(lists).length == 0) {
     res.status(200).send([]);
@@ -42,6 +42,19 @@ app.delete("/lists/:name", (req, res) => {
   delete lists[pro];
   res.status(200).send("successfully deleted");
 });
+
+app.put("/lists/:name", (req, res) => {
+  const name = req.params.name; //params take the value from the URL, it is 'name' values for the list here. 
+  const updatedMembers = req.body.members;
+
+  if (!lists[name]) {
+    return res.status(404).send("list not found");
+  }
+
+  lists[name] = updatedMembers;
+  res.json(updatedMembers);
+});
+
 
 app.listen(3007, () => {
   console.log("server started on the port 3007");
