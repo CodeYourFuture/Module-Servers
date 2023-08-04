@@ -1,18 +1,18 @@
 import React from "react";
 
-function DeleteMessageButton({ messageId, onDelete }) {
+function DeleteBookingButton({ bookingId, onDelete }) {
   const handleDelete = () => {
-    fetch(`https://hotel-bookings-server.onrender.com/bookings/${messageId}`, {
+    fetch(`https://hotel-bookings-server.onrender.com/bookings/${bookingId}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.status === 200) {
-        onDelete(messageId);
+        onDelete(bookingId);
       }
     });
-    console.log({ messageId });
+    console.log({ bookingId });
   };
 
   return <button onClick={handleDelete}>Delete</button>;
 }
 
-export default DeleteMessageButton;
+export default DeleteBookingButton;
