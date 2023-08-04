@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const validator = require("email-validator"); //level 4
+const moment = require("moment");
 
 app.use(express.json());
 app.use(cors());
@@ -32,8 +34,18 @@ app.post("/bookings", (req, res) => {
     checkInDate: req.body.checkInDate,
     checkOutDat: req.body.checkOutDat,
   };
-  bookings.push(newBooking);
-  res.json(bookings);
+  //email validation
+/*   var now = moment(new Date());
+  end = moment(fd);
+  days = end.diff(now, "days"); */
+  let a = moment(newBooking.checkInDate);
+  let b = moment(newBooking.checkOutDat)
+  if (validator.validate(newBooking.email) && b.diff(a, "days") > 0) {
+    bookings.push(newBooking);
+    res.json(bookings);
+  } else {
+    res.send("unvalid email");
+  }
 });
 
 //
