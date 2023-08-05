@@ -105,7 +105,7 @@ function NewBookings({ props }) {
           Email:
           <input
             className="input"
-            type="text"
+            type="email"
             value={email}
             onChange={handleEmailChange}
             required
@@ -117,7 +117,7 @@ function NewBookings({ props }) {
           Room Id:
           <input
             className="input"
-            type="text"
+            type="number"
             value={roomId}
             onChange={handleRoomIdChange}
             required
