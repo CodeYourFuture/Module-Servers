@@ -9,7 +9,6 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 
-
 const welcomeMessage = {
   id: 0,
   from: "Bart",
@@ -29,8 +28,6 @@ function validateMessage(req, res, next) {
   }
   next();
 }
-
-
 
 // Create a new message
 app.post("/messages", validateMessage, function (req, res) {
