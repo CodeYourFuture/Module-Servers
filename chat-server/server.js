@@ -28,6 +28,9 @@ function validateMessage(req, res, next) {
   }
   next();
 }
+app.get("/", function(req, res){
+  res.json("My chat is here.....!")
+});
 
 // Create a new message
 app.post("/messages", validateMessage, function (req, res) {
