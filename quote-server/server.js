@@ -1,30 +1,30 @@
 const express = require("express");
 const lodash = require("lodash");
-const app = express();
+const app1 = express();
 const quotesData = require("./quotes.json"); // Directly require the JSON data
 const cors = require("cors");
 const fs = require("fs");
 
-app.use(cors());
-app.use(express.json());
+app1.use(cors());
+app1.use(express.json());
 
 
-app.get("/", function (request, response) {
+app1.get("/", function (request, response) {
   response.send(
     "Neill's Quote Server! Ask me for /quotes/random, /quotes, or /quotes/search?term={your search term}"
   );
 });
 
-app.get("/quotes", function (request, response) {
+app1.get("/quotes", function (request, response) {
   response.json(quotesData);
 });
 
-app.get("/quotes/random", function (request, response) {
+app1.get("/quotes/random", function (request, response) {
   const randomQuote = lodash.sample(quotesData);
   response.json(randomQuote);
 });
 
-app.get("/quotes/search", function (request, response) {
+app1.get("/quotes/search", function (request, response) {
   const searchTerm = request.query.term;
   const filteredQuotes = quotesData.filter(
     (quote) =>
@@ -34,7 +34,7 @@ app.get("/quotes/search", function (request, response) {
   response.json(filteredQuotes);
 });
 
-app.get("/quotes/:id", function (req, res) {
+app1.get("/quotes/:id", function (req, res) {
   const id = parseInt(req.params.id);
   const quote = lodash.find(quotesData, { id: id });
   if (!quote) {
@@ -43,7 +43,7 @@ app.get("/quotes/:id", function (req, res) {
   res.json(quote);
 });
 
-app.post("/quotes", function (req, res) {
+app1.post("/quotes", function (req, res) {
   const newQuote = req.body;
   newQuote.id = Date.now().toString(); // Convert the id to a string based on the current timestamp
   quotesData.push(newQuote);
@@ -59,6 +59,6 @@ function pickFromArray(arr) {
 }
 
 const PORT = 45479;
-app.listen(PORT, function () {
+app1.listen(PORT, function () {
   console.log("Your app is listening on port " + PORT + "......");
 });
