@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 let corsOptions = {
-  origin: "awesome-cyf-website.com", // Compliant
+  origin:"awesome-cyf-website.com", // Compliant
   
 };
 
