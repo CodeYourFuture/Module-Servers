@@ -19,7 +19,7 @@ const welcomeMessage = {
 //Note: messages will be lost when Glitch restarts our server.
 const messages = [welcomeMessage];
 
-app.get("/", function (request, response, next) {
+app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
 
@@ -43,15 +43,20 @@ app.post("/messages", function (request, response) {
     response.status(400);
   }
 
-  
-  response.json({message: "Something went wrong"});
+  response.json({ message: "Something went wrong" });
 });
 
 app.get("/messages", function (request, response) {
   response.json(messages);
 });
 
-app.get("/messages/:id", function (request, response) {
+app.get("/messages/search", function (request, response) {
+  const searchReq = request.query.text;
+  console.log(request.query.text);
+  const filteredMsg = messages.includes("express");
+});
+
+app.get("/messages/:seriesId/:episodeId", function (request, response) {
   const messageId = parseInt(request.params.id);
   const message = messages.find((singleMsg) => singleMsg.id === messageId);
 
