@@ -3,7 +3,7 @@ const cors = require("cors");
 
 const app = express();
 let corsOptions = {
-  origin: "cyf-chat-tester.netlify.app"// Compliant
+  origin: "cyf-chat-tester.netlify.app",// Compliant
 };
 
 app.use(express.json());
