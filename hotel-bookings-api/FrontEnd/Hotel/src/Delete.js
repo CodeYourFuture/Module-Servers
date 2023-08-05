@@ -9,7 +9,8 @@ function DeleteBookingButton({ bookingId, onDelete }) {
         onDelete(bookingId);
       }
     });
-    console.log({ bookingId });
+  
+
   };
 
   return <button onClick={handleDelete}>Delete</button>;
