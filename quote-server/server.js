@@ -5,7 +5,11 @@ const quotesData = require("./quotes.json"); // Directly require the JSON data
 const cors = require("cors");
 const fs = require("fs");
 
-app.use(cors());
+let corsOptions = {
+  origin: "cyf-chat-tester.netlify.app", // Compliant
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
