@@ -2,7 +2,7 @@
   "name": "module-node",
   "version": "1.0.0",
   "description": "- [ ] Set up example board \r - [ ] Populate repo with coursework issues from Google Classroom Boilerplate\r - [ ] Add core Actions from org store https://docs.github.com/en/actions/creating-actions/sharing-actions-and-workflows-with-your-organization",
-  "main": "index.js",
+  "main": "server.js",
   "workspaces": [
     "chat-server",
     "quote-server",
@@ -10,7 +10,8 @@
     "hotel-bookings-api"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
