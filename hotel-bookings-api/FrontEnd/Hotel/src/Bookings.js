@@ -129,7 +129,7 @@ function NewBookings({ props }) {
           Check-In-Date:
           <input
             className="input"
-            type="text"
+            type="date"
             value={checkInDate}
             onChange={handlecheckInDateChange}
             required
@@ -141,7 +141,7 @@ function NewBookings({ props }) {
           Check-Out-Date:
           <input
             className="input"
-            type="text"
+            type="date"
             value={checkOutDate}
             onChange={handlecheckOutDateChange}
             required
