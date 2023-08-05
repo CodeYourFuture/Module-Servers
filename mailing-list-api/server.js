@@ -2,6 +2,13 @@ process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
 
+let corsOptions = {
+  origin: "localhost", // Compliant
+}; //netlify URL goes here
+
+let app = express();
+app.use(cors(corsOptions));
+
 const server = express();
 server.disable("x-powered-by");
 
