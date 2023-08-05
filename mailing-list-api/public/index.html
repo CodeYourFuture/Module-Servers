@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mailing List Frontend</title>
+  </head>
+  <body>
+    <h1>Mailing Lists</h1>
+    <ul id="listNames"></ul>
+    <button id="fetchLists">Fetch Lists</button>
+
+    <h2>List Details</h2>
+    <div>
+      <label for="listName">List Name:</label>
+      <input type="text" id="listName" />
+      <button id="fetchList">Fetch List</button>
+      <button id="deleteList">Delete List</button>
+    </div>
+    <div id="listDetails"></div>
+
+    <script>
+      const listNamesElement = document.getElementById("listNames");
+      const fetchListsButton = document.getElementById("fetchLists");
+      const listNameInput = document.getElementById("listName");
+      const fetchListButton = document.getElementById("fetchList");
+      const deleteListButton = document.getElementById("deleteList");
+      const listDetailsElement = document.getElementById("listDetails");
+
+      async function fetchLists() {
+        listNamesElement.innerHTML = "";
+
+        const response = await fetch("/lists");
+        const listNames = await response.json();
+
+        listNames.forEach((listName) => {
+          const li = document.createElement("li");
+          li.textContent = listName;
+          listNamesElement.appendChild(li);
+        });
+      }
+
+      async function fetchList() {
+        const name = listNameInput.value;
+
+        if (name) {
+          const response = await fetch(`/lists/${name}`);
+          const list = await response.json();
+
+          listDetailsElement.textContent = JSON.stringify(list, null, 2);
+        }
+      }
+
+      async function deleteList() {
+        const name = listNameInput.value;
+
+        if (name) {
+          const response = await fetch(`/lists/${name}`, { method: "DELETE" });
+
+          if (response.status === 200) {
+            listDetailsElement.textContent = "List deleted successfully.";
+          } else {
+            listDetailsElement.textContent =
+              "List not found or unable to delete.";
+          }
+        }
+      }
+
+      fetchListsButton.addEventListener("click", fetchLists);
+      fetchListButton.addEventListener("click", fetchList);
+      deleteListButton.addEventListener("click", deleteList);
+    </script>
+  </body>
+</html>
