@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 
 let corsOptions = {
-  origin: "awesome-cyf-website.com", // Compliant
+  // origin: "awesome-cyf-website.com", // Compliant
+  Access-Control-Allow-Origin: *
 };
 
 const app = express();
@@ -28,8 +29,12 @@ function validateMessage(req, res, next) {
   }
   next();
 }
-app.get("/", function(req, res){
-  res.json("My chat is here.....!")
+// app.get("/", function(req, res){
+//   res.json("My chat is here.....!")
+// });
+
+app.get('/', function(req, res) {
+  res.header('Access-Control-Allow-Origin', '*')
 });
 
 // Create a new message
