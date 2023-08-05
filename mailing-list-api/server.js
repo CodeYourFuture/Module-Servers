@@ -3,8 +3,8 @@ const express = require("express");
 const cors = require("cors");
 
 let corsOptions = {
-  origin: "localhost", // Compliant
-}; //netlify URL goes here
+  origin: "localhost", // long netlify URL goes here instead of "localhost"
+};
 
 const server = express();
 server.disable("x-powered-by");
