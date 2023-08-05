@@ -30,6 +30,10 @@ function validateMessage(req, res, next) {
   next();
 }
 
+app.get("/", function (req, res) {
+  res.send("My chat is here.....!");
+});
+
 // Create a new message
 app.post("/messages", validateMessage, function (req, res) {
   const newMessage = req.body;
