@@ -29,12 +29,10 @@ function validateMessage(req, res, next) {
   }
   next();
 }
-// app.get("/", function(req, res){
-//   res.json("My chat is here.....!")
-// });
 
-app.get('/foo', function(req, res) {
-  res.header('Access-Control-Allow-Origin', '*')
+
+app.get("/", function(req, res){
+res.json("My chat is here.....!");
 });
 
 // Create a new message
