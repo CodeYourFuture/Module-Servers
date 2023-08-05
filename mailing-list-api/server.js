@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 
 const server = express();
+server.disable("x-powered-by");
 
 server.use(express.json()); // needed to parse JSON data
 server.use(cors()); // middleware for security - makes Express.js backend accessible to frontend applications running on different domains, while still following CORS security rules
