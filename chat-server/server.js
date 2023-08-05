@@ -1,6 +1,7 @@
 process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs").promises;
 
 const app = express();
 app.use(express.json());
@@ -16,18 +17,16 @@ app.use(cors());
 //This array is our "data store".
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
-const messages = [welcomeMessage];
+let messages = [welcomeMessage];
 
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + "/index.html");
-});
+
 
 // show messages whit get api
 app.get("/messages", function (req, res) {
   if(messages.length === 0){
     return res.status(404).json({error : "no messages found"})
   }
-  res.send({messages});
+  res.send(messages);
 });
 
 
@@ -45,13 +44,13 @@ if(!errors.isEmpty()){
 }
 //add a timeSent
 const newMessage={
-  id:req.body.id,
+  id:messages.length,
   from:req.body.from,
   text:req.body.text,
   timeSent:new Date().toISOString()
 }
   messages.push(newMessage);
-  res.json({messages});
+  res.status(201).json({messages});
 })
 
 // Read only messages whose text contains a given substring: /messages/search?text=express
@@ -86,9 +85,10 @@ if(!message){
 }
 const index = messages.indexOf(message);
 messages.splice(index,1);
-res.send({
+res.send(
   messages
-})
+
+  )
 })
 //update a text message
 app.put("/messages/:id",function (req,res) {
