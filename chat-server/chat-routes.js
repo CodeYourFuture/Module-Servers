@@ -27,7 +27,7 @@ router.post("/send", (req, res) => {
     });
   }
 });
-console.log();
+
 router.delete("/messages/:pid", (req, res) => {
   try {
     const messageId = req.params.pid;
