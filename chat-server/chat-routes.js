@@ -16,6 +16,9 @@ router.get("/messages", (req, res) => {
 router.post("/send", (req, res) => {
   try {
     const message = req.body;
+    if (!message.from && !message.text) {
+      return res.status(404).json({ message: "Message was empty" });
+    }
     messages.push(message);
     res
       .status(200)
@@ -34,9 +37,26 @@ router.delete("/messages/:pid", (req, res) => {
     const index = messages.findIndex((message) => message.id === messageId);
     if (index !== -1) {
       messages.splice(index, 1);
-      res.sendStatus(200); // Send a 200 OK status code
+      res.status(200).json({ message: "Place deleted." });
     } else {
-      res.sendStatus(404); // Send a 404 Not Found status code if booking not found
+      res.status(404).json({ message: "Something went wrong." });
+    }
+  } catch (error) {}
+});
+
+router.patch("/messages/:pid", (req, res) => {
+  try {
+    const messageId = req.params.pid;
+    const updatedMessage = req.body;
+    const index = messages.findIndex((message) => message.id === messageId);
+    if (index !== -1) {
+      messages[index] = {
+        ...messages[index],
+        ...updatedMessage,
+      };
+      res.status(200).json({ message: "Message updated successfully" });
+    } else {
+      res.status(404).json({ message: "Message not found" });
     }
   } catch (error) {}
 });
