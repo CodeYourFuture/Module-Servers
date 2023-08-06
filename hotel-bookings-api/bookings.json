@@ -1,15 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Mr",
-    "firstName": "Jimi",
-    "surname": "Hendrix",
-    "email": "jimi@example.com",
-    "roomId": 2,
-    "checkInDate": "2017-11-21",
-    "checkOutDate": "2017-11-23"
-  },
-  {
     "id": 2,
     "title": "King",
     "firstName": "James",
@@ -48,5 +38,25 @@
     "roomId": 3,
     "checkInDate": "2017-08-30",
     "checkOutDate": "2017-10-02"
+  },
+  {
+    "id": 6,
+    "title": "Mr",
+    "firstName": "Kristina",
+    "surname": "Beko",
+    "email": "Kristina@example.com",
+    "roomId": 7,
+    "checkInDate": "2023-11-21",
+    "checkOutDate": "2023-11-23"
+  },
+  {
+    "id": 7,
+    "title": "Mr",
+    "firstName": "beko",
+    "surname": "meigag",
+    "email": "beko123321@example.com",
+    "roomId": "9",
+    "checkInDate": "2017-01-01",
+    "checkOutDate": "2017-03-01"
   }
 ]
