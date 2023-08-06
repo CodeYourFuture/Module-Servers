@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
-// const cors = require("cors");
+const cors = require("cors");
 
 // let corsOptions = {
 //   origin: "cyf-chat-tester.netlify.app", // Compliant
 // };
 
-// app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(express.json());
 
 const welcomeMessage = {
@@ -115,3 +116,4 @@ const PORT = 18080;
 app.listen(PORT, function () {
   console.log("Your app is listening on port " + PORT + "......");
 });
+
