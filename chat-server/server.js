@@ -19,6 +19,10 @@ const welcomeMessage = {
 
 const messages = [welcomeMessage];
 
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
+
 // Middleware function for validation
 function validateMessage(req, res, next) {
   const { from, text } = req.body;
@@ -31,8 +35,11 @@ function validateMessage(req, res, next) {
 }
 
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
+
+
+// Read all messages
+app.get("/messages", function (req, res) {
+  res.json(messages);
 });
 
 // Create a new message
@@ -42,11 +49,6 @@ app.post("/messages", validateMessage, function (req, res) {
   newMessage.timeSent = new Date();
   messages.push(newMessage);
   res.json(newMessage);
-});
-
-// Read all messages
-app.get("/messages", function (req, res) {
-  res.json(messages);
 });
 
 // Read messages whose text contains a given substring
