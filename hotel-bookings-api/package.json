@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "email-validator": "^2.0.4",
+    "express": "^4.18.2",
+    "is-my-date-valid": "^0.1.1",
+    "moment": "^2.29.4"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
