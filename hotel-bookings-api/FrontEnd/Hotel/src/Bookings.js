@@ -34,7 +34,7 @@ function NewBookings({ props }) {
     setCheckOutDate(event.target.value);
   };
 
-  const newMessage = {
+  const newBooking = {
     title,
     firstName,
     surname,
@@ -44,23 +44,27 @@ function NewBookings({ props }) {
     checkOutDate,
   };
 
-  fetch("https://hotel-bookings-server.onrender.com/bookings", {
+ 
+    fetch("https://hotel-bookings-server.onrender.com/bookings", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(newMessage),
+    body: JSON.stringify(newBooking),
   })
     .then((res) => res.json())
     .then((data) => {
-      props(data);
-      setTitle("");
-      setFirstName("");
-      setSurname("");
-      setEmail("");
-      setCheckInDate("");
-      setCheckOutDate("");
-    });
+      console.log(data)
+    props(data);
+    setTitle("");
+    setFirstName("");
+    setSurname("");
+    setEmail("");
+    setCheckInDate("");
+   setCheckOutDate("");
+   })
+    
+ 
 
   return (
     <form className="form">
@@ -149,7 +153,7 @@ function NewBookings({ props }) {
         </label>
       </div>
       <div>
-        <button type="submit">Submit</button>
+         <button  type="submit">Submit</button> 
       </div>
     </form>
   );
