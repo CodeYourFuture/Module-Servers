@@ -1,10 +1,14 @@
+process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser")
 
 const app = express();
 
-app.use(express.json());
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 //Use this array as your (in-memory) data store.
 const bookings = require("./bookings.json");
@@ -13,7 +17,59 @@ app.get("/", function (request, response) {
   response.send("Hotel booking server.  Ask for /bookings, etc.");
 });
 
-// TODO add your routes and helper functions here
+app.get("/bookings", function (request, response) {
+  response.send(bookings);
+});
+
+app.post("/bookings", function (req, res) {
+  const newId = bookings.length + 1;
+  const booking = {
+    id: newId,
+    roomId: req.body.roomId,
+    title: req.body.title,
+    firstName: req.body.firstName,
+    surname: req.body.surname,
+    email: req.body.email,
+    checkInDate: req.body.checkInDate,
+    checkOutDate: req.body.checkOutDate,
+  };
+  if (
+    req.body.title &&
+    req.body.firstName &&
+    req.body.surname &&
+    req.body.email &&
+    req.body.roomId &&
+    req.body.checkInDate &&
+    req.body.checkOutDate
+  ) {
+    bookings.push(booking);
+    res.status(200).json(booking);
+  } else res.status(404).send(error);
+});
+
+app.get("/bookings/:id", function (req, res) {
+  const id = Number(req.params.id);
+  const filteredBooking = bookings.filter((booking) => booking.id === id);
+  if (filteredBooking.length > 0) {
+    res.send(filteredBooking);
+  } else {
+    res.status(404).send(error);
+  }
+});
+
+app.delete("/bookings/:id", function (req, res) {
+  const id = Number(req.params.id);
+  console.log(`DELETE /bookings/${id} is called`);
+  const bookingIdx = bookings.findIndex((booking) => booking.id === id);
+  console.log(`bookingIdx ${bookingIdx}`);
+  if (bookingIdx >= 0) {
+    bookings.splice(bookingIdx, 1);
+    console.log(bookings.length)
+    res.status(200).send("deleted");
+  } else {
+    res.status(404).send("Please check Id");
+  }
+});
 
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);

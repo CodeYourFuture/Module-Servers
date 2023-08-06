@@ -1,0 +1,62 @@
+body {
+  background-color: azure;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: grey;
+  color: beige;
+  align-items: center;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input {
+  display: flex;
+  width: 20rem;
+  justify-content: center;
+  background-color: antiquewhite;
+  margin-bottom: 1rem;
+  padding: 0.7em;
+}
+.label {
+  font-size: 1.5em;
+  color: black;
+}
+
+button {
+  padding: 0.8em;
+  background-color: brown;
+  font-size: 1em;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+li {
+  list-style: none;
+  border: 1px solid black;
+  margin-bottom: 1rem;
+  width: 22em;
+  background-color: white;
+  text-align: center;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+h2 {
+  font-size: 2em;
+  background-color: black;
+  color: beige;
+  margin: 1em;
+}
