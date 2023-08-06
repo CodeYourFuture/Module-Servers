@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 
-let corsOptions = {
-  origin: "cyf-chat-tester.netlify.app", // Compliant
-};
+// let corsOptions = {
+//   origin: "cyf-chat-tester.netlify.app", // Compliant
+// };
 
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(express.json());
 
 const welcomeMessage = {
@@ -31,8 +31,8 @@ function validateMessage(req, res, next) {
 }
 
 
-app.get("/", function(req, res){
-res.json("My chat is here.....!");
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
 });
 
 // Create a new message
