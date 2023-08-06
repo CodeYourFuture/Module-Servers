@@ -2,17 +2,17 @@ const express = require("express");
 const lodash = require("lodash");
 const app = express();
 const quotesData = require("./quotes.json"); // Directly require the JSON data
-const cors = require("cors");
+// const cors = require("cors");
 const fs = require("fs");
 
 
-// const cors = require("cors");
 
-let corsOptions = {
-  origin: "awesome - cyf - website.com", // Compliant
-};
 
-app.use(cors(corsOptions));
+// let corsOptions = {
+//   origin: "awesome - cyf - website.com", // Compliant
+// };
+
+// app.use(cors(corsOptions));
 app.use(express.json());
 
 
