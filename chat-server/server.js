@@ -24,7 +24,7 @@ app.get('/messages/:id', (req, res) => {
   
   const id = Number(req.params.id);
   
-  const message = messages.find(text => text.id === id);
+  const message = messages.find(msg=> msg.id === id);
   if (message) {
     res.json(message);
   } else {
