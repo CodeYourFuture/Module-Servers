@@ -57,7 +57,6 @@ app.post("/api/hotel/booking", validationData, (req, res) => {
 
   const newId = bookings[bookings.length - 1].id + 1;
   const {
-    title,
     firstName,
     surname,
     email,
