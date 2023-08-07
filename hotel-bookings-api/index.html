@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking App</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-4">
+    <h1>Booking App</h1>
+
+    <div class="card mt-4">
+      <div class="card-header">
+        Add New Booking
+      </div>
+      <div class="card-body">
+        <form id="bookingForm">
+          <div class="form-group">
+            <label for="roomId">Room ID:</label>
+            <input type="text" class="form-control" id="roomId" name="roomId" required>
+          </div>
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+          </div>
+          <div class="form-group">
+            <label for="surname">Surname:</label>
+            <input type="text" class="form-control" id="surname" name="surname" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="checkInDate">Check-In Date:</label>
+            <input type="date" class="form-control" id="checkInDate" name="checkInDate" required>
+          </div>
+          <div class="form-group">
+            <label for="checkOutDate">Check-Out Date:</label>
+            <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-header">
+        Existing Bookings
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Room ID</th>
+              <th>Title</th>
+              <th>First Name</th>
+              <th>Surname</th>
+              <th>Email</th>
+              <th>Check-In Date</th>
+              <th>Check-Out Date</th>
+            </tr>
+          </thead>
+          <tbody id="bookingTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      function fetchBookings() {
+        $.get("/bookings", function (data) {
+          $("#bookingTableBody").empty();
+
+          data.forEach(function (booking) {
+            const row = $("<tr>");
+            row.append($("<td>").text(booking.id));
+            row.append($("<td>").text(booking.roomId));
+            row.append($("<td>").text(booking.title));
+            row.append($("<td>").text(booking.firstName));
+            row.append($("<td>").text(booking.surname));
+            row.append($("<td>").text(booking.email));
+            row.append($("<td>").text(booking.checkInDate));
+            row.append($("<td>").text(booking.checkOutDate));
+
+            $("#bookingTableBody").append(row);
+          });
+        });
+      }
+
+      $("#bookingForm").submit(function (event) {
+        event.preventDefault();
+        const formData = $(this).serialize();
+
+        $.post("/bookings", formData, function (data) {
+          fetchBookings();
+          $("#bookingForm")[0].reset();
+        }).fail(function (error) {
+          alert("Error submitting the form: " + error.responseJSON.error);
+        });
+      });
+
+      fetchBookings();
+    });
+  </script>
+
+</body>
+</html>

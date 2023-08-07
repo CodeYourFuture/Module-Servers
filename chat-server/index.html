@@ -1,26 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="application/json">
     <title>Welcome to CYF Chat</title>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <h1>
+  <body class="container mt-5">
+    <h1 class="text-center">
       CYF Chat
     </h1>
-    <h2>
+    <h2 class="mt-4">
       Send a message
     </h2>
-    <form action="/messages" method="post">
-      <p>
-        Name: <input type="text" name="from" placeholder="Your Name" /> <br />
-        Message: <input type="text" name="text" placeholder="The message..." />
-        <br />
-      </p>
-      <button type="submit">
+    <form action="/messages" method="post" onsubmit="sendMessage(event)" class="mb-4">
+      <div class="form-group">
+        <label for="senderInput">Name:</label>
+        <input type="text" class="form-control" id="senderInput" name="sender" placeholder="Your Name" />
+      </div>
+      <div class="form-group">
+        <label for="contentInput">Message:</label>
+        <input type="text" class="form-control" id="contentInput" name="content" placeholder="The message..." />
+      </div>
+      <button type="submit" class="btn btn-primary">
         Send
       </button>
     </form>
 
-    <a href="/messages">See all messages</a>
+    <h2 class="mb-3">
+      All Messages
+    </h2>
+    <div id="messagesContainer">
+
+    </div>
+
+    <script>
+      function sendMessage(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: "POST",
+          body: JSON.stringify(Object.fromEntries(formData)),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((newMessage) => {
+            appendMessage(newMessage);
+            form.reset();
+          })
+          .catch((error) => {
+            console.error("Error sending message:", error);
+          });
+      }
+
+      function fetchMessages() {
+        fetch("/messages")
+          .then((response) => response.json())
+          .then((messages) => {
+            messages.forEach((message) => {
+              appendMessage(message);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching messages:", error);
+          });
+      }
+
+      function appendMessage(message) {
+        const messagesContainer = document.getElementById("messagesContainer");
+        const messageElement = document.createElement("div");
+        messageElement.innerHTML = `<strong>${message.sender}</strong>: ${message.content}`;
+        messagesContainer.appendChild(messageElement);
+      }
+
+      fetchMessages();
+    </script>
   </body>
 </html>
