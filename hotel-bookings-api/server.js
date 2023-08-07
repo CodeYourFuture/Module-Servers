@@ -19,7 +19,6 @@ app.get("/bookings", (req, res) => {
 })
 
 let counter = 5
-let roomIdCounter = 6
 
 app.post("/bookings", (req, res) => {
 
@@ -41,9 +40,8 @@ app.post("/bookings", (req, res) => {
     res.status(400).send("Didn't store the booking in the bookings array");
   } else {
     counter = counter + 1
-    roomIdCounter = roomIdCounter + 1
     newBooking.id = counter
-    newBooking.roomId = roomIdCounter
+    newBooking.roomId = req.body.roomId
     newBooking.title = req.body.title
     newBooking.firstName = req.body.firstName
     newBooking.surname = req.body.surname
@@ -53,6 +51,15 @@ app.post("/bookings", (req, res) => {
     bookings && bookings.push(newBooking)
     res.send(newBooking)
   }
+})
+
+app.put("/bookings/:id", (req, res) => {
+  let editedBooking = { ...req.body, ...req.params }
+  let bookingIndex = bookings.findIndex(booking => booking.id === Number(req.params.id))
+  bookings.splice(bookingIndex, 1, editedBooking)
+  console.log(editedBooking)
+  res.status(200).send(bookings)
+  console.log(res.status)
 })
 
 app.get("/bookings/search", (req, res) => {
@@ -91,6 +98,8 @@ app.delete("/bookings/:id", (req, res) => {
   let givenId = req.params.id
   res.send(deleteBookingID(bookings, givenId))
 })
+
+
 
 // TODO add your routes and helper functions here
 
