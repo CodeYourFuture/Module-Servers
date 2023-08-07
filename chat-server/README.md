@@ -1,3 +1,9 @@
+live glitch server and code
+
+https://glitch.com/edit/#!/ali-nasir-ali-chat-server
+
+https://ali-nasir-ali-chat-server.glitch.me/
+
 # Challenge: A Chat Server
 
 ## Overview: what is this challenge?
@@ -70,7 +76,6 @@ What to do now:
 ## 🏝️ Stretch challenges
 
 The remaining challenges below are stretch challenges - you can have go at these once you've completed the Level 1 challenge.
-
 
 ## Level 2 - simple validation
 
@@ -186,8 +191,6 @@ and in CORS in Express [here](https://expressjs.com/en/resources/middleware/cors
 | POST   | `/messages`    | create a new message   |
 | DELETE | `/messages/17` | delete a message by id |
 
-
 ## Solution
 
 You can find the solution to this challenge on the `solutions` branch of this repo.
-
