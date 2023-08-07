@@ -6,16 +6,14 @@ const fs = require("fs").promises;
 const app = express();
 app.use(express.json());
 app.use(cors());
- const {body,validationResult} = require("express-validator");
+const {body,validationResult} = require("express-validator");
 
- const welcomeMessage = {
+const welcomeMessage = {
   id: 0,
   from: "Bart",
   text: "Welcome to CYF chat system!",
 };
 
-//This array is our "data store".
-//We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
 let messages = [welcomeMessage];
 
