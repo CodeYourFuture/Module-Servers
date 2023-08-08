@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Booking</title>
+</head>
+<body>
+  <h1>Welcome to the Hotel Booking Server!</h1>
+  
+  <h2>Add a New Booking</h2>
+  <form id="bookingForm">
+    <label for="roomId">Room ID:</label>
+    <input type="text" name="roomId" required><br>
+    <label for="title">Title:</label>
+    <input type="text" name="title" required><br>
+    <label for="firstName">First Name:</label>
+    <input type="text" name="firstName" required><br>
+    <label for="surname">Surname:</label>
+    <input type="text" name="surname" required><br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" required><br>
+    <label for="checkInDate">Check-in Date:</label>
+    <input type="date" name="checkInDate" required><br>
+    <label for="checkOutDate">Check-out Date:</label>
+    <input type="date" name="checkOutDate" required><br>
+    <button type="submit">Submit</button>
+  </form>
+  
+  <h2>Bookings</h2>
+  <ul id="bookingsList"></ul>
+  
+  <h2>Get Booking by ID</h2>
+  <form id="getBookingForm">
+    <label for="bookingId">Booking ID:</label>
+    <input type="number" name="bookingId" required>
+    <button type="submit">Get Booking</button>
+  </form>
+  <div id="bookingDetails"></div>
+  
+  <script>
+    const bookingForm = document.getElementById("bookingForm");
+    const bookingsList = document.getElementById("bookingsList");
+    const getBookingForm = document.getElementById("getBookingForm");
+    const bookingDetails = document.getElementById("bookingDetails");
+
+    async function fetchBookings() {
+      const response = await fetch("/bookings");
+      const bookingsData = await response.json();
+
+      bookingsList.innerHTML = "";
+      bookingsData.forEach((booking) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `Booking ID: ${booking.id}, Name: ${booking.firstName} ${booking.surname}`;
+        bookingsList.appendChild(listItem);
+      });
+    }
+
+    async function fetchBookingById(bookingId) {
+      const response = await fetch(`/bookings/${bookingId}`);
+      const bookingData = await response.json();
+
+      bookingDetails.innerHTML = `
+        <h3>Booking Details</h3>
+        <p>Booking ID: ${bookingData.id}</p>
+        <p>Room ID: ${bookingData.roomId}</p>
+        <p>Name: ${bookingData.title} ${bookingData.firstName} ${bookingData.surname}</p>
+        <p>Email: ${bookingData.email}</p>
+        <p>Check-in Date: ${bookingData.checkInDate}</p>
+        <p>Check-out Date: ${bookingData.checkOutDate}</p>
+      `;
+    }
+
+    bookingForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(bookingForm);
+      const bookingData = {};
+      formData.forEach((value, key) => {
+        bookingData[key] = value;
+      });
+
+      const response = await fetch("/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (response.ok) {
+        alert("Booking added successfully!");
+        bookingForm.reset();
+        fetchBookings(); 
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    });
+
+    getBookingForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(getBookingForm);
+      const bookingId = formData.get("bookingId");
+
+      fetchBookingById(bookingId);
+    });
+
+    fetchBookings();
+  </script>
+</body>
+</html>
+
