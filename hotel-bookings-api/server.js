@@ -16,6 +16,15 @@ app.get("/", function (request, response) {
 
 // TODO add your routes and helper functions here
 
+// create a new booking
+
+app.post("/bookings/", function(request, response) {
+  console.log("this is the data the client sent over --->", request.body);
+  const newBooking = request.body;
+  bookings.push(newBooking);
+  response.status(201).send({ newBooking });
+});
+
 // get all bookings
 
 app.get("/bookings", function (request, response) {
