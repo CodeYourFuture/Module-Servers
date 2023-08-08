@@ -1,3 +1,4 @@
+process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
 
@@ -14,6 +15,12 @@ app.get("/", function (request, response) {
 });
 
 // TODO add your routes and helper functions here
+
+// get all bookings
+
+app.get("/bookings", function (request, response) {
+  response.json(bookings);
+});
 
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
