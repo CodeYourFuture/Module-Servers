@@ -31,6 +31,14 @@ app.get("/bookings", function (request, response) {
   response.json(bookings);
 });
 
+// get one booking, specified by an ID
+
+app.get("/bookings/:id", function (request, response) {
+  const bookingIdToFind = Number(request.params.id);
+  const bookingWithMatchingId = bookings.find((booking) => booking.id === bookingIdToFind);
+  response.send({ bookingWithMatchingId });
+});
+
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
