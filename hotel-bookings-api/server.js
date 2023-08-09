@@ -50,9 +50,16 @@ app.get("/bookings/:id", function (request, response) {
 app.delete("/bookings/:id", function (request, response) {
   const bookingId = Number(request.params.id);
   const bookingWithMatchingId = bookings.find((booking) => booking.id === bookingId);
-  const bookingIndexToBeDeleted = bookings.indexOf(bookingWithMatchingId);
-  bookings.splice(bookingIndexToBeDeleted);
-  response.status(200).send({ success: true });
+  console.log(bookingWithMatchingId);
+  if (bookingWithMatchingId === undefined) {
+    console.log("error");
+    response.status(404).send("ID not found");
+  } else {
+    const bookingIndexToBeDeleted = bookings.indexOf(bookingWithMatchingId);
+    bookings.splice(bookingIndexToBeDeleted, 1);
+    console.log(bookingIndexToBeDeleted);
+    response.status(200).send({ success: true });
+  }
 });
 
 const listener = app.listen(process.env.PORT, function () {
