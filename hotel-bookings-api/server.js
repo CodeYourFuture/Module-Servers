@@ -39,6 +39,16 @@ app.get("/bookings/:id", function (request, response) {
   response.send({ bookingWithMatchingId });
 });
 
+// delete a booking, specified by an ID
+
+app.delete("/bookings/:id", function (request, response) {
+  const bookingId = Number(request.params.id);
+  const bookingWithMatchingId = bookings.find((booking) => booking.id === bookingId);
+  const bookingIndexToBeDeleted = bookings.indexOf(bookingWithMatchingId);
+  bookings.splice(bookingIndexToBeDeleted);
+  response.status(200).send({ success: true });
+});
+
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
