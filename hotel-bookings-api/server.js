@@ -21,11 +21,16 @@ app.get("/", function (request, response) {
 
 // create a new booking
 
-app.post("/bookings/", function(request, response) {
-  console.log("this is the data the client sent over --->", request.body);
-  const newBooking = {id:uuidv4(), ...request.body};
-  bookings.push(newBooking);
-  response.status(201).send({ newBooking });
+app.post("/bookings", function (request, response) {
+  // const newBooking = { id: uuidv4(), ...request.body };
+  const newBooking = request.body;
+  const values = Object.values(newBooking);
+    if (values.includes("") || values.includes(null)) {
+      response.status(400).send("Please enter missing information")
+    } else {
+      bookings.push(newBooking);
+      response.status(201).send({ newBooking });
+    }
 });
 
 // get all bookings
@@ -64,6 +69,7 @@ app.delete("/bookings/:id", function (request, response) {
     response.status(200).send({ success: true });
   }
 });
+
 
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
