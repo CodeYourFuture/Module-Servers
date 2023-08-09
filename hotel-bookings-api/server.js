@@ -36,7 +36,13 @@ app.get("/bookings", function (request, response) {
 app.get("/bookings/:id", function (request, response) {
   const bookingIdToFind = Number(request.params.id);
   const bookingWithMatchingId = bookings.find((booking) => booking.id === bookingIdToFind);
-  response.send({ bookingWithMatchingId });
+  console.log(bookingWithMatchingId);
+  if (bookingWithMatchingId === undefined) {
+    console.log("error")
+    response.status(404).send("ID not found");
+  } else {
+    response.send({ bookingWithMatchingId });
+  }
 });
 
 // delete a booking, specified by an ID
