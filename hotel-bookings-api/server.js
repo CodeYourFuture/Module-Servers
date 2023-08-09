@@ -1,11 +1,14 @@
 process.env.PORT = process.env.PORT || 9090;
 const express = require("express");
 const cors = require("cors");
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
+
 app.use(express.json());
 app.use(cors());
+
 
 //Use this array as your (in-memory) data store.
 const bookings = require("./bookings.json");
@@ -20,7 +23,7 @@ app.get("/", function (request, response) {
 
 app.post("/bookings/", function(request, response) {
   console.log("this is the data the client sent over --->", request.body);
-  const newBooking = request.body;
+  const newBooking = {id:uuidv4(), ...request.body};
   bookings.push(newBooking);
   response.status(201).send({ newBooking });
 });
