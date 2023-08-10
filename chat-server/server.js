@@ -9,7 +9,7 @@ app.use(cors());
 
 const welcomeMessage = {
   id: 0,
-  from: "Bart",
+  from: "Afsha",
   text: "Welcome to CYF chat system!",
   timeSent: new Date()
 };
@@ -99,6 +99,25 @@ app.delete("/messages/:id", (request, response) => {
   messages.splice(indexOfMessageToBeDeleted, 1);
   response.status(200).json({ messages });
 });
+
+app.put("/messages/:id", (request, response) => {
+  const idParams = request.params.id;
+  const messageIndex = messages.findIndex((message) => message.id === Number(idParams));
+  let timeSent;
+  if (messageIndex !== -1) {
+    timeSent = messages[messageIndex].timeSent;
+  }
+  console.log(timeSent);
+  const newMessage = {...request.body, timeSent};
+  console.log("req.body --->", newMessage);
+  console.log(typeof idParams);
+  console.log("idParams --->", idParams);
+
+  console.log("messageIndex --->", messageIndex);
+  messages.splice(messageIndex, 1, newMessage);
+  console.log("messages --->", messages);
+  response.status(200).send({success:true});
+})
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
