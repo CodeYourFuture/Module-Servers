@@ -33,11 +33,9 @@ function textMessageSearch(searchedText) {
 //get message by id
 
 app.get("/messages/:id", function (req, res) {
-  console.log(req.params.id);
   const findMsgById = parseInt(req.params.id);
-  console.log(findMsgById);
   if (isNaN(findMsgById)) {
-    console.log("NaN");
+    // console.log("NaN");
     res.status(400).send();
   } else {
     const message = messages.find((message) => message.id === findMsgById);

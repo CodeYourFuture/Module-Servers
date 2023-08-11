@@ -20,5 +20,8 @@
     "node",
     "glitch",
     "express"
-  ]
+  ],
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
 }
