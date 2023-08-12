@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Welcome to Mele Hotel Server</title>
+    <style>
+      * {box-sizing: border-box}
+
+
+.container {
+  padding: 16px;
+}
+
+
+input[type=text] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+ input[type=number] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+
+input[type=text]:focus{
+  background-color: #ddd;
+  outline: none;
+}
+input[type=number]:focus{
+  background-color: #ddd;
+  outline: none;
+}
+
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+
+.sendbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.sendbtn:hover {
+  opacity:1;
+}
+
+
+
+    </style>
+  </head>
+  <body>
+    <form action="/bookings" method="post">
+  <div class="container">
+    <h1>Bookings</h1>
+  
+    <hr>
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" placeholder="Enter Title" name="title">
+<hr>
+    <label for="firstname"><b>Firstname</b></label>
+    <input type="text" placeholder="Enter Firstname" name="firstname">
+<hr>
+    <label for="surname"><b>Enter Surname</b></label>
+    <input type="text" placeholder="Enter lastname" name="surname">
+    <hr>
+   <label for="email"><b>Enter Email</b></label>
+    <input type="text" placeholder="Enter email" name="email">
+    <hr>
+    <label for="roomid"><b>Enter roomid</b></label>
+    <input type="number" placeholder="RoomId" name="roomid">
+    <hr>
+    <label for="checkindate"><b>CheckInDate</b></label>
+    <input type="text" placeholder="CheckInDate" name="checkindate">
+    <hr>
+    <label for="checkoutdate"><b>CheckInDate</b></label>
+    <input type="text" placeholder="CheckOutDate" name="checkoutdate">
+    <hr>
+
+
+
+    
+    <button type="submit" class="sendbtn">Send</button>
+  </div>
+
+    </form>
+
+    
+  </body>
+</html>
