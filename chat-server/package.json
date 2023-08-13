@@ -20,5 +20,8 @@
     "node",
     "glitch",
     "express"
-  ]
+  ],
+  "devDependencies": {
+    "querystring": "^0.2.1"
+  }
 }
