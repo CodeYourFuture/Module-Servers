@@ -24,8 +24,10 @@ app.get("/bookings/:id", function (request, response) {
   } else response.status(404).send("Booking does not exist");
 });
 app.post("/bookings", function (request, response) {
+  let id = bookings[bookings.length - 1].id + 1;
+  console.log(id);
   let newBooking = {
-    id: bookings.length + 1,
+    id: id,
     title: request.body.title,
     firstName: request.body.firstName,
     surname: request.body.surname,
@@ -51,7 +53,7 @@ app.delete("/bookings/:id", function (request, response) {
   let id = Number(request.params.id);
   let IndexOfBooking = bookings.findIndex((booking) => booking.id === id);
   if (IndexOfBooking > 0) {
-    response.json(IndexOfBooking.splice(IndexOfBooking, 1));
+    response.json(bookings.splice(IndexOfBooking, 1));
   } else response.status(404).send("Booking does not exist");
 });
 // TODO add your routes and helper functions here
