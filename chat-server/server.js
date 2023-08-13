@@ -1,4 +1,4 @@
-process.env.PORT = process.env.PORT || 9090;
+process.env.PORT = process.env.PORT || 3003;
 const express = require("express");
 const cors = require("cors");
 
@@ -6,7 +6,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 const welcomeMessage = {
   id: 0,
   from: "Bart",
@@ -31,14 +31,17 @@ app.get("/messages/:id", function (request, response) {
   response.status(200).send(message);
 });
 app.post("/messages", function (request, response) {
+  let id = messages[messages.length - 1].id + 1;
   let newMessage = {
-    id: messages.length,
+    id: id,
     from: request.body.from,
     text: request.body.text,
   };
   if (request.body.from && request.body.text) {
     messages.push(newMessage);
+    console.log(newMessage);
     response.json(messages);
+    response.status(200).send("Your message has been accepted");
   } else response.status(400).send("Please fill in missing details");
 });
 app.delete("/messages/:id", function (request, response) {
