@@ -61,6 +61,25 @@ app.delete("/messages/:id", function (req, res) {
   const deletedMessage = messages.splice(messageIndex, 1)[0];
   res.send(deletedMessage);
 });
+app.get("/messages/search", function (request, response) {
+  const searchSubtring = request.query.text;
+
+  if (!searchSubtring) {
+    return response.status(400).send({ error: "Missing search text" });
+  }
+
+  const matchingMessages = messages.filter((msg) =>
+    msg.text.toLowerCase().includes(searchSubtring.toLowerCase())
+  );
+
+  response.send(matchingMessages);
+});
+
+app.get("/messages/latest", function (request, response) {
+  const recentMessages = messages.slice(-10);
+
+  response.send(recentMessages);
+});
 
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
