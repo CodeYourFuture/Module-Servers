@@ -32,6 +32,10 @@ const messages = [
 
 app.post("/messages", function (request, response) {
   const newMessage = request.body;
+
+  if (!newMessage || !newMessage.text || !newMessage.from) {
+    return response.status(400).send({ error: "Invalid message data" });
+  }
   messages.push(newMessage);
   response.status(201).send({ newMessage });
 });
