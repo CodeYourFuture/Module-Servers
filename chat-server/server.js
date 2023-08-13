@@ -20,28 +20,16 @@ const welcomeMessage1 = {
   id: 1,
   from: "Lisa",
   text: "Hello to CYF chat system!",
+  timeSent: new Date().toUTCString(),
 };
 const welcomeMessage2 = {
   id: 2,
   from: "Homer",
   text: "Douh!",
+  timeSent: new Date().toUTCString(),
 };
 
-const messages = [
-  welcomeMessage,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage1,
-  welcomeMessage2,
-];
+const messages = [welcomeMessage1, welcomeMessage2];
 
 // Serving index.html file
 app.get("/", (req, res) => {
@@ -72,6 +60,7 @@ app.post("/messages", (req, res) => {
     id: messages[messages.length - 1].id + 1,
     from: req.body.from,
     text: req.body.text,
+    timeSent: new Date().toUTCString(),
   };
   messages.push(newMessage);
   if (
