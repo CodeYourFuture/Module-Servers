@@ -17,6 +17,12 @@ const welcomeMessage = {
 //Note: messages will be lost when Glitch restarts our server.
 const messages = [welcomeMessage];
 
+app.post("/messages", function (req, res) {
+  const newMessage = req.body;
+  messages.push(newMessage);
+  res.status(201).send({ newMessage });
+});
+
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
