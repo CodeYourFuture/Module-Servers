@@ -30,10 +30,23 @@ app.post("/bookings", (req, res) => {
     checkInDate: req.body.checkInDate,
     checkOutDate: req.body.checkOutDate,
   };
-  if (newBooking) {
-    bookings.push(newBooking);
-    res.status(201).json(newBooking);
-  } else {
+  bookings.push(newBooking);
+  if (
+    !newBooking.roomId ||
+    newBooking.roomId === "" ||
+    !newBooking.title ||
+    newBooking.title === "" ||
+    !newBooking.firstName ||
+    newBooking.firstName === "" ||
+    !newBooking.surname ||
+    newBooking.surname === "" ||
+    !newBooking.email ||
+    newBooking.email === "" ||
+    !newBooking.checkInDate ||
+    newBooking.checkInDate === "" ||
+    !newBooking.checkOutDate ||
+    newBooking.checkOutDate === ""
+  ) {
     res.status(400).send("Invalid booking");
   }
 });
