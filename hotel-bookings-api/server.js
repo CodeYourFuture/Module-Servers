@@ -30,7 +30,6 @@ app.post("/bookings", (req, res) => {
     checkInDate: req.body.checkInDate,
     checkOutDate: req.body.checkOutDate,
   };
-  bookings.push(newBooking);
   if (
     !newBooking.roomId ||
     newBooking.roomId === "" ||
@@ -48,6 +47,9 @@ app.post("/bookings", (req, res) => {
     newBooking.checkOutDate === ""
   ) {
     res.status(400).send("Invalid booking");
+  } else {
+    bookings.push(newBooking);
+    res.status(201).json(newBooking);
   }
 });
 
