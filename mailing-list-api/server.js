@@ -1,8 +1,10 @@
 const express = require("express");
 const mailingLists = require("./mailing-lists");
 const { body, validationResult } = require("express-validator");
-const app = express();
+const cors = require("cors");
 
+const app = express();
+app.use(cors());
 app.use(express.json());
 
 const lists = new Map(Object.entries(mailingLists));
@@ -32,21 +34,19 @@ app.get("/lists/:name", (req, res) => {
   });
 });
 
-
 app.delete("/lists/:name", (req, res) => {
   const listName = req.params.name;
-  const isDeletedList = lists.delete(listName)
-  if(!isDeletedList){
+  const isDeletedList = lists.delete(listName);
+  if (!isDeletedList) {
     return res.status(404).json({
-        data: null,
-        messahe: "The list based on inputed name was not found"
-    })
+      data: null,
+      messahe: "The list based on inputed name was not found",
+    });
   }
   res.status(200).json({
     data: Array.from(lists),
-    message: "The list based on inputed name was deleted."
-  })
-
+    message: "The list based on inputed name was deleted.",
+  });
 });
 
 const port = 9090;
