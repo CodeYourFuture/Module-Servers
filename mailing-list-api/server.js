@@ -1,52 +1,72 @@
 const express = require("express");
-const mailingLists = require("./mailing-lists");
-const { body, validationResult } = require("express-validator");
 const cors = require("cors");
 
+let corsOptions = {
+  origin: "localhost",
+};
+
 const app = express();
-app.use(cors());
+app.disable("x-powered-by");
+
 app.use(express.json());
+app.use(cors(corsOptions));
 
-const lists = new Map(Object.entries(mailingLists));
+const mailingListObject = require("./mailing-lists");
 
-app.get("/lists", (req, res) => {
-  const listsArray = Array.from(lists.keys());
-  res.status(200).json({
-    data: listsArray,
-    message: "All lists",
-  });
+app.get("/", function (request, response) {
+  response.send("Mailing list server");
 });
 
-app.get("/lists/:name", (req, res) => {
-  const list = lists.get(req.params.name);
-  if (!list) {
-    return res.status(404).json({
-      data: null,
-      message: "The list based on inputed name was not found",
-    });
+app.get("/lists", function (request, response) {
+  let mailingListKeys = Object.keys(mailingListObject);
+  if (mailingListKeys) {
+    response.status(200).json(mailingListKeys);
+  } else {
+    response.status(200).json([]);
   }
-  res.status(200).json({
-    data: {
-      listName: req.params.name,
-      listMembers: list,
-    },
-    message: "The list based on inputed name",
-  });
 });
 
-app.delete("/lists/:name", (req, res) => {
-  const listName = req.params.name;
-  const isDeletedList = lists.delete(listName);
-  if (!isDeletedList) {
-    return res.status(404).json({
-      data: null,
-      messahe: "The list based on inputed name was not found",
-    });
+app.get("/lists/:name", function (request, response) {
+  const nameSearch = request.params.name;
+  console.log(request.params.name);
+
+  const foundList = mailingListObject[nameSearch];
+  let singleList = {
+    name: nameSearch,
+    members: foundList,
+  };
+
+  if (foundList) {
+    response.status(200).json(singleList);
+  } else {
+    response.status(404).json("List not found");
   }
-  res.status(200).json({
-    data: Array.from(lists),
-    message: "The list based on inputed name was deleted.",
-  });
+});
+
+app.delete("/lists/:name", function (request, response) {
+  const nameDelete = request.params.name;
+  const foundName = mailingListObject[nameDelete];
+
+  if (foundName) {
+    delete mailingListObject[foundName];
+    response.status(200).json(mailingListObject);
+  } else {
+    response.status(404).json({ message: "List not found." });
+  }
+});
+
+app.put("/lists/:name", function (request, response) {
+  const listName = request.params.name;
+  const newOrUpdatedList = request.body;
+
+  const foundList = mailingListObject[listName];
+  if (foundList) {
+    mailingListObject[listName] = newOrUpdatedList;
+    response.status(200).end();
+  } else {
+    mailingListObject[listName] = newOrUpdatedList;
+    response.status(201).end();
+  }
 });
 
 const port = 9090;
