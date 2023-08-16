@@ -10,7 +10,10 @@ app.use(cors());
 //Use this array as your (in-memory) data store.
 const bookings = require("./bookings.json");
 
-let bookingIdCounter = 6; // How do I start this from last object id from json?
+let bookingIdCounter = Math.max(...bookings.map((booking) => booking.id));
+// using both spread and map
+// .map gets booking.id from each booking object in the bookings array and puts it in new array -> bookings = [{ id: 1 }, { id: 3 }, { id: 2 } etc.]
+// ... spreads out the elements of new array created by map to be used in the Math.max()
 
 app.get("/", function (request, response) {
   response.send("Hotel booking server.  Ask for /bookings, etc.");
@@ -29,7 +32,7 @@ app.get("/bookings/:id", function (request, response) {
 
 app.post("/bookings", function (request, response) {
   let newBooking = request.body;
-  newBooking.id = bookingIdCounter++; // increment booking id number
+  newBooking.id = bookingIdCounter + 1; // increment booking id number
 
   if (
     newBooking.title.length === 0 || // could also use !newBooking.title etc.
