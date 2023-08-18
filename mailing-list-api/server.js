@@ -16,7 +16,13 @@ app.get("/lists", (req, res) => {
   }
   res.json(empty);
 });
-//Start our server so that it listens for HTTP requests!
-const listener = app.listen(process.env.PORT, function () {
-  console.log("Your app is listening on port " + listener.address().port);
+app.get("/lists/:name", (req, res) => {
+  for (let [key, value] of Object.entries(mailingList)) {
+    if (req.params.name == key) {
+      res.json({ name: key, members: value });
+    }
+    res.json(`The ${req.params.name} does not exist. Try again!`);
+  }
 });
+//Start our server so that it listens for HTTP requests!
+app.listen(3000);
