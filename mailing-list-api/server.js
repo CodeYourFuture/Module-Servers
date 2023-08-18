@@ -7,22 +7,42 @@ const app = express();
 const mailingList = require("./mailing-lists");
 // middleware
 app.use(cors());
+app.use(express.json());
 
 // registering handlers for some routes:
+
 app.get("/lists", (req, res) => {
   const listOfNames = [];
   for (let name of Object.keys(mailingList)) {
-    listOfNames.push(listOfNames);
+    listOfNames.push(name);
   }
-  res.json(empty);
+  res.json(listOfNames);
 });
 app.get("/lists/:name", (req, res) => {
   for (let [key, value] of Object.entries(mailingList)) {
     if (req.params.name == key) {
       res.json({ name: key, members: value });
     }
-    res.json(`The ${req.params.name} does not exist. Try again!`);
   }
+  res.sendStatus(404);
 });
-//Start our server so that it listens for HTTP requests!
+app.delete("/lists/:name", (req, res) => {
+  for (let [key, value] of Object.entries(mailingList)) {
+    if (req.params.name == key) {
+      delete mailingList[key];
+      res.sendStatus(200);
+    }
+  }
+  res.sendStatus(404);
+});
+app.put("/lists/:name", (req, res) => {
+  for (let [key, value] of Object.entries(mailingList)) {
+    if (req.params.name == key) {
+      res.sendStatus(200);
+    }
+  }
+  mailingList[req.body.name] = req.body.members;
+  res.sendStatus(201);
+});
+
 app.listen(3000);
