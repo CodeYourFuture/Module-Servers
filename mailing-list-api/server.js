@@ -1,6 +1,7 @@
 // server.js
 const express = require("express");
 const app = express();
+app.disable("x-powered-by");
 
 //loading the mailing list JSON
 const mailingList = require("./mailing-lists");
