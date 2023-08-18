@@ -1,12 +1,10 @@
 // server.js
-const cors = require("cors");
 const express = require("express");
 const app = express();
 
 //loading the mailing list JSON
 const mailingList = require("./mailing-lists");
 // middleware
-app.use(cors());
 app.use(express.json());
 
 // registering handlers for some routes:
