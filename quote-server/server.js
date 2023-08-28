@@ -28,10 +28,13 @@ app.get("/quotes/random", function (req, res) {
 
 app.get("/quotes/search", function (req, res) {
   let searchTerm = req.query.term.toLowerCase();
-  let filteredQuotes = quotes.filter((quote) =>
-    quote.quote.toLowerCase().includes(searchTerm) || quote.author.toLowerCase().includes(searchTerm)
+  let filteredQuotes = quotes.filter(
+    (quote) =>
+      quote.quote.toLowerCase().includes(searchTerm) ||
+      quote.author.toLowerCase().includes(searchTerm)
   );
   res.json(filteredQuotes);
+});
 
 //...END OF YOUR CODE
 
