@@ -17,6 +17,15 @@ app.get("/lists", (req, res) => {
   res.send(mailingLists);
 });
 
+app.get("/lists/:name", (req, res) => {
+  const name = req.params.name;
+  for (const list in mailingLists) {
+    if (list === name) {
+      res.send(`${list}: ${mailingLists[list]}`);
+    }
+  }
+});
+
 for (const list in mailingLists) {
   console.log(list);
 }
