@@ -33,7 +33,9 @@ app.delete("/lists/:name", (req, res) => {
   for (const list in mailingLists) {
     if (list === name) {
       delete mailingLists[list];
-      res.send();
+      res.status(200).send();
+    } else {
+      res.status(404).send();
     }
   }
 });
