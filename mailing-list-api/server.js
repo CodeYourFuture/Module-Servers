@@ -47,7 +47,7 @@ app.put("/lists/:name", (req, res) => {
   console.log(req.body);
   const name = req.params.name;
   const newMembers = req.body.members;
-  for (list in mailingLists) {
+  for (const list in mailingLists) {
     if (list === name) {
       newMembers.forEach((member) => {
         mailingLists[list].push(member);
