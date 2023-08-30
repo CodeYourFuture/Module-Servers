@@ -52,12 +52,13 @@ app.put("/lists/:name", (req, res) => {
       newMembers.forEach((member) => {
         mailingLists[list].push(member);
       });
-      res.send(mailingLists);
+      res.status(200).send();
     } else {
       mailingLists[name] = [];
       newMembers.forEach((member) => {
         mailingLists[name].push(member);
       });
+      res.status(201).send();
     }
   }
 });
