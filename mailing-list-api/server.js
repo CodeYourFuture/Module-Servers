@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const port = 3000;
 const mailingLists = require("./mailing-lists");
+
+app.use(bodyParser.json());
 
 console.log(mailingLists);
 
@@ -36,6 +39,25 @@ app.delete("/lists/:name", (req, res) => {
       res.status(200).send();
     } else {
       res.status(404).send();
+    }
+  }
+});
+
+app.put("/lists/:name", (req, res) => {
+  console.log(req.body);
+  const name = req.params.name;
+  const newMembers = req.body.members;
+  for (list in mailingLists) {
+    if (list === name) {
+      newMembers.forEach((member) => {
+        mailingLists[list].push(member);
+      });
+      res.send(mailingLists);
+    } else {
+      mailingLists[name] = [];
+      newMembers.forEach((member) => {
+        mailingLists[name].push(member);
+      });
     }
   }
 });
