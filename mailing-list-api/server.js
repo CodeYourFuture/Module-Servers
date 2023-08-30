@@ -28,6 +28,16 @@ app.get("/lists/:name", (req, res) => {
   }
 });
 
+app.delete("/lists/:name", (req, res) => {
+  const name = req.params.name;
+  for (const list in mailingLists) {
+    if (list === name) {
+      delete mailingLists[list];
+      res.send();
+    }
+  }
+});
+
 for (const list in mailingLists) {
   console.log(list);
 }
