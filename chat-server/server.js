@@ -10,43 +10,48 @@ app.use(express.json());
 const messages = [
   {
     id: 0,
-    from: "Bart",
+    from: "Jeremy",
     text: "Welcome to CYF chat system!",
   },
   {
     id: 1,
-    from: "Bedi",
+    from: "Wasilota",
     text: "Welcome to CYF chat system!",
   },
   {
     id: 2,
-    from: "Amy",
+    from: "Chama",
+    text: "Welcome to CYF chat system!",
+  },
+  {
+    id: 3,
+    from: "Moses",
     text: "Welcome to CYF chat system!",
   }
 ];
 
-app.post("/msessage", function (request, response) {
-  const newMessage = request.body;
+app.post("/message", function (req, res) {
+  const newMessage = req.body;
 
   if (!newMessage || !newMessage.text || !newMessage.from) {
-    return response.status(400).send({ error: "Invalid message data" });
+    return res.status(400).send({ error: "Invalid message data" });
   }
   messages.push(newMessage);
-  response.status(201).send({ newMessage });
+  res.status(201).send({ newMessage });
+});
+app.get("/", function (req, res) {res.send(messages)});
+app.get("/messages", function (req, res) {
+  res.send(messages);
 });
 
-app.get("/messages", function (request, response) {
-  response.send(messages);
-});
-
-app.get("/messages/:id", function (request, response) {
-  const messageId = parseInt(request.params.id);
+app.get("/messages/:id", function (req, res) {
+  const messageId = parseInt(req.params.id);
   const message = messages.find((msg) => msg.id === messageId);
   if (!message) {
     console.log("Message not found"); 
-    return response.status(404).send({ error: "Message not found" });
+    return res.status(404).send({ error: "Message not found" });
   }
-  response.send(message);
+  res.send(message);
 });
 
 app.delete("/messages/:id", function (req, res) {
@@ -57,24 +62,24 @@ app.delete("/messages/:id", function (req, res) {
   res.send(deletedMessage);
 });
 
-app.get("/messages/search", function (request, response) {
-  const searchSubtring = request.query.text;
+app.get("/messages/search", function (req, res) {
+  const searchSubtring = req.query.text;
 
   if (!searchSubtring) {
-    return response.status(400).send({ error: "Missing search text" });
+    return res.status(400).send({ error: "Missing search text" });
   }
 
   const matchingMessages = messages.filter((msg) =>
     msg.text.toLowerCase().includes(searchSubtring.toLowerCase())
   );
 
-  response.send(matchingMessages);
+  res.send(matchingMessages);
 });
 
-app.get("/messages/latest", function (request, response) {
+app.get("/messages/latest", function (req, res) {
   const recentMessages = messages.slice(-10);
 
-  response.send(recentMessages);
+  res.send(recentMessages);
 });
 
 app.listen(port, () => {
