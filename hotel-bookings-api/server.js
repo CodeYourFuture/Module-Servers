@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+process.env.PORT = process.env.PORT || 5000;
 
 const app = express();
 
@@ -17,4 +18,8 @@ app.get("/", function (request, response) {
 
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
+});
+
+app.get("/bookings", function (request, response) {
+  response.send(bookings);
 });
