@@ -57,3 +57,15 @@ app.get("/bookings/:id", (req, res) => {
     ? res.status(200).send(booking)
     : res.status(404).send("Booking not found");
 });
+
+app.delete("/bookings/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const booking = bookings.find((booking) => booking.id === id);
+  if (booking != null) {
+    const index = bookings.indexOf(booking);
+    bookings.splice(index, 1);
+    res.status(200).send(bookings);
+  } else {
+    res.status(404).send("ID not found");
+  }
+});
