@@ -23,3 +23,29 @@ const listener = app.listen(process.env.PORT, function () {
 app.get("/bookings", function (request, response) {
   response.send(bookings);
 });
+
+app.post("/bookings/:id", (req, res) => {
+  const id = req.body.id;
+  const title = req.body.title;
+  const firstName = req.body.firstName;
+  const surname = req.body.surname;
+  const email = req.body.email;
+  const roomId = req.body.roomId;
+  const checkInDate = req.body.checkInDate;
+  const checkOutDate = req.body.checkOutDate;
+  if (
+    (id != undefined) &
+    (title != undefined) &
+    (firstName != undefined) &
+    (surname != undefined) &
+    (email != undefined) &
+    (roomId != undefined) &
+    (checkInDate != undefined) &
+    (checkOutDate != undefined)
+  ) {
+    bookings.push(req.body);
+    res.status(200).send(bookings);
+  } else {
+    res.status(404).send();
+  }
+});
