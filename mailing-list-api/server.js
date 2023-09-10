@@ -1,55 +1,63 @@
 const express = require("express");
 const app = express();
-const port = 9000;
+const cors = require("cors");
+const PORT = process.env.PORT || 9000;
 
+const mailingLists = require("./mailing-lists");
 app.use(express.json());
-
-const lists = new Map();
+app.use(cors());
 
 app.get("/", (req, res) => {
-  res.status(200).send("list a name by writing /list");
+  res.send("Mailing List REST API");
 });
 
 app.get("/lists", (req, res) => {
-  const listNames = [...lists.keys()];
+  const listNames = Object.keys(mailingLists);
   res.status(200).json(listNames);
 });
 
 app.get("/lists/:name", (req, res) => {
   const listName = req.params.name;
-  const list = lists.get(listName);
-
+  const list = mailingLists[listName];
   if (list) {
-    res.status(200).json(list);
+    res.status(200).json({ name: listName, members: list });
   } else {
-    res.status(404).send("List not found");
+    res.sendStatus(404);
   }
 });
+////////////delete/////////////////
 
 app.delete("/lists/:name", (req, res) => {
   const listName = req.params.name;
-
-  if (lists.has(listName)) {
-    lists.delete(listName);
-    res.status(200).send("List deleted successfully");
+  if (mailingLists[listName]) {
+    delete mailingLists[listName];
+    res.status(200).json("successfully deleted");
   } else {
-    res.status(404).send("List not found");
+    res.status(404).json("not found to delete");
   }
 });
-
+////////////////put/////////////////
 app.put("/lists/:name", (req, res) => {
   const listName = req.params.name;
-  const newList = req.body;
+  const { name: bodyName, members: bodyMembers } = req.body;
 
-  if (lists.has(listName)) {
-    lists.set(listName, newList);
-    res.status(200).send("List updated successfully");
+  if (listName && bodyName && bodyMembers) {
+    if (mailingLists[listName]) {
+      mailingLists[listName] = {
+        name: bodyName,
+        members: bodyMembers,
+      };
+      res.status(200).json({ name: bodyName, members: bodyMembers });
+    } else {
+      const newList = { name: bodyName, members: bodyMembers };
+      mailingLists[listName] = newList;
+      res.status(201).json(newList);
+    }
   } else {
-    lists.set(listName, newList);
-    res.status(201).send("List created successfully");
+    res.sendStatus(400);
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const listener = app.listen(process.env.port, () => {
+  console.log(`server is runing ${listener.address().port}`);
 });
