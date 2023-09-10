@@ -17,6 +17,16 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
+// ... (your existing code)
+
+app.get("/quotes", function (request, response) {
+  response.json(quotes);
+});
+
+app.get("/quotes/random", function (request, response) {
+  const randomQuote = pickFromArray(quotes);
+  response.json(randomQuote);
+});
 
 //...END OF YOUR CODE
 
@@ -32,3 +42,4 @@ function pickFromArray(arr) {
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
+/////////////////////// my server link is ////////
