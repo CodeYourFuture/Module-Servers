@@ -28,6 +28,21 @@ app.get('/messages', function(req, res){
   res.status(200).json({messages})
 });
 
+
+app.get('/messages/search', (req, res) => {
+  const searchText = req.query.text;
+  const filteredMessages = messages.filter((m) =>
+      m.text.includes(searchText)
+  );
+  res.status(200).json({ messages: filteredMessages });
+});
+
+app.get('/messages/latest', (req, res) => {
+  const recentMessages = messages.slice(-10);
+
+  res.status(200).json({ messages: recentMessages });
+});
+
 app.get('/messages/:id', function(req, res){
   const id = req.params.id;
   res.status(200).json({messages: messages.filter(m => String(m.id) === id)});

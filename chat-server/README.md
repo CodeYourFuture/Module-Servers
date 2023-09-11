@@ -76,8 +76,8 @@ The remaining challenges below are stretch challenges - you can have go at these
 
 For this level, your server must:
 
-- [ ] _reject_ requests to create messages if the message objects have an empty or missing `text` or `from` property.
-  - [ ] In this case your server should return a status code of `400`.
+- [x] _reject_ requests to create messages if the message objects have an empty or missing `text` or `from` property.
+  - [x] In this case your server should return a status code of `400`.
 
 (Advanced note: people don't actually agree on the best status code for this situation.)
 
@@ -91,8 +91,8 @@ This is a big topic for further study. We won't try to cover it in this challeng
 
 For this level your API _must_ also allow a client to:
 
-- [ ] Read _only_ messages whose text contains a given substring: `/messages/search?text=express`
-- [ ] Read only the most recent 10 messages: `/messages/latest`
+- [x] Read _only_ messages whose text contains a given substring: `/messages/search?text=express`
+- [x] Read only the most recent 10 messages: `/messages/latest`
 
 ## Level 4 - Optional - add a timestamp, `timeSent`
 
