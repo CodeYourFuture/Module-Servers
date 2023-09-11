@@ -13,6 +13,7 @@ const welcomeMessage = {
   id: 0,
   from: "Bart",
   text: "Welcome to CYF chat system!",
+  timeSent: new Date(),
 };
 
 //This array is our "data store".
@@ -53,7 +54,8 @@ app.post('/messages', function(req, res){
     const newMessage = {
       id: messages.length,
       from: req.body.from,
-      text: req.body.text
+      text: req.body.text,
+      timeSent: new Date(),
     }
     messages.push(newMessage);
     res.status(201).json({newMessage})
