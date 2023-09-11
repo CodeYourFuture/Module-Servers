@@ -80,6 +80,25 @@ app.delete('/messages/:id', function(req, res){
 
 });
 
+app.put('/messages/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedMessage = messages.find((m) => String(m.id) === id);
+
+  if (!updatedMessage) {
+    res.status(404).json({ message: 'Message not found' });
+  } else {
+    // Update the 'text' and 'from' properties if provided by the client
+    if (req.body.text !== undefined) {
+      updatedMessage.text = req.body.text;
+    }
+    if (req.body.from !== undefined) {
+      updatedMessage.from = req.body.from;
+    }
+
+    res.status(200).json({ message: updatedMessage });
+  }
+});
+
 app.listen(process.env.PORT,() => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
