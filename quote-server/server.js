@@ -10,9 +10,13 @@ const app = express();
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
 //   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
+//   /quotes/random     - Should return ONE quote (json
+
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+});
+app.get("/hello", (request, response) => {
+  response.send(quotes[0]);
 });
 
 //START OF YOUR CODE...
