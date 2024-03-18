@@ -1,21 +1,36 @@
 // server.js
 // This is where your node app starts
 
-//load the 'express' module which makes writing webservers easy
-import express from "express";
+import express, { query } from "express";
 //load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
 
 const app = express();
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
-app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+
+// app.get("/quotes/search", (request, response) => {
+//   const n = request.query.term;
+//   response.send(searchQuote(n));
+// });
+
+app.get("/quotes/random", (request, response) => {
+  response.send(pickFromArray(quotes));
 });
 
-//START OF YOUR CODE...
+
+app.get("/quotes", (request, response) => {
+  response.send(quotes);
+});
+
+app.get("/", (request, response) => {
+  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes or /quotes/search");
+});
+
+app.get("/hello", (request, response) => {
+  const n = request.query.name;
+  response.send("Hello!  I'm a sever that just says hello to " + n);
+});
+
+
 
 //...END OF YOUR CODE
 
@@ -25,6 +40,10 @@ app.get("/", (request, response) => {
 //
 const pickFromArray = (arrayofQuotes) =>
   arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
+
+// const searchQuote = (searchTerm) =>
+//   quotes.filter((quote) => quote.quote.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) || quote.author.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
+
 
 //Start our server so that it listens for HTTP requests!
 const listener = app.listen(3001, () => {
