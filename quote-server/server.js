@@ -7,10 +7,10 @@ import quotes from "./quotes.json" assert { type: "json" };
 
 const app = express();
 
-// app.get("/quotes/search", (request, response) => {
-//   const n = request.query.term;
-//   response.send(searchQuote(n));
-// });
+app.get("/quotes/search", (request, response) => {
+  const n = request.query.term;
+  response.send(searchQuote(n));
+});
 
 app.get("/quotes/random", (request, response) => {
   response.send(pickFromArray(quotes));
@@ -41,8 +41,8 @@ app.get("/hello", (request, response) => {
 const pickFromArray = (arrayofQuotes) =>
   arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
 
-// const searchQuote = (searchTerm) =>
-//   quotes.filter((quote) => quote.quote.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) || quote.author.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
+const searchQuote = (searchTerm) =>
+  quotes.filter((quote) => quote.quote.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) || quote.author.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
 
 
 //Start our server so that it listens for HTTP requests!
