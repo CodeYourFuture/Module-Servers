@@ -5,18 +5,32 @@
 import express from "express";
 //load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
-
+// const express = require("express");
 const app = express();
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send(
+    "Behrouz's Quote Server!  Ask me for /quotes/random, or /quotes"
+  );
 });
 
 //START OF YOUR CODE...
+const port = 3000;
+// app.listen(port, () => {
+//   console.log("Listening on port 3001 !");
+// });
 
+app.get("/quotes", (req, res) => {
+  res.send(quotes);
+});
+app.get("/quotes/random", (req, res) => {
+  const randomQuote = pickFromArray(quotes);
+  console.log(randomQuote, "this is a random quote");
+  return res.send(randomQuote);
+});
 //...END OF YOUR CODE
 
 //You can use this function to pick one element at random from a given array
