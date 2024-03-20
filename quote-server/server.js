@@ -41,11 +41,17 @@ const termFinderInQuotes = (array, term) => {
 
 app.get("/quotes/search", (req, res) => {
   const term = req.query.term;
-  console.log(typeof term, "this is term");
-  console.log(termFinderInQuotes(quotes, term));
   res.send(termFinderInQuotes(quotes, term));
 });
 //================================
+
+//============ECHO THE PARAMTRE================
+app.get("/echo", (req, res) => {
+  const queryParam = req.query.word;
+  res.send(`You said: '${queryParam}'`);
+});
+
+//=============================================
 //You can use this function to pick one element at random from a given array
 //example: pickFromArray([1,2,3,4]), or
 //example: pickFromArray(myContactsArray)
