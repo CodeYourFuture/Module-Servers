@@ -32,7 +32,20 @@ app.get("/quotes/random", (req, res) => {
   return res.send(randomQuote);
 });
 //...END OF YOUR CODE
+//============LEVEL-2 =====================
+const termFinderInQuotes = (array, term) => {
+  return array
+    .filter((item) => item.quote.toLowerCase().includes(term.toLowerCase()))
+    .map((item) => item.quote);
+};
 
+app.get("/quotes/search", (req, res) => {
+  const term = req.query.term;
+  console.log(typeof term, "this is term");
+  console.log(termFinderInQuotes(quotes, term));
+  res.send(termFinderInQuotes(quotes, term));
+});
+//================================
 //You can use this function to pick one element at random from a given array
 //example: pickFromArray([1,2,3,4]), or
 //example: pickFromArray(myContactsArray)
