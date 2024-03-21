@@ -18,7 +18,8 @@ app.get("/", (request, response) => {
 });
 
 let fetchedQuotes;
-const link = "https://api.quotable.io/quotes?page=1";
+const link =
+  "https://gist.githubusercontent.com/nasrulhazim/54b659e43b1035215cd0ba1d4577ee80/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json";
 fetch(link)
   .then((response) => {
     if (!response.ok) {
@@ -27,8 +28,8 @@ fetch(link)
     return response.json();
   })
   .then((data) => {
-    fetchedQuotes = data.results;
-    console.log(fetchedQuotes, "this is fetched quotes");
+    fetchedQuotes = data;
+    // console.log(fetchedQuotes, "this is fetched quotes");
   });
 
 //START OF YOUR CODE...
@@ -41,9 +42,9 @@ app.get("/quotes", (req, res) => {
   res.send(fetchedQuotes);
 });
 app.get("/quotes/random", (req, res) => {
-  const randomQuote = pickFromArray(fetchedQuotes);
+  const randomQuote = pickFromArray(fetchedQuotes.quotes);
   console.log(randomQuote, "this is a random quote");
-  return res.send(randomQuote);
+  res.send(randomQuote);
 });
 //...END OF YOUR CODE
 //============LEVEL-2 =====================
@@ -55,7 +56,7 @@ const termFinderInQuotes = (array, term) => {
 
 app.get("/quotes/search", (req, res) => {
   const term = req.query.term;
-  res.send(termFinderInQuotes(quotes, term));
+  res.send(termFinderInQuotes(fetchedQuotes.quotes, term));
 });
 //================================
 
