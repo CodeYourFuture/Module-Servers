@@ -3,6 +3,8 @@
 
 //load the 'express' module which makes writing webservers easy
 import express, { response } from "express";
+
+import cors from "cors";
 //load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
 // const express = require("express");
@@ -11,9 +13,11 @@ const app = express();
 //   /                  - Return some helpful welcome info (text)
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
+
+app.use(cors());
 app.get("/", (request, response) => {
   response.send(
-    "Behrouz's Quote Server!  Ask me for /quotes/random, or /quotes"
+    "Behrouz's Quote Server!  Ask me for /quotes/random, or /quotes also /quotes/search?term={word} for any specifi word!"
   );
 });
 
