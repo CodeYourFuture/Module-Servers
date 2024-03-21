@@ -2,7 +2,7 @@
 // This is where your node app starts
 
 //load the 'express' module which makes writing webservers easy
-import express from "express";
+import express, { response } from "express";
 //load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
 // const express = require("express");
@@ -17,6 +17,20 @@ app.get("/", (request, response) => {
   );
 });
 
+let fetchedQuotes;
+const link = "https://api.quotable.io/quotes?page=1";
+fetch(link)
+  .then((response) => {
+    if (!response.ok) {
+      console.error("Error happened during fetch!");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    fetchedQuotes = data.results;
+    console.log(fetchedQuotes, "this is fetched quotes");
+  });
+
 //START OF YOUR CODE...
 const port = 3000;
 // app.listen(port, () => {
@@ -24,10 +38,10 @@ const port = 3000;
 // });
 
 app.get("/quotes", (req, res) => {
-  res.send(quotes);
+  res.send(fetchedQuotes);
 });
 app.get("/quotes/random", (req, res) => {
-  const randomQuote = pickFromArray(quotes);
+  const randomQuote = pickFromArray(fetchedQuotes);
   console.log(randomQuote, "this is a random quote");
   return res.send(randomQuote);
 });
