@@ -15,6 +15,34 @@ const app = express();
 //   /quotes/random     - Should return ONE quote (json)
 
 app.use(cors());
+
+// ==============codes to connect the server to front end ========
+
+// Define a route to serve the code
+app.get("/code", (req, res) => {
+  // Read the server.js file
+  const fs = require("fs");
+  const path = require("path");
+  const filePath = path.join(__dirname, "server.js");
+
+  // Read the contents of the file
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading file:", err);
+      res.status(500).send("Error reading file");
+      return;
+    }
+
+    // Set response content type to text/plain
+    res.set("Content-Type", "text/plain");
+
+    // Send the file contents as a response
+    res.send(data);
+  });
+});
+
+//=====================================================
+
 app.get("/", (request, response) => {
   response.send(
     "Behrouz's Quote Server!  Ask me for /quotes/random, or /quotes also /quotes/search?term={word} for any specifi word!"
@@ -50,13 +78,8 @@ app.get("/quotes/random", (req, res) => {
   console.log(randomQuote, "this is a random quote");
   res.send(randomQuote);
 });
-//...END OF YOUR CODE
+
 //============LEVEL-2 =====================
-const termFinderInQuotes = (array, term) => {
-  return array
-    .filter((item) => item.quote.toLowerCase().includes(term.toLowerCase()))
-    .map((item) => item.quote);
-};
 
 app.get("/quotes/search", (req, res) => {
   const term = req.query.term;
@@ -70,6 +93,7 @@ app.get("/echo", (req, res) => {
   res.send(`You said: '${queryParam}'`);
 });
 
+//...END OF YOUR CODE
 //=============================================
 //You can use this function to pick one element at random from a given array
 //example: pickFromArray([1,2,3,4]), or
@@ -77,6 +101,13 @@ app.get("/echo", (req, res) => {
 //
 const pickFromArray = (arrayofQuotes) =>
   arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
+
+// search a term theough the quotes
+const termFinderInQuotes = (array, term) => {
+  return array
+    .filter((item) => item.quote.toLowerCase().includes(term.toLowerCase()))
+    .map((item) => item.quote);
+};
 
 //Start our server so that it listens for HTTP requests!
 const listener = app.listen(3001, () => {
