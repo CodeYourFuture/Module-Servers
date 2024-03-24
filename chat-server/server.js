@@ -12,7 +12,13 @@ app.use(express.json());
 // Get __dirname in ES module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-let messages = [];
+const welcomeMessage = {
+  id: 0,
+  from: "Bart",
+  text: "Welcome to CYF chat system!",
+};
+
+let messages = [welcomeMessage];
 let count = -1;
 
 app.get("/", (request, response) => {
@@ -32,10 +38,14 @@ app.get("/messages/:messageId", (req, res) => {
 app.use(express.urlencoded({ extended: true }));
 app.post("/messages", (req, res) => {
   const newMessage = req.body;
-  count++;
-  const id = { id: count };
-  messages.push(Object.assign(id, newMessage));
-  res.send("Your message was added successfully!");
+  if (newMessage.from === "" || newMessage.text === "") {
+    res.status(400);
+  } else {
+    count++;
+    const id = { id: count };
+    messages.push(Object.assign(id, newMessage));
+    res.send("Your message was added successfully!");
+  }
 });
 
 app.delete("/messages/:messageId", (req, res) => {
@@ -43,6 +53,19 @@ app.delete("/messages/:messageId", (req, res) => {
   messages = messages.filter((message) => message.id !== messageId);
   res.status(204).send();
 });
+
+// // Searchterm queries
+
+// app.get("/quotes/search", (req, res) => {
+//   const searchTerm = req.query.term.toLowerCase();
+//   const filterMessages = messages.filter(
+//     (message) =>
+//       message.text.toLowerCase().includes(searchTerm) ||
+//       message.from.toLowerCase().includes(searchTerm)
+//   );
+//   const sendFilter = searchTerm ? filterMessages : [];
+//   res.send(sendFilter);
+// });
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
