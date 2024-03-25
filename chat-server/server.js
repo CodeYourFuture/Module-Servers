@@ -29,6 +29,19 @@ app.get("/messages", (req, res) => {
   res.send(messages);
 });
 
+app.get("/messages/search", (req, res) => {
+  const searchTerm = req.query.text.toLowerCase();
+  const filterMessages = messages.filter((message) =>
+    message.text.toLowerCase().includes(searchTerm)
+  );
+  res.send(filterMessages);
+});
+
+app.get("/messages/latest", (req, res) => {
+  const lastTenMessages = messages.slice(messages.length - 10);
+  res.send(lastTenMessages);
+});
+
 app.get("/messages/:messageId", (req, res) => {
   const messageId = Number(req.params.messageId);
   const filterMessages = messages.find((message) => message.id === messageId);
@@ -55,17 +68,6 @@ app.delete("/messages/:messageId", (req, res) => {
 });
 
 // // Searchterm queries
-
-// app.get("/quotes/search", (req, res) => {
-//   const searchTerm = req.query.term.toLowerCase();
-//   const filterMessages = messages.filter(
-//     (message) =>
-//       message.text.toLowerCase().includes(searchTerm) ||
-//       message.from.toLowerCase().includes(searchTerm)
-//   );
-//   const sendFilter = searchTerm ? filterMessages : [];
-//   res.send(sendFilter);
-// });
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
