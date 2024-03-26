@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import { searchForWorkspaceRoot } from "vite";
 
 const app = express();
 
@@ -25,6 +26,13 @@ const messages = [welcomeMessage];
 
 const findMessageById = (arr, msgId) => {
   return arr.filter((obj) => obj.id === Number(msgId));
+};
+
+const serachInMessages = (arr, word) => {
+  const msgs = arr.filter((object) => {
+    return object.text.toLowerCase().includes(word.toLowerCase());
+  });
+  return msgs;
 };
 
 app.get("/", (request, response) => {
@@ -51,8 +59,11 @@ app.get("/messages", (req, res) => {
   res.send(usersChat);
 });
 
-app.get("/messages/search?text=express", (req, res) => {
+app.get("/messages/search", (req, res) => {
   const textForSearch = req.query.text;
+  console.log(req.query);
+  const msgIncludesWord = serachInMessages(usersChat, textForSearch);
+  res.status(200).send(msgIncludesWord);
 });
 
 app.get("/messages/:id", (req, res) => {
