@@ -66,6 +66,11 @@ const rejectTheRequest = (obj) => {
 
 app.post("/messages", (req, res) => {
   const chatData = req.body;
+  // adding a timestamp
+  const date = new Date();
+  const sentTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  chatData["sentTime"] = sentTime;
+
   if (rejectTheRequest(chatData)) {
     res.status(400).send("Fill all the feilds");
   } else {
