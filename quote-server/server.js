@@ -1,11 +1,5 @@
-// server.js
-// This is where your node app starts
-
-//load the 'express' module which makes writing webservers easy
 import express from "express";
-//load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
-
 const app = express();
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
@@ -15,20 +9,36 @@ const app = express();
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
-app.get("/hello", (request, response) => {
-  response.send(quotes[0]);
+app.get("/quotes", (request, response) => {
+  console.log("you are lestining for hello endpoint");
+  response.send({ quotes });
 });
 
-//START OF YOUR CODE...
+app.get("/quotes/random", (req, res) => {
+  console.log("you are hitting random quotes");
+  const pickFromArray = (quotes) =>
+    quotes[Math.floor(Math.random() * quotes.length)];
+  const randomQuote = pickFromArray(quotes);
+  res.send(randomQuote);
+});
 
-//...END OF YOUR CODE
+app.get("/quotes/search", (req, res) => {
+  console.log("you are hitting the query route");
+  const searchQuery = req.query.terms.toLocaleLowerCase();
+  const filterQuote = quotes.filter(
+    (quote) =>
+      quote.quote.toLocaleLowerCase().includes(searchQuery) ||
+      quote.author.toLocaleLowerCase().includes(searchQuery)
+  );
+  res.send({ filterQuote });
+});
 
-//You can use this function to pick one element at random from a given array
-//example: pickFromArray([1,2,3,4]), or
-//example: pickFromArray(myContactsArray)
-//
-const pickFromArray = (arrayofQuotes) =>
-  arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
+app.get("/echo", (req, res) => {
+  const getWord = req.query.word;
+  if (getWord) {
+  }
+  res.send(`you said ${getWord}`);
+});
 
 //Start our server so that it listens for HTTP requests!
 const listener = app.listen(3001, () => {
