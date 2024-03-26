@@ -23,32 +23,37 @@ const welcomeMessage = {
 //We will start with one message in the array.
 const messages = [welcomeMessage];
 
+const findMessageById = (arr, msgId) => {
+  return arr.filter((obj) => obj.id === Number(msgId));
+};
+
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/index.html");
 });
 
 const usersChat = [];
-// const jsonCreator=(msg)={
-//   const message={
-//     id:,
-//     messages:msg,
-//     from:'Ali'
-//   }
-// }
+
+const rejectTheRequest = (obj) => {
+  return obj.from === "" || obj.text === "" ? true : false;
+};
 
 app.post("/messages", (req, res) => {
   const chatData = req.body;
-  usersChat.push(chatData);
-  res.send("Chat added !");
+  if (rejectTheRequest(chatData)) {
+    res.status(400).send("Fill all the feilds");
+  } else {
+    usersChat.push(chatData);
+    res.send("Chat added !");
+  }
 });
 
 app.get("/messages", (req, res) => {
   res.send(usersChat);
 });
 
-const findMessageById = (arr, msgId) => {
-  return arr.filter((obj) => obj.id === Number(msgId));
-};
+app.get("/messages/search?text=express", (req, res) => {
+  const textForSearch = req.query.text;
+});
 
 app.get("/messages/:id", (req, res) => {
   const msgId = req.params.id;
