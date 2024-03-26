@@ -106,7 +106,7 @@ const pickFromArray = (arrayofQuotes) =>
 const termFinderInQuotes = (array, term) => {
   return array
     .filter((item) => item.quote.toLowerCase().includes(term.toLowerCase()))
-    .map((item) => item.quote);
+    .map((item) => `${item.quote} , ${item.author}`);
 };
 
 //Start our server so that it listens for HTTP requests!
