@@ -23,11 +23,14 @@ const welcomeMessage = {
 //This array is our "data store".
 //We will start with one message in the array.
 const messages = [welcomeMessage];
+//////////////////////////functions/////////////////////////
 
+// finding the object contains a msg accroding to its id
 const findMessageById = (arr, msgId) => {
   return arr.filter((obj) => obj.id === Number(msgId));
 };
 
+// searches for a specific msg according to the id
 const serachInMessages = (arr, word) => {
   const msgs = arr.filter((object) => {
     return object.text.toLowerCase().includes(word.toLowerCase());
@@ -35,6 +38,22 @@ const serachInMessages = (arr, word) => {
   return msgs;
 };
 
+// getting latest 10 msg from all the msg
+const latestTenMsg = (arr) => {
+  const arrayOfTen = [];
+  if (arr.length >= 10) {
+    for (let i = arr.length - 1; i >= arr.length - 10; i--) {
+      arrayOfTen.push(arr[i].text);
+    }
+  } else {
+    for (let i = arr.length; i >= 0; i--) {
+      arrayOfTen.push(arr[i].text);
+    }
+  }
+  return arrayOfTen;
+};
+//[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+////////////////////////////////////////////////////////
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/index.html");
 });
@@ -64,6 +83,13 @@ app.get("/messages/search", (req, res) => {
   console.log(req.query);
   const msgIncludesWord = serachInMessages(usersChat, textForSearch);
   res.status(200).send(msgIncludesWord);
+});
+
+app.get("/messages/latest", (req, res) => {
+  console.log(usersChat);
+  const latestMsgs = latestTenMsg(usersChat);
+  console.log(usersChat);
+  res.status(200).send(latestMsgs);
 });
 
 app.get("/messages/:id", (req, res) => {
