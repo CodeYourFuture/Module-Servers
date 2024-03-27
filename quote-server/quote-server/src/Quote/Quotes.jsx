@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import "./Quote.css";
 
 const GenerateQuote = () => {
   const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
 
   // Function to fetch a random quote from the server
   const fetchRandomQuote = async () => {
@@ -13,7 +15,9 @@ const GenerateQuote = () => {
         throw new Error("Failed to fetch random quote");
       }
       const data = await response.json();
-      setQuote(data.quote); // Update state with the fetched quote
+      console.log(data);
+      setQuote(data.quote);
+      setAuthor(data.author);
     } catch (error) {
       console.error("Error fetching random quote:", error);
     }
@@ -22,8 +26,9 @@ const GenerateQuote = () => {
   return (
     <div>
       <h2>Generate Quote</h2>
-      <button onClick={fetchRandomQuote}>Generate Random Quote</button>
       {quote && <p>{quote}</p>}
+      {author && <p id="author">{author}</p>}
+      <button onClick={fetchRandomQuote}>Generate Random Quote</button>
     </div>
   );
 };
