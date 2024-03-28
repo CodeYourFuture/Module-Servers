@@ -22,8 +22,19 @@ const welcomeMessage = {
 
 //This array is our "data store".
 //We will start with one message in the array.
-const messages = [welcomeMessage];
+// const messages = [welcomeMessage];
 //////////////////////////functions/////////////////////////
+
+/////////finding Max Id in the Objects
+
+const maxIdPlusOne = (arr) => {
+  if (arr.length != 0) {
+    const maxId = arr[arr.length - 1].id;
+    return maxId + 1;
+  } else {
+    return 0;
+  }
+};
 
 // finding the object contains a msg accroding to its id
 const findMessageById = (arr, msgId) => {
@@ -66,6 +77,8 @@ const rejectTheRequest = (obj) => {
 
 app.post("/messages", (req, res) => {
   const chatData = req.body;
+  // adding Id to the object of the chat
+  chatData.id = maxIdPlusOne(usersChat);
   // adding a timestamp
   const date = new Date();
   const sentTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -75,7 +88,7 @@ app.post("/messages", (req, res) => {
     res.status(400).send("Fill all the feilds");
   } else {
     usersChat.push(chatData);
-    res.send("Chat added !");
+    res.send(chatData);
   }
 });
 
