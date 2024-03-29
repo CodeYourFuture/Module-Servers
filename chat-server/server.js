@@ -50,6 +50,25 @@ app.post("/messages", (req, res) => {
   }
 });
 
+// search by text route
+// has to be tested again
+app.get("/messages/latest", (req, res) => {
+  console.log("you are hitting search route server !");
+  const searchQuery = req.query.terms.toLowerCase();
+  const filteredMessages = messages.filter((message) =>
+    message.text.toLowerCase().includes(searchQuery)
+  );
+
+  res.json({ filteredMessages });
+});
+
+//only most recent 10 messages
+//not completed
+app.get("/messages/latest", (req, res) => {
+  console.log("you are hitting most recent 10 messages server!");
+  const recentMessage = messages.slice(-10);
+  res.json({ recentMessage });
+});
 // Find message by ID
 app.get("/messages/:id", (req, res) => {
   console.log("you are hitting find dynamic server!");
