@@ -16,6 +16,10 @@
         /></label>
         <button type="submit">Send</button>
       </form>
+      <form action="/messages/:idShow" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
+        <button type="submit">Delete</button>
+      </form>
     </main>
     <footer>
       <h3><a href="/messages">See all messages</a></h3>
