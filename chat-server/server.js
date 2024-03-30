@@ -38,12 +38,15 @@ app.post("/messages", (req, res) => {
   console.log("you are hitting post route!");
   const newMessage = req.body;
   if (newMessage.from === "" || newMessage.text === "") {
-    res.status(400).json();
+    res.status(400).send();
     console.log("status 400");
   } else {
     count++;
     const id = { id: count };
-    messages.push(Object.assign(id, newMessage));
+    //set the time level 5
+    const timeSent = new Date().toLocaleTimeString();
+    const timeObject = { timeSentAt: timeSent };
+    messages.push(Object.assign(id, newMessage, timeObject));
     console.log("your message was added successfully");
     res.send("Your message was added successfully!");
     console.log(messages);
