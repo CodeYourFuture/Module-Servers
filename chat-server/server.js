@@ -57,7 +57,7 @@ const latestTenMsg = (arr) => {
       arrayOfTen.push(arr[i]);
     }
   } else {
-    for (let i = arr.length; i >= 0; i--) {
+    for (let i = arr.length - 1; i >= 0; i--) {
       arrayOfTen.push(arr[i]);
     }
   }
@@ -73,41 +73,20 @@ const usersChat = [
   {
     from: "Behrouz",
     text: "hello",
-    id: 6,
-    sentTime: "18:31:22",
+    id: 1,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
   },
   {
     from: "Behrouz",
-    text: "hello world",
-    id: 7,
-    sentTime: "18:31:25",
+    text: "world",
+    id: 3,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
   },
+
   {
     from: "Behrouz",
-    text: "hello ben",
-    id: 8,
-    sentTime: "18:31:30",
-  },
-  {
-    from: "Behrouz",
-    text: "hi",
-    id: 9,
-    sentTime: "18:31:22",
-  },
-  {
-    from: "Behrouz",
-    text: "x",
-    id: 10,
-    sentTime: "18:31:22",
-  },
-  {
-    from: "Behrouz",
-    text: "me",
-    id: 6,
-    sentTime: "18:31:22",
-  },
-  {
-    from: "Behrouz_k",
     text: "a",
     id: 7,
     sentTime: "11:36:18",
@@ -116,21 +95,35 @@ const usersChat = [
   {
     from: "Behrouz_k",
     text: "b",
-    id: 7,
+    id: 2,
     sentTime: "11:36:18",
     sentDate: "6/3/2024",
   },
   {
     from: "Behrouz_k",
     text: "c",
-    id: 7,
+    id: 4,
     sentTime: "11:36:18",
     sentDate: "6/3/2024",
   },
   {
     from: "Behrouz_k",
     text: "d",
-    id: 7,
+    id: 5,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
+  },
+  {
+    from: "Behrouz",
+    text: "hello world",
+    id: 8,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
+  },
+  {
+    from: "Behrouz",
+    text: "my name is B",
+    id: 8,
     sentTime: "11:36:18",
     sentDate: "6/3/2024",
   },
@@ -190,9 +183,13 @@ app.get("/messages/:id", (req, res) => {
 app.delete("/messages/:id", (req, res) => {
   const msgId = req.params.id;
   const findedMsg = findMessageById(usersChat, msgId);
-  const index = usersChat.indexOf(findedMsg[0]);
-  usersChat.splice(index, 1);
-  res.send("Message deleted !");
+  if (findedMsg.length > 0) {
+    const index = usersChat.indexOf(findedMsg[0]);
+    usersChat.splice(index, 1);
+    res.send("Message deleted succesfully");
+  } else {
+    res.status(404).send("Message didn't find!");
+  }
 });
 
 app.listen(process.env.PORT, () => {
