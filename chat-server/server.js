@@ -54,11 +54,11 @@ const latestTenMsg = (arr) => {
   const arrayOfTen = [];
   if (arr.length >= 10) {
     for (let i = arr.length - 1; i >= arr.length - 10; i--) {
-      arrayOfTen.push(arr[i].text);
+      arrayOfTen.push(arr[i]);
     }
   } else {
     for (let i = arr.length; i >= 0; i--) {
-      arrayOfTen.push(arr[i].text);
+      arrayOfTen.push(arr[i]);
     }
   }
   return arrayOfTen;
@@ -69,7 +69,72 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/index.html");
 });
 
-const usersChat = [];
+const usersChat = [
+  {
+    from: "Behrouz",
+    text: "hello",
+    id: 6,
+    sentTime: "18:31:22",
+  },
+  {
+    from: "Behrouz",
+    text: "hello world",
+    id: 7,
+    sentTime: "18:31:25",
+  },
+  {
+    from: "Behrouz",
+    text: "hello ben",
+    id: 8,
+    sentTime: "18:31:30",
+  },
+  {
+    from: "Behrouz",
+    text: "hi",
+    id: 9,
+    sentTime: "18:31:22",
+  },
+  {
+    from: "Behrouz",
+    text: "x",
+    id: 10,
+    sentTime: "18:31:22",
+  },
+  {
+    from: "Behrouz",
+    text: "me",
+    id: 6,
+    sentTime: "18:31:22",
+  },
+  {
+    from: "Behrouz_k",
+    text: "a",
+    id: 7,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
+  },
+  {
+    from: "Behrouz_k",
+    text: "b",
+    id: 7,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
+  },
+  {
+    from: "Behrouz_k",
+    text: "c",
+    id: 7,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
+  },
+  {
+    from: "Behrouz_k",
+    text: "d",
+    id: 7,
+    sentTime: "11:36:18",
+    sentDate: "6/3/2024",
+  },
+];
 
 const rejectTheRequest = (obj) => {
   return obj.from === "" || obj.text === "" ? true : false;
@@ -82,10 +147,14 @@ app.post("/messages", (req, res) => {
   // adding a timestamp
   const date = new Date();
   const sentTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const sentDate = `${date.getDay()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`;
   chatData["sentTime"] = sentTime;
+  chatData["sentDate"] = sentDate;
 
   if (rejectTheRequest(chatData)) {
-    res.status(400).send("Fill all the feilds");
+    res.status(400).json({ error: "Fill All the field!" });
   } else {
     usersChat.push(chatData);
     res.send(chatData);
@@ -98,8 +167,9 @@ app.get("/messages", (req, res) => {
 
 app.get("/messages/search", (req, res) => {
   const textForSearch = req.query.text;
-  console.log(req.query);
+  // console.log(req.query);
   const msgIncludesWord = serachInMessages(usersChat, textForSearch);
+  //console.log(msgIncludesWord);
   res.status(200).send(msgIncludesWord);
 });
 
