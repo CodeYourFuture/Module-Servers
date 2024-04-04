@@ -192,6 +192,16 @@ app.delete("/messages/:id", (req, res) => {
   }
 });
 
+app.put("/messages/edit/:id", (req, res) => {
+  const editedMsg = req.body;
+  const msgId = req.params.id;
+  const foundMsg = findMessageById(usersChat, msgId);
+  foundMsg[0].text = editedMsg.text;
+  console.log(foundMsg, "this is found msg");
+
+  res.status(200).send(foundMsg);
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
