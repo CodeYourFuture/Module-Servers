@@ -12,17 +12,17 @@ const app = express();
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send("Areeb's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
 
 //START OF YOUR CODE...
 
 app.get("/quotes", function (request, response) {
-  response.send("You asked for route /quotes");
+  response.send(quotes);
 });
 
 app.get("/quotes/random", function (request, response) {
-  response.send("You asked for route /random quotes");
+  response.send(pickFromArray(quotes));
 });
 
 //...END OF YOUR CODE
