@@ -14,14 +14,13 @@ fetch(quotesApi)
         author: quote.author
       })
     })
+    app.listen(PORT, () => {
+      console.log(`Your app is listening on port ${PORT}`);
+    });
   })
   .catch(error => {
     console.log(error);
   })
-
-app.listen(PORT, () => {
-  console.log(`Your app is listening on port ${PORT}`);
-});
 
 app.get("/quotes", (request, response) => {
   response.json(quotes);
