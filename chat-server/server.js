@@ -180,13 +180,32 @@ app.get("/messages/:id", (req, res) => {
   res.send(findedMsg);
 });
 
+// app.delete("/messages/:id", (req, res) => {
+//   const msgId = req.params.id;
+//   const findedMsg = findMessageById(usersChat, msgId);
+//   if (findedMsg.length > 0) {
+//     const index = usersChat.indexOf(findedMsg[0]);
+//     usersChat.splice(index, 1);
+//     res.send("Message deleted succesfully");
+//   } else {
+//     res.status(404).send("Message didn't find!");
+//   }
+// });
+
 app.delete("/messages/:id", (req, res) => {
   const msgId = req.params.id;
   const findedMsg = findMessageById(usersChat, msgId);
   if (findedMsg.length > 0) {
     const index = usersChat.indexOf(findedMsg[0]);
     usersChat.splice(index, 1);
-    res.send("Message deleted succesfully");
+
+    // After deletion, re-fetch the latest messages
+    const latestMsgs = latestTenMsg(usersChat);
+
+    res.send({
+      message: "Message deleted successfully",
+      latestMessages: latestMsgs, // Send the updated list of latest messages
+    });
   } else {
     res.status(404).send("Message didn't find!");
   }
