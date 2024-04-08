@@ -50,5 +50,5 @@ function findQuoteByKeyword(searchTerm) {
 }
 
 app.get("/", (request, response) => {
-  response.send("Pedro's Quote Server!  Ask me for /quotes/random, /quotes, or /search?term='search term'");
+  response.send("Pedro's Quote Server!  Ask me for /quotes/random, /quotes, or quotes/search?term='search term'");
 });
