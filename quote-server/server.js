@@ -23,10 +23,6 @@ app.listen(PORT, () => {
   console.log(`Your app is listening on port ${PORT}`);
 });
 
-app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
-});
-
 app.get("/quotes", (request, response) => {
   response.json(quotes);
 })
@@ -52,3 +48,7 @@ function findQuoteByKeyword(searchTerm) {
   });
   return searchResults;
 }
+
+app.get("/", (request, response) => {
+  response.send("Pedro's Quote Server!  Ask me for /quotes/random, /quotes, or /search?term='search term'");
+});
