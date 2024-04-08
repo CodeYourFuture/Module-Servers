@@ -1,8 +1,23 @@
 import express from "express";
-import quotes from "./quotes.json" assert { type: "json" };
 
+const quotesApi = "https://api.quotable.io/quotes?page=1"
+const quotes = [];
 const app = express();
 const PORT = 3001;
+
+fetch(quotesApi)
+  .then(response => response.json())
+  .then(data => {
+    data.results.forEach(quote => {
+      quotes.push({
+        quote: quote.content,
+        author: quote.author
+      })
+    })
+  })
+  .catch(error => {
+    console.log(error);
+  })
 
 app.listen(PORT, () => {
   console.log(`Your app is listening on port ${PORT}`);
