@@ -1,32 +1,39 @@
-// server.js
-// This is where your node app starts
-
-//load the 'express' module which makes writing webservers easy
 import express from "express";
-//load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
 
 const app = express();
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
+const PORT = 3001;
+
+app.listen(PORT, () => {
+  console.log(`Your app is listening on port ${PORT}`);
+});
+
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
 
-//START OF YOUR CODE...
+app.get("/quotes", (request, response) => {
+  response.json(quotes);
+})
 
-//...END OF YOUR CODE
+app.get("/quotes/random", (request, response) => {
+  response.json(pickFromArray(quotes));
+})
 
-//You can use this function to pick one element at random from a given array
-//example: pickFromArray([1,2,3,4]), or
-//example: pickFromArray(myContactsArray)
-//
-const pickFromArray = (arrayofQuotes) =>
-  arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
+app.get("/quotes/search", (request, response) => {
+  const searchTerm = request.query.term;
+  const searchResults = findQuoteByKeyword(searchTerm);
+  response.json(searchResults);
+})
 
-//Start our server so that it listens for HTTP requests!
-const listener = app.listen(3001, () => {
-  console.log("Your app is listening on port " + listener.address().port);
-});
+function pickFromArray(arrayOfQuotes) {
+  return arrayOfQuotes[Math.floor(Math.random() * arrayOfQuotes.length)];
+}
+
+function findQuoteByKeyword(searchTerm) {
+  const searchResults = quotes.filter(quote => {
+    return quote.quote.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      quote.author.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+  return searchResults;
+}
