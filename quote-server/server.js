@@ -6,6 +6,7 @@ import quotes from "./quotes.json" assert { type: "json" };
 
 const app = express();
 app.use(cors());
+
 app.get("/quotes/search", (request, response) => {
   const n = request.query.term;
   response.send(searchQuote(n.toLocaleLowerCase()));
