@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Main = () => {
-  const [quotes, setQuotes] = useState([])
+  const [quotes, setQuotes] = useState([]);
 
   const quotesApi = "https://type.fit/api/quotes";
 
-  const fetchQuotes = async (quotesSource) => {
-    const response = await fetch(quotesSource);
-    const data = await response.json();
-    setQuotes(data);
-  }
+  useEffect(() => {
+    const fetchQuotes = async (quotesSource) => {
+      try {
+        const response = await fetch(quotesSource);
+        const data = await response.json();
+        setQuotes(data);
+      } catch (error) {
+        console.error("Error fetching quotes:", error);
+      }
+    };
 
-  fetchQuotes(quotesApi);
+    fetchQuotes(quotesApi);
+  }, []);
 
   return (
     <main>
@@ -19,5 +25,5 @@ export const Main = () => {
       <p>Quote</p>
       <button>New Quote!</button>
     </main>
-  )
-}
+  );
+};
