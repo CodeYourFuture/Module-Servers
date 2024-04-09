@@ -3,7 +3,7 @@ import express from "express";
 const quotesApi = "https://api.quotable.io/quotes?page=1"
 const quotes = [];
 const app = express();
-const PORT = process.env.PORT || 3001;
+const port = process.env.PORT || 3001;
 
 fetch(quotesApi)
   .then(response => response.json())
@@ -14,8 +14,8 @@ fetch(quotesApi)
         author: quote.author
       })
     })
-    app.listen(PORT, () => {
-      console.log(`Your app is listening on port ${PORT}`);
+    app.listen(port, () => {
+      console.log(`Your app is listening on port ${port}`);
     });
   })
   .catch(error => {
