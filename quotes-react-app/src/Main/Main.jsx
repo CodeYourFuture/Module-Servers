@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export const Main = () => {
   const [quotes, setQuotes] = useState([]);
+  const [randomQuote, setRandomQuote] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   const quotesApi = "https://type.fit/api/quotes";
@@ -13,6 +14,7 @@ export const Main = () => {
         const data = await response.json();
         setQuotes(data);
         setIsLoading(false);
+        setRandomQuote(pickRandomQuote(data));
       } catch (error) {
         console.error("Error fetching quotes:", error);
       }
@@ -25,7 +27,9 @@ export const Main = () => {
     return arrayOfQuotes[Math.floor(Math.random() * arrayOfQuotes.length)];
   }
 
-  const randomQuote = pickRandomQuote(quotes);
+  const handleNewQuote = () => {
+    setRandomQuote(pickRandomQuote(quotes));
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -36,7 +40,7 @@ export const Main = () => {
       <h2>Random Quote</h2>
       <h3>{randomQuote.text}</h3>
       <p>{randomQuote.author}</p>
-      <button>New Quote!</button>
+      <button onClick={handleNewQuote}>New Quote!</button>
     </main>
   );
 };
