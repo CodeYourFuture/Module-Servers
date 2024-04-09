@@ -11,7 +11,6 @@ export const Main = () => {
         const response = await fetch(quotesSource);
         const data = await response.json();
         setQuotes(data);
-        console.log(quotes);
       } catch (error) {
         console.error("Error fetching quotes:", error);
       }
@@ -19,6 +18,10 @@ export const Main = () => {
 
     fetchQuotes(quotesApi);
   }, []);
+
+  useEffect(() => {
+    console.log(quotes);
+  }, [quotes]);
 
   return (
     <main>
