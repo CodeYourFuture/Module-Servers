@@ -7,17 +7,16 @@ import express from "express";
 import quotes from "./quotes.json" assert { type: "json" };
 
 const app = express();
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
+
 app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send("Hadika's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
-
-//START OF YOUR CODE...
-
-//...END OF YOUR CODE
+app.get("/quotes", (req,res) => {
+  res.send(quotes);
+})
+app.get("/quotes/random", (req, res) => {
+  res.send(pickFromArray(quotes));
+})
 
 //You can use this function to pick one element at random from a given array
 //example: pickFromArray([1,2,3,4]), or
