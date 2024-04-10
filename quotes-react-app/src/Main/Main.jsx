@@ -38,7 +38,7 @@ export const Main = () => {
   return (
     <main>
       <h2>Random Quote</h2>
-      <h3>{randomQuote.quote}</h3>
+      <h3>{`"${randomQuote.quote}"`}</h3>
       <p>{randomQuote.author}</p>
       <button onClick={handleNewQuote}>New Quote!</button>
     </main>
