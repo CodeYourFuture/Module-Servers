@@ -5,7 +5,7 @@ export const Main = () => {
   const [randomQuote, setRandomQuote] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  const quotesApi = "https://type.fit/api/quotes";
+  const quotesApi = "https://quotes-server-kxpndusosfe0.runkit.sh/quotes";
 
   useEffect(() => {
     const fetchQuotes = async (quotesSource) => {
@@ -38,7 +38,7 @@ export const Main = () => {
   return (
     <main>
       <h2>Random Quote</h2>
-      <h3>{randomQuote.text}</h3>
+      <h3>{randomQuote.quote}</h3>
       <p>{randomQuote.author}</p>
       <button onClick={handleNewQuote}>New Quote!</button>
     </main>
