@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Get __dirname in ES module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -55,7 +56,7 @@ app.post("/messages", (req, res) => {
 
 // search by text route
 // has to be tested again
-app.get("/messages/latest", (req, res) => {
+app.get("/messages/search", (req, res) => {
   console.log("you are hitting search route server !");
   const searchQuery = req.query.terms.toLowerCase();
   const filteredMessages = messages.filter((message) =>
@@ -67,7 +68,7 @@ app.get("/messages/latest", (req, res) => {
 
 //only most recent 10 messages
 //not completed
-app.get("/messages/latest", (req, res) => {
+app.get("/messages/latests", (req, res) => {
   console.log("you are hitting most recent 10 messages server!");
   const recentMessage = messages.slice(-10);
   res.json({ recentMessage });
@@ -92,22 +93,24 @@ app.delete("/messages/:id", (req, res) => {
 });
 
 // Edit message by ID
-// app.put("/messages/:id", (req, res) => {
-//   console.log("you are hitting dynamic edit server!");
-//   const idShow = req.params.id * 1;
-//   const messageIndex = messages.findIndex((ele) => ele.id === idShow);
-//   if (messageIndex !== -1) {
-//     const { from, text } = req.body;
-//     const updatedMessage = {
-//       id: idShow,
-//       from,
-//       text,
-//     };
-//     messages[messageIndex] = updatedMessage;
-//     res.json(updatedMessage);
-//   }
-// });
+app.put("/messages/:id", (req, res) => {
+  console.log("you are hitting dynamic edit server!");
+  const idShow = req.params.id * 1;
+  const messageIndex = messages.findIndex((ele) => ele.id === idShow);
+  if (messageIndex !== -1) {
+    const { from, text } = req.body;
+    const updatedMessage = {
+      id: idShow,
+      from,
+      text,
+    };
+    messages[messageIndex] = updatedMessage;
+    res.json(updatedMessage);
+  }
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
+/// example link
+//https://bahadory-chat-server.glitch.me/
