@@ -11,12 +11,22 @@ const app = express();
 app.get("/", (request, response) => {
   response.send("Hadika's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
-app.get("/quotes", (req,res) => {
+app.get("/quotes", (req, res) => {
   res.send(quotes);
 })
 app.get("/quotes/random", (req, res) => {
   res.send(pickFromArray(quotes));
 })
+app.get("/quotes/search", (req, res) => {
+  let searchInput = req.query.term.toLowerCase();
+  if (searchInput) {
+    const searchTerm = quotes.filter(({ quote }) => {
+      return quote?.toLowerCase().includes(searchInput.toLowerCase());
+    })
+    res.send({ quotes: searchTerm });
+  }
+  else res.send([]);
+});
 
 //You can use this function to pick one element at random from a given array
 //example: pickFromArray([1,2,3,4]), or
