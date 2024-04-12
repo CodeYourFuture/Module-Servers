@@ -16,9 +16,21 @@ app.get("/", (request, response) => {
 });
 app.get("/quotes", (request, response) => {
   response.send({ quotes });
+  console.log(request.query);
 });
 app.get("/quotes/random", (request, response) => {
   response.send(pickFromArray(quotes));
+});
+app.get("/quotes/search", (request, response) => {
+  const searchQuery = request.query.term;
+  const searchQueryCase = searchQuery.toLocaleLowerCase();
+  console.log(searchQuery);
+
+  const filteredQuotes = quotes.filter((quote) => {
+    return quote.quote.includes(searchQueryCase);
+  });
+
+  response.send(filteredQuotes);
 });
 //START OF YOUR CODE...
 
