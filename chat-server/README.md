@@ -77,7 +77,7 @@ For this level your API _must_ also allow a client to:
 
 ## Level 4 - Optional - add a timestamp, `timeSent`
 
-For this level, the server must:
+For this level, the server mu
 
 - [ ] store a timestamp in each message object, in a field called `timeSent`.
 - [ ] This should be set to the current time when the server first receives the message. This should be a DateTime object, which can be created with `new Date()`. It will NOT be submitted by the client.
