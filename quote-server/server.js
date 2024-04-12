@@ -5,16 +5,21 @@
 import express from "express";
 //load the quotes JSON
 import quotes from "./quotes.json" assert { type: "json" };
-
 const app = express();
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
+
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
-
+app.get("/quotes", (request, response) => {
+  response.send({ quotes });
+});
+app.get("/quotes/random", (request, response) => {
+  response.send(pickFromArray(quotes));
+});
 //START OF YOUR CODE...
 
 //...END OF YOUR CODE
