@@ -69,66 +69,67 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/index.html");
 });
 
-const usersChat = [
-  {
-    from: "Behrouz",
-    text: "hello",
-    id: 1,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-  {
-    from: "Behrouz",
-    text: "world",
-    id: 3,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
+// const usersChat = [
+//   {
+//     from: "Behrouz",
+//     text: "hello",
+//     id: 1,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+//   {
+//     from: "Behrouz",
+//     text: "world",
+//     id: 3,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
 
-  {
-    from: "Behrouz",
-    text: "a",
-    id: 7,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-  {
-    from: "Behrouz_k",
-    text: "b",
-    id: 2,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-  {
-    from: "Behrouz_k",
-    text: "c",
-    id: 4,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-  {
-    from: "Behrouz_k",
-    text: "d",
-    id: 5,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-  {
-    from: "Behrouz",
-    text: "hello world",
-    id: 8,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-  {
-    from: "Behrouz",
-    text: "my name is B",
-    id: 8,
-    sentTime: "11:36:18",
-    sentDate: "6/3/2024",
-  },
-];
+//   {
+//     from: "Behrouz",
+//     text: "a",
+//     id: 7,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+//   {
+//     from: "Behrouz_k",
+//     text: "b",
+//     id: 2,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+//   {
+//     from: "Behrouz_k",
+//     text: "c",
+//     id: 4,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+//   {
+//     from: "Behrouz_k",
+//     text: "d",
+//     id: 5,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+//   {
+//     from: "Behrouz",
+//     text: "hello world",
+//     id: 8,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+//   {
+//     from: "Behrouz",
+//     text: "my name is B",
+//     id: 11,
+//     sentTime: "11:36:18",
+//     sentDate: "6/3/2024",
+//   },
+// ];
 
+const usersChat = [];
 const rejectTheRequest = (obj) => {
   return obj.from === "" || obj.text === "" ? true : false;
 };
@@ -150,7 +151,11 @@ app.post("/messages", (req, res) => {
     res.status(400).json({ error: "Fill All the field!" });
   } else {
     usersChat.push(chatData);
-    res.send(chatData);
+    const latestMessages = latestTenMsg(usersChat);
+    console.log(latestMessages, "latest mssgs");
+
+    console.log(chatData, "chat data for posting");
+    res.send(latestTenMsg(usersChat));
   }
 });
 
@@ -167,9 +172,9 @@ app.get("/messages/search", (req, res) => {
 });
 
 app.get("/messages/latest", (req, res) => {
-  console.log(usersChat);
   const latestMsgs = latestTenMsg(usersChat);
-  console.log(usersChat);
+  console.log(latestMsgs, "latest msgs in latest endpoint");
+
   res.status(200).send(latestMsgs);
 });
 
@@ -213,12 +218,18 @@ app.delete("/messages/:id", (req, res) => {
 
 app.put("/messages/edit/:id", (req, res) => {
   const editedMsg = req.body;
+  console.log(req.body, "this is body");
   const msgId = req.params.id;
   const foundMsg = findMessageById(usersChat, msgId);
   foundMsg[0].text = editedMsg.text;
+  //added just to check
+  const latestMessages = latestTenMsg(usersChat);
   console.log(foundMsg, "this is found msg");
-
-  res.status(200).send(foundMsg);
+  console.log(latestMessages);
+  res.status(200);
+  //console.log(res);
+  //res.send({ result: latestMessages });
+  res.send();
 });
 
 app.listen(process.env.PORT, () => {
