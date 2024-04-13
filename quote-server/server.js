@@ -1,42 +1,59 @@
-// server.js
-// This is where your node app starts
-
-//load the 'express' module which makes writing webservers easy
 import express from "express";
-//load the quotes JSON
-import quotes from "./quotes.json" assert { type: "json" };
+//import quotes from "./quotes.json" assert { type: "json" };
+import axios from "axios";
 
 const app = express();
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
+let quotes = []; // Store the fetched quotes here
+
+// if we want to Fetch quotes from an API
+axios
+  .get("https://api.quotable.io/quotes?page=1")
+  .then((response) => {
+    quotes = response.data;
+  })
+  .catch((error) => {
+    console.error("Failed to fetch quotes", error);
+  });
+
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
 
-//START OF YOUR CODE...
-// return all quotes
-app.get("/quotes", (request, response) => {
-  response.json(quotes);
+app.get("/quotes", (req, res) => {
+  res.json(quotes);
 });
 
-// return a random quote
-app.get("/quotes/random", (request, response) => {
+app.get("/quotes/random", (req, res) => {
   const randomQuote = pickFromArray(quotes);
-  response.json(randomQuote);
+  res.json(randomQuote);
 });
+// example http://localhost:3001/quotes/search?term=day
 
-//...END OF YOUR CODE
+app.get("/quotes/search", (request, response) => {
+  const searchTerm = request.query.term;
+  console.log("Search Term:", searchTerm);
 
-//You can use this function to pick one element at random from a given array
-//example: pickFromArray([1,2,3,4]), or
-//example: pickFromArray(myContactsArray)
-//
+  const matchingQuotes = quotes.filter((quote) => {
+    const quoteText = quote.quote.toLowerCase();
+    const authorName = quote.author.toLowerCase();
+    const searchTermLower = searchTerm.toLowerCase();
+    return (
+      quoteText.includes(searchTermLower) ||
+      authorName.includes(searchTermLower)
+    );
+  });
+  //bring in JSON format
+  response.json(matchingQuotes);
+});
+app.get("/echo", (request, response) => {
+  const word = request.query.word;
+  response.send(`You said '${word}'`);
+});
+//  pick one element randomly from an array
 const pickFromArray = (arrayofQuotes) =>
   arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
 
-//Start our server so that it listens for HTTP requests!
+//Start our server
 const listener = app.listen(3001, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
