@@ -5,7 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node --no-warnings=ExperimentalWarning server.js"
+    "start": "nodemon server.js"
   },
   "license": "MIT",
   "keywords": [
@@ -15,5 +15,8 @@
   ],
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }

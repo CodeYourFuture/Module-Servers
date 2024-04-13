@@ -27,7 +27,10 @@ app.get("/quotes/search", (request, response) => {
   console.log(searchQuery);
 
   const filteredQuotes = quotes.filter((quote) => {
-    return quote.quote.includes(searchQueryCase);
+    return (
+      quote.quote.toLocaleLowerCase().includes(searchQueryCase) ||
+      quote.author.toLocaleLowerCase().includes(searchQueryCase)
+    );
   });
 
   response.send(filteredQuotes);
