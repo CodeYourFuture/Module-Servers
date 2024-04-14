@@ -164,9 +164,15 @@ If you want to share your server with other people, you can use Runkit. It's a f
 - Copy-paste your code into the notebook
 - Click the "Run" button to run your code
 - Click the "Endpoint" button to get a URL for your server
+  .......................
+  // myRunKit Endpoint // 20240413204752
+  // https://untitled-ofqubsneu7aq.runkit.sh/
 
-// myRunKit Endpoint https://untitled-7swz9tkegz8b.runkit.sh/
-
+{
+"error": "socket hang up",
+"message": "ECONNRESET"
+}
+.....................................
 Here's an example of a [Runkit notebook](https://runkit.com/sallymcgrath/quote-server) that creates [endpoints](https://quote-server-c8voo0a0pfdh.runkit.sh/) you can use.
 
 This is pulling from an API: https://api.quotable.io/quotes?page=1

@@ -1,19 +1,10 @@
 import express from "express";
-//import quotes from "./quotes.json" assert { type: "json" };
-import axios from "axios";
+import quotes from "./quotes.json" assert { type: "json" };
+import cors from "cors";
 
 const app = express();
-let quotes = []; // Store the fetched quotes here
 
-// if we want to Fetch quotes from an API
-axios
-  .get("https://api.quotable.io/quotes?page=1")
-  .then((response) => {
-    quotes = response.data;
-  })
-  .catch((error) => {
-    console.error("Failed to fetch quotes", error);
-  });
+app.use(cors());
 
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
@@ -54,6 +45,6 @@ const pickFromArray = (arrayofQuotes) =>
   arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
 
 //Start our server
-const listener = app.listen(3001, () => {
+const listener = app.listen(3000, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
