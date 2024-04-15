@@ -4,6 +4,12 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { promises as fs } from 'fs';
+let messagesArray = [];
+
+fs.readFile("messsages.json", "utf-8").then((messages) => {
+  messagesArray = JSON.parse(messages);
+
+})
 
 const app = express();
 app.use(cors());
@@ -16,10 +22,7 @@ app.get("/", (request, response) => {
 });
 
 app.get("/messages", (req, res) => {
-  fs.readFile("messsages.json", "utf-8").then((messagesArray) => {
-    console.log(JSON.parse(messagesArray));
-    res.send(JSON.parse(messagesArray));
-  })
+  res.send(messagesArray);
 });
 
 app.get("/messages/:messageId", (req, res) => {
@@ -35,10 +38,19 @@ app.post("/messages", function (req, res) {
 });
 
 app.put("/messages/:id", function (req, res) {
+
   const newMsg = { ...req.body, ...req.params };
   const msgIndex = messagesArray.findIndex((msg) => msg.id === req.params.id);
-  console.log("New message updated", newMsg);
-  console.log("index of the message", msgIndex);
+
+  if (newMsg !== undefined &&
+    msgIndex == req.params.id &&
+    req.body.id == req.params.id) {
+
+    messagesArray.splice(msgIndex, 1, newMsg);
+    res.status(200).send(messagesArray);
+  } else {
+    res.status(404).send("Error in request or in the body.");
+  }
 });
 
 app.delete("/messages/:messageId", function (req, res) {
