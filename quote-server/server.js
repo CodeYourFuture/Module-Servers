@@ -3,8 +3,21 @@
 
 //load the 'express' module which makes writing webservers easy
 import express from "express";
+import fetch from "node-fetch";
 //load the quotes JSON
-import quotes from "./quotes.json" assert { type: "json" };
+// import quotes from "./quotes.json" assert { type: "json" };
+let quotes = [];
+
+const fetchQuotes = async () => {
+  try {
+    const quoted = await fetch("https://api.quotable.io/quotes?page=1");
+    const parsedQuote = await quoted.json();
+    quotes = parsedQuote.results;
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+  }
+};
+fetchQuotes();
 const app = express();
 // Now register handlers for some routes:
 //   /                  - Return some helpful welcome info (text)
@@ -23,12 +36,14 @@ app.get("/quotes/random", (request, response) => {
 });
 app.get("/quotes/search", (request, response) => {
   const searchQuery = request.query.term;
+  console.log(searchQuery);
   const searchQueryCase = searchQuery.toLocaleLowerCase();
   console.log(searchQuery);
 
   const filteredQuotes = quotes.filter((quote) => {
+    // console.log(quote.author);
     return (
-      quote.quote.toLocaleLowerCase().includes(searchQueryCase) ||
+      quote.content.toLocaleLowerCase().includes(searchQueryCase) ||
       quote.author.toLocaleLowerCase().includes(searchQueryCase)
     );
   });
