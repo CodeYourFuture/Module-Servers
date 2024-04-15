@@ -7,7 +7,7 @@
     <header><h1>CYF Chat</h1></header>
     <main>
       <h2>Send a message</h2>
-      <form action="/messages" method="post">
+      <form>
         <label
           >Name: <input type="text" name="from" placeholder="Your Name"
         /></label>
@@ -18,7 +18,35 @@
       </form>
     </main>
     <footer>
-      <h3><a href="/messages">See all messages</a></h3>
+      <h3><a href="http://localhost:9090/messages">See all messages</a></h3>
     </footer>
+
+    <script>
+      let form = document.querySelector("form");
+      let count=0;
+
+      form.addEventListener("submit", (event) => {
+     
+        event.preventDefault();
+        let formData = new FormData(form);
+        let data = Object.fromEntries(formData);
+        data["id"] = `${count++}`;
+        let jsonData = JSON.stringify(data);
+       
+
+        fetch("http://localhost:9090/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: jsonData,
+        })
+          .then((res) => res.json())
+          .then((result) => console.log(result))
+          .catch((err) => console.log(err));
+
+         
+      });
+    </script>
   </body>
 </html>

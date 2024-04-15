@@ -1,0 +1,17 @@
+[
+    {
+      "id": "0",
+      "from": "Adniya",
+      "text": "Welcome to Adniya chat system!",
+      "time": "15:34:22"
+    }, {
+        "id": "1",
+        "from": "Sara",
+        "text": "Welcome to Sara chat system!",
+        "time": "15:34:22"
+    }, {
+        "id": "2",
+        "from": "Zaha",
+        "text": "Welcome to Zaha chat system!",
+        "time": "15:34:22"
+    }]
