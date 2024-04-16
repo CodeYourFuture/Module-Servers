@@ -15,9 +15,9 @@
   <main>
     <section id="send-message">
       <h2>Send a message</h2>
-      <form action="/messages" method="post">
+      <form id="message-form" action="/messages" method="post">
         <label>Name: <input id="new-message-from" type="text" name="from" placeholder="Your Name" /></label>
-        <label>Message: <input id="new-message-id" type="text" name="text" placeholder="The message..." /></label>
+        <label>Message: <input id="new-message-text" type="text" name="text" placeholder="The message..." /></label>
         <button type="submit">Send</button>
       </form>
     </section>
@@ -36,6 +36,8 @@
   <footer>
     <!-- <p>Project by Pedro Ricciardi, as part of the CYF Course - Servers Module - Chat-Server Issue</p> -->
   </footer>
+
+  <!-- SCRIPTS -->
   <script>
     const renderMessage = (message) => {
       const listItem = document.createElement('li');

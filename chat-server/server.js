@@ -9,6 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(express.static(__dirname));
 
@@ -59,6 +60,20 @@ app.get("/messages/:messageId", (request, response) => {
 
 // POST routes
 
+app.post("/messages", (request, response) => {
+  const newMessage = request.body;
+  const { from, text } = newMessage;
+  if (!from || !text) {
+    response.status(400).json("Message must have a from and text");
+    return;
+  }
+
+  const lastId = messages[messages.length - 1].id;
+  newMessage.id = lastId + 1;
+  messages.push(newMessage);
+
+  response.sendFile(`${__dirname}/index.html`);
+})
 
 // DELETE routes
 
