@@ -66,12 +66,25 @@
       });
     };
 
+    const loadMessagesFailure = (error) => {
+      const messagesList = document.getElementById('messages-list');
+      messagesList.innerHTML = '';
+      const errorMessage = document.createElement('p');
+      errorMessage.setAttribute('class', 'error-message');
+      errorMessage.textContent = `${error}`;
+      messagesList.appendChild(errorMessage);
+    };
+
     const fetchAndLoadMessageById = () => {
       const messageId = document.getElementById('find-message-id').value;
       fetch(`/messages/${messageId}`)
         .then(response => response.json())
         .then(message => {
-          loadMessages([message]);
+          if (message && message.from && message.text) {
+            loadMessages([message]);
+          } else {
+            loadMessagesFailure('Message not found. Please select other ID');
+          }
         })
         .then(() => {
           document.getElementById('find-message-id').value = '';
