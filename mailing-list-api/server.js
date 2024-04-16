@@ -2,7 +2,11 @@
 const express = require("express");
 const data = require("./mailing-lists");
 const app = express();
+app.use(express.json());
 port = 3000;
+
+const list = new Map(Object.entries(data));
+
 app.listen(port, () => {
   console.log(`listening on porttt: ${port}`);
 });
@@ -14,7 +18,7 @@ app.get("/", (req, res) => {
 app.get("/list", (req, res) => {
   const list = new Map(Object.entries(data));
   const arrayOfList = Array.from(list.keys());
-  console.log(arrayOfList);
+
   if (arrayOfList.length > 0) {
     res.status(200).send(arrayOfList);
   } else {
@@ -27,11 +31,10 @@ app.get("/list/:name", (req, res) => {
 
   const list = new Map(Object.entries(data));
   // const listOfKeys = Array.from(list.keys());
+  const hasEndpontName = list.has(endpointName);
 
-  const emailsOfMemebers = list.get(endpointName);
-  console.log(emailsOfMemebers);
-
-  if (emailsOfMemebers) {
+  if (hasEndpontName) {
+    const emailsOfMemebers = list.get(endpointName);
     const responseBody = {
       name: endpointName,
       members: emailsOfMemebers,
@@ -39,5 +42,46 @@ app.get("/list/:name", (req, res) => {
     res.status(200).send(responseBody);
   } else {
     res.status(404).send("404 , Data not found!");
+  }
+});
+
+app.delete("/list/:name", (req, res) => {
+  const nameOfList = req.params.name;
+  const list = new Map(Object.entries(data));
+  const hasDelted = list.delete(nameOfList);
+
+  if (hasDelted) {
+    res.status(200).send("Delte was successful");
+  } else {
+    res.status(404).send("item wasn't found");
+  }
+});
+
+app.put("/list/:name", (req, res) => {
+  const nameInParams = req.params.name;
+
+  const nameInBody = req.body.name;
+  const newMembers = req.body.members;
+
+  if (nameInParams != nameInBody) {
+    res
+      .status(409)
+      .send(
+        "List can not be updated due to the conflict in the name of path and updated request!"
+      );
+  } else {
+    const list = new Map(Object.entries(data));
+
+    const hasTheName = list.has(nameInBody);
+    if (hasTheName) {
+      const oldMembers = list.get(nameInParams);
+      const updatedmembers = oldMembers.concat(newMembers);
+      list.set(nameInBody, updatedmembers);
+      res.status(200).send("Updated successfully");
+    } else {
+      list.set(nameInBody, newMembers);
+      res.status(201).send("New list added!");
+    }
+    console.log(list);
   }
 });
