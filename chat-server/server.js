@@ -64,7 +64,7 @@ app.post("/messages", (request, response) => {
   const newMessage = request.body;
   const { from, text } = newMessage;
   if (!from || !text) {
-    response.status(400).json("Message must have a from and text");
+    response.status(400).json("Message must have a Name and a Text");
     return;
   }
 
