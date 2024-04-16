@@ -1,4 +1,3 @@
-//import express from "express";
 const express = require("express");
 const data = require("./mailing-lists");
 const app = express();
