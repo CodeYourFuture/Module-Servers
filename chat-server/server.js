@@ -22,9 +22,24 @@ const welcomeMessage = {
 //We will start with one message in the array.
 const messages = [welcomeMessage];
 
+// GET routes
+
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/index.html");
+  response.sendFile(`${__dirname}/index.html`);
 });
+
+app.get("/messages", (request, response) => {
+  response.json(messages)
+});
+
+app.get("/messages/:messageId", (request, response) => {
+  response.sendFile(`${__dirname}/index.html`);
+});
+
+// POST routes
+
+
+// DELETE routes
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
