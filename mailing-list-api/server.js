@@ -16,7 +16,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/list", (req, res) => {
-  const list = new Map(Object.entries(data));
   const arrayOfList = Array.from(list.keys());
 
   if (arrayOfList.length > 0) {
@@ -29,7 +28,6 @@ app.get("/list", (req, res) => {
 app.get("/list/:name", (req, res) => {
   const endpointName = req.params.name;
 
-  const list = new Map(Object.entries(data));
   // const listOfKeys = Array.from(list.keys());
   const hasEndpontName = list.has(endpointName);
 
@@ -47,7 +45,7 @@ app.get("/list/:name", (req, res) => {
 
 app.delete("/list/:name", (req, res) => {
   const nameOfList = req.params.name;
-  const list = new Map(Object.entries(data));
+
   const hasDelted = list.delete(nameOfList);
 
   if (hasDelted) {
@@ -63,15 +61,13 @@ app.put("/list/:name", (req, res) => {
   const nameInBody = req.body.name;
   const newMembers = req.body.members;
 
-  if (nameInParams != nameInBody) {
+  if (nameInParams != nameInBody || !nameInBody || newMembers.length == 0) {
     res
       .status(409)
       .send(
         "List can not be updated due to the conflict in the name of path and updated request!"
       );
   } else {
-    const list = new Map(Object.entries(data));
-
     const hasTheName = list.has(nameInBody);
     if (hasTheName) {
       const oldMembers = list.get(nameInParams);
