@@ -13,17 +13,17 @@
     <section id="send-message">
       <h2>Send a message</h2>
       <form action="/messages" method="post">
-        <label>Name: <input type="text" name="from" placeholder="Your Name" /></label>
-        <label>Message: <input type="text" name="text" placeholder="The message..." /></label>
+        <label>Name: <input id="new-message-from" type="text" name="from" placeholder="Your Name" /></label>
+        <label>Message: <input id="new-message-id" type="text" name="text" placeholder="The message..." /></label>
         <button type="submit">Send</button>
       </form>
     </section>
     <section id="messages">
-      <h3><a href="" onclick="loadAllMessages()">See all messages</a></h3>
+      <h3><a href="" onclick="fetchAndLoadMessages()">See all messages</a></h3>
       <div>
         <h3>See message by ID</h3>
-        <input type="text" placeholder="Type an ID here">
-        <button>Show message</button>
+        <input id="find-message-id" type="text" placeholder="Type an ID here">
+        <button onclick="fetchAndLoadMessageById()">Show message</button>
       </div>
       <ul id="messages-list">
 
@@ -31,23 +31,73 @@
     </section>
   </main>
   <footer>
+    <!-- <p>Project by Pedro Ricciardi, as part of the CYF Course - Servers Module - Chat-Server Issue</p> -->
   </footer>
   <script>
-    const loadAllMessages = () => {
+    const renderMessage = (message) => {
+      const listItem = document.createElement('li');
+      const listItemParagraph = document.createElement('p');
+      const listItemDeleteButton = document.createElement('button');
+
+      listItemDeleteButton.textContent = 'Delete';
+      listItemDeleteButton.setAttribute('onclick', 'deleteMessage(event)')
+
+      listItemParagraph.textContent = `${message.from}: ${message.text}`;
+
+      listItem.appendChild(listItemParagraph);
+      listItem.appendChild(listItemDeleteButton);
+      listItem.setAttribute('data-messageId', message.id);
+
+      return listItem;
+    };
+
+    const loadMessages = (messagesToRender) => {
+      const messagesList = document.getElementById('messages-list');
+      messagesList.innerHTML = '';
+      messagesToRender.forEach(message => {
+        const listItem = renderMessage(message);
+        messagesList.appendChild(listItem);
+      });
+    };
+
+    const fetchAndLoadMessageById = () => {
+      const messageId = document.getElementById('find-message-id').value;
+      fetch(`/messages/${messageId}`)
+        .then(response => response.json())
+        .then(message => {
+          loadMessages([message]);
+        })
+        .then(() => {
+          document.getElementById('find-message-id').value = '';
+        })
+        .catch(error => console.error('Error fetching message:', error));
+    }
+
+    const fetchAndLoadMessages = () => {
       fetch('/messages')
         .then(response => response.json())
         .then(messages => {
-          const messagesList = document.getElementById('messages-list');
-          messagesList.innerHTML = '';
-          messages.forEach(message => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${message.from}: ${message.text}`;
-            messagesList.appendChild(listItem);
-          });
+          loadMessages(messages);
         })
         .catch(error => console.error('Error fetching messages:', error));
     };
-    window.onload = loadAllMessages
+
+    const deleteMessage = (event) => {
+      const messageId = event.target.parentNode.getAttribute('data-messageId');
+      fetch(`/messages/${messageId}`, {
+        method: 'DELETE'
+      })
+        .then(response => {
+          if (response.ok) {
+            event.target.parentNode.remove();
+          } else {
+            throw new Error('Error deleting message');
+          }
+        })
+        .catch(error => console.error('Error deleting message:', error));
+    }
+
+    window.onload = fetchAndLoadMessages;
   </script>
 </body>
 

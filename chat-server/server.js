@@ -18,9 +18,22 @@ const welcomeMessage = {
   text: "Welcome to CYF chat system!",
 };
 
+const newMessages = [
+  {
+    id: 1,
+    from: "Peter",
+    text: "Hello, CYFers!",
+  },
+  {
+    id: 2,
+    from: "Gary",
+    text: "How are you?",
+  }
+]
+
 //This array is our "data store".
 //We will start with one message in the array.
-const messages = [welcomeMessage];
+const messages = [welcomeMessage, ...newMessages];
 
 // GET routes
 
@@ -33,13 +46,31 @@ app.get("/messages", (request, response) => {
 });
 
 app.get("/messages/:messageId", (request, response) => {
-  response.sendFile(`${__dirname}/index.html`);
+  const messageId = parseInt(request.params.messageId);
+  const message = messages.find((message) => message.id === messageId);
+  if (message) {
+    response.json(message);
+  } else {
+    response.status(404).json("Message not found");
+  }
 });
 
 // POST routes
 
 
 // DELETE routes
+
+app.delete("/messages/:messageId", (request, response) => {
+  const messageId = parseInt(request.params.messageId);
+  const messageIndex = messages.findIndex((message) => message.id === messageId);
+  
+  if (messageIndex !== -1) {
+    messages.splice(messageIndex, 1);
+    response.sendStatus(204);
+  } else {
+    response.sendStatus(404);
+  }
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
