@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 const app = express();
 
 app.use(cors());
+app.use(express.json())
 
 // Get __dirname in ES module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
