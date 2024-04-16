@@ -3,14 +3,16 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+// Get __dirname in ES module
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
 app.use(cors());
 app.use(express.json())
+app.use(express.static(__dirname));
 
-// Get __dirname in ES module
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 
 const welcomeMessage = {
   id: 0,
@@ -63,7 +65,7 @@ app.get("/messages/:messageId", (request, response) => {
 app.delete("/messages/:messageId", (request, response) => {
   const messageId = parseInt(request.params.messageId);
   const messageIndex = messages.findIndex((message) => message.id === messageId);
-  
+
   if (messageIndex !== -1) {
     messages.splice(messageIndex, 1);
     response.sendStatus(204);
