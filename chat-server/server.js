@@ -23,6 +23,11 @@ const messages = [welcomeMessage];
 
 app.post("/messages", (req, res) => {
   const { from, text } = req.body;
+  if (!from || !text) {
+    return res
+      .status(400)
+      .json({ error: "Both 'from' and 'text' fields are required." });
+  }
 
   const newMessage = {
     id: messages.length,
@@ -36,6 +41,21 @@ app.post("/messages", (req, res) => {
 app.get("/messages", (req, res) => {
   res.json(messages);
 });
+//.............................
+app.get("/messages/search", (req, res) => {
+  const searchText = req.query.text;
+  const filteredMessages = messages.filter((msg) =>
+    msg.text.includes(searchText)
+  );
+  res.json(filteredMessages);
+});
+
+app.get("/messages/latest", (req, res) => {
+  const recentMessages = messages.slice(-10);
+  res.json(recentMessages);
+});
+
+//........................
 
 app.get("/messages/:id", (req, res) => {
   const messageId = parseInt(req.params.id);
