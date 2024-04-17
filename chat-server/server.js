@@ -152,9 +152,6 @@ app.post("/messages", (req, res) => {
   } else {
     usersChat.push(chatData);
     const latestMessages = latestTenMsg(usersChat);
-    console.log(latestMessages, "latest mssgs");
-
-    console.log(chatData, "chat data for posting");
     res.send(latestTenMsg(usersChat));
   }
 });
@@ -173,15 +170,15 @@ app.get("/messages/search", (req, res) => {
 
 app.get("/messages/latest", (req, res) => {
   const latestMsgs = latestTenMsg(usersChat);
-  console.log(latestMsgs, "latest msgs in latest endpoint");
-
   res.status(200).send(latestMsgs);
 });
 
+let inPutFetch;
 app.get("/messages/:id", (req, res) => {
   const msgId = req.params.id;
-  console.log(msgId);
+  console.log(inPutFetch, "in put fetch log");
   const findedMsg = findMessageById(usersChat, msgId);
+  console.log(findedMsg, "this is finded msg");
   res.send(findedMsg);
 });
 
@@ -218,15 +215,13 @@ app.delete("/messages/:id", (req, res) => {
 
 app.put("/messages/edit/:id", (req, res) => {
   const editedMsg = req.body;
-  console.log(req.body, "this is body");
   const msgId = req.params.id;
   const foundMsg = findMessageById(usersChat, msgId);
   foundMsg[0].text = editedMsg.text;
+  console.log(foundMsg);
   //added just to check
   const latestMessages = latestTenMsg(usersChat);
-  console.log(foundMsg, "this is found msg");
-  console.log(latestMessages);
-  res.status(200);
+
   //console.log(res);
   //res.send({ result: latestMessages });
   res.send();
