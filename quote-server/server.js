@@ -1,7 +1,9 @@
 import express from "express";
 import quotes from "./quotes.json" assert { type: "json" };
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
 app.get("/", (request, response) => {
   response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
