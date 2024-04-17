@@ -11,7 +11,7 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hi there");
+  res.status(200).send("This is a Mailing-list-api project!");
 });
 
 app.get("/list", (req, res) => {
@@ -77,6 +77,5 @@ app.put("/list/:name", (req, res) => {
       list.set(nameInBody, newMembers);
       res.status(201).send("New list added!");
     }
-    console.log(list);
   }
 });
