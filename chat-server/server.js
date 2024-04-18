@@ -51,7 +51,9 @@ app.get("/messages/:id", (req, res) => {
 
 app.post("/messages", (req, res) => {
   const newId = (lastId += 1);
-  console.log(req);
+  if (!req.body.from) return res.status(422).json({ message: "From field is required" }); //A 422 status code indicates that the server was unable to process the request because it contains invalid data.
+  if (!req.body.text) return res.status(422).json({ message: "Text field is required" });
+
   const message = {
     id: newId,
     from: req.body.from,
