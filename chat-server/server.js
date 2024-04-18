@@ -12,32 +12,48 @@ app.use(cors());
 // Get __dirname in ES module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const welcomeMessage = {
-  id: 0,
-  from: "Bart",
-  text: "Welcome to CYF chat system!",
-};
-
-const welcomeMessage2 = {
-  id: 1,
-  from: "test",
-  text: "test",
-};
-
-let lastId = 1;
-
 //This array is our "data store".
 //We will start with one message in the array.
 
-const messages = [welcomeMessage, welcomeMessage2];
+const messages = [
+  {
+    id: 0,
+    from: "Bart",
+    text: "Welcome to CYF chat system!",
+  },
+  {
+    id: 1,
+    from: "test",
+    text: "test",
+  },
+];
 
-app.get("/", (request, response) => {
+let lastId = 1;
+
+app.get("/", (req, res) => {
   response.sendFile(__dirname + "/index.html");
 });
 
 // Get all messages
 app.get("/messages", (req, res) => {
   res.send(messages);
+});
+
+//Level 3 - more "read" functionality
+
+app.get("/messages/search", (req, res) => {
+  console.log("here");
+  const searchText = req.query.text;
+  if (!searchText) {
+    return res.status(400).json({ message: "Please provide a 'text' query parameter" });
+  }
+  const filteredMessages = messages.filter((message) => message.text.includes(searchText));
+  res.json(filteredMessages);
+});
+
+app.get("/messages/latest", (req, res) => {
+  const latestMessages = messages.slice(-10);
+  res.json(latestMessages);
 });
 
 // GET a specific message by id
