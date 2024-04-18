@@ -1,10 +1,11 @@
 import "./App.css";
+import Footer from "./Footer";
 import Header from "./Header";
 import NewQuote from "./NewQuote";
 import { useState } from "react";
 
 function App() {
-  const [randomQuote, setRandomQuote] = useState({quote: "Are you feeling", author: ""});
+  const [randomQuote, setRandomQuote] = useState({ quote: "Are you feeling", author: "" });
   const apiEndpoint = "https://quote-server-tbmpxe4ij3hq.runkit.sh/quotes/random";
 
   function getRandomQuote() {
@@ -18,6 +19,7 @@ function App() {
       <Header />
       <NewQuote quote={randomQuote.quote} author={randomQuote.author} />
       <button onClick={getRandomQuote}>Lucky ?</button>
+      <Footer />
     </>
   );
 }
