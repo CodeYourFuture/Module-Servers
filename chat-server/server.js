@@ -20,18 +20,20 @@ const messages = [
     id: 0,
     from: "Bart",
     text: "Welcome to CYF chat system!",
+    timeSent: new Date(),
   },
   {
     id: 1,
     from: "test",
     text: "test",
+    timeSent: new Date(),
   },
 ];
 
 let lastId = 1;
 
 app.get("/", (req, res) => {
-  response.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 // Get all messages
@@ -70,10 +72,12 @@ app.post("/messages", (req, res) => {
   if (!req.body.from) return res.status(422).json({ message: "From field is required" }); //A 422 status code indicates that the server was unable to process the request because it contains invalid data.
   if (!req.body.text) return res.status(422).json({ message: "Text field is required" });
 
+  const timeSent = new Date(); // Adding timestamp
   const message = {
     id: newId,
     from: req.body.from,
     text: req.body.text,
+    timeSent: timeSent,
   };
   lastId = newId;
   messages.push(message);
