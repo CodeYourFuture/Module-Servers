@@ -1,8 +1,10 @@
 function Header() {
   return (
-    <header>
-      <h1>Get a Random Quote</h1>
-    </header>
+    <div>
+      <header>
+        <h1>Get a Random Quote</h1>
+      </header>
+    </div>
   );
 }
 
