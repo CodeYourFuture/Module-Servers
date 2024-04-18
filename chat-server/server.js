@@ -11,14 +11,20 @@ app.use(cors());
 // Get __dirname in ES module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const welcomeMessage =[{
-  id: 0,
-  from: "Bart",
-  text: "Welcome to CYF chat system!",
-},
+const welcomeMessage = [
+  {
+    id: 0,
+    from: "Bart",
+    text: "Welcome to CYF chat system!",
+  },
+  {
+    id: 1,
+    from: "test",
+    text: "test",
+  },
 ];
 
-let lastId= 0,
+let lastId = 1;
 
 //This array is our "data store".
 //We will start with one message in the array.
@@ -36,8 +42,8 @@ app.get("/messages", (req, res) => {
 // GET a specific message by id
 app.get("/messages/:id", (req, res) => {
   const message = welcomeMessage.find((p) => p.id === parseInt(req.params.id));
-  if (!post) return res.status(404).json({ message: "Post not found" });
-  res.json(post);
+  if (!message) return res.status(404).json({ message: "Post not found" });
+  res.json(message);
 });
 
 app.listen(process.env.PORT, () => {
