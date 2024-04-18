@@ -3,7 +3,6 @@ import express, { json } from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -84,11 +83,32 @@ app.post("/messages", (req, res) => {
   res.status(201).json(message);
 });
 
+// Level 5 - Optional  - PUT to update a message
+
+app.put("/messages/:id", (req, res) => {
+  const messageId = parseInt(req.params.id);
+  const messageIndex = messages.findIndex((message) => message.id === messageId);
+
+  if (messageIndex === -1) {
+    return res.status(404).json({ message: "Message not found for an update" });
+  }
+  const updatedMessage = messages[messageIndex];
+
+  if (req.body.text !== undefined) {
+    updatedMessage.text = req.body.text;
+  }
+
+  if (req.body.from !== undefined) {
+    updatedMessage.from = req.body.from;
+  }
+  res.json(updatedMessage);
+});
+
 // DELETE a message
 
 app.delete("/messages/:id", (req, res) => {
   const index = messages.findIndex((p) => p.id === parseInt(req.params.id));
-  if (index === -1) return res.status(404).json({ message: "Message not found" });
+  if (index === -1) return res.status(404).json({ message: "Message not found for delete" });
 
   messages.splice(index, 1);
   res.json({ message: "Message deleted" });
