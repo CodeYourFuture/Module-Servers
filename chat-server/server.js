@@ -62,7 +62,16 @@ app.post("/messages", (req, res) => {
   res.status(201).json(message);
 });
 
+// DELETE a message
+
+app.delete("/messages/:id", (req, res) => {
+  const index = messages.findIndex((p) => p.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ message: "Message not found" });
+
+  messages.splice(index, 1);
+  res.json({ message: "Message deleted" });
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
 });
-
