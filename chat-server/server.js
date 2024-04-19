@@ -59,7 +59,8 @@ app.get("/messages/latest", (req, res) => {
 
 // GET a specific message by id
 app.get("/messages/:id", (req, res) => {
-  const message = messages.find((p) => p.id === parseInt(req.params.id));
+  const messageId = parseInt(req.params.id);
+  const message = messages.find((p) => p.id === messageId);
   if (!message) return res.status(404).json({ message: "Message not found" });
   res.json(message);
 });
@@ -68,8 +69,12 @@ app.get("/messages/:id", (req, res) => {
 
 app.post("/messages", (req, res) => {
   const newId = (lastId += 1);
-  if (!req.body.from) return res.status(422).json({ message: "From field is required" }); //A 422 status code indicates that the server was unable to process the request because it contains invalid data.
-  if (!req.body.text) return res.status(422).json({ message: "Text field is required" });
+  if (!req.body.from) {
+    return res.status(422).json({ message: "From field is required" });
+  } //A 422 status code indicates that the server was unable to process the request because it contains invalid data.
+  if (!req.body.text) {
+    return res.status(422).json({ message: "Text field is required" });
+  }
 
   const timeSent = new Date(); // Adding timestamp
   const message = {
