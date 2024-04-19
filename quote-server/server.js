@@ -16,6 +16,16 @@ app.get("/", (request, response) => {
 });
 
 //START OF YOUR CODE...
+// return all quotes
+app.get("/quotes", (request, response) => {
+  response.json(quotes);
+});
+
+// return a random quote
+app.get("/quotes/random", (request, response) => {
+  const randomQuote = pickFromArray(quotes);
+  response.json(randomQuote);
+});
 
 //...END OF YOUR CODE
 
