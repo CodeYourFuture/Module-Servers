@@ -1,4 +1,3 @@
-process.env.PORT = process.env.PORT || 9090;
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -21,6 +20,23 @@ const welcomeMessage = {
 //We will start with one message in the array.
 const messages = [welcomeMessage];
 
+app.put("/messages/:id", (req, res) => {
+  const messageId = parseInt(req.params.id);
+  const { from, text } = req.body;
+
+  const updateMessage = messages.find((msg) => msg.id === messageId);
+  if (!updateMessage) {
+    return res.status(404).json({ error: "Message not found" });
+  }
+  if (from) {
+    updateMessage.from = from;
+  }
+  if (text) {
+    updateMessage.text = text;
+  }
+  res.json(updateMessage);
+});
+
 app.post("/messages", (req, res) => {
   const { from, text } = req.body;
   if (!from || !text) {
@@ -33,6 +49,7 @@ app.post("/messages", (req, res) => {
     id: messages.length,
     from,
     text,
+    timeSent: new Date().toISOString(),
   };
   messages.push(newMessage);
   res.json(newMessage);
