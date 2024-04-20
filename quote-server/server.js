@@ -22,7 +22,8 @@ app.get("/quotes/search", (req, res) => {
   if (!searchTerm) {
     return res.status(400).json({ error: "No search term provided" });
   }
-  const searchedQuotes = quotes.filter((quote) => quote.quote.toLowerCase().includes(searchTerm.toLowerCase() || quote.author.toLowerCase().includes(searchTerm.toLowerCase())));
+  const searchTermLowerCase = searchTerm.toLowerCase();
+  const searchedQuotes = quotes.filter((quote) => quote.quote.toLowerCase().includes(searchTermLowerCase) || quote.author.toLowerCase().includes(searchTermLowerCase));
   res.json(searchedQuotes);
 });
 
