@@ -197,6 +197,7 @@ app.get("/messages/:id", (req, res) => {
 app.delete("/messages/:id", (req, res) => {
   const msgId = req.params.id;
   const findedMsg = findMessageById(usersChat, msgId);
+  console.log(msgId, findedMsg);
   if (findedMsg.length > 0) {
     const index = usersChat.indexOf(findedMsg[0]);
     usersChat.splice(index, 1);
@@ -216,9 +217,14 @@ app.delete("/messages/:id", (req, res) => {
 app.put("/messages/edit/:id", (req, res) => {
   const editedMsg = req.body;
   const msgId = req.params.id;
-  const foundMsg = findMessageById(usersChat, msgId);
-  foundMsg[0].text = editedMsg.text;
-  console.log(foundMsg);
+  usersChat.forEach((msg) => {
+    if (msg.id === Number(msgId)) {
+      msg.text = editedMsg.text;
+    }
+  });
+  // const foundMsg = findMessageById(usersChat, msgId);
+  // foundMsg[0].text = editedMsg.text;
+  // console.log(foundMsg);
   //added just to check
   const latestMessages = latestTenMsg(usersChat);
 
