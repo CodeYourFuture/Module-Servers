@@ -10,9 +10,9 @@ let quotes = [];
 
 const fetchQuotes = async () => {
   try {
-    const quoted = await fetch("https://api.quotable.io/quotes?page=1");
-    const parsedQuote = await quoted.json();
-    quotes = parsedQuote.results;
+    const quotesApi = await fetch("https://api.quotable.io/quotes?page=1");
+    const quotesData = await quotesApi.json();
+    quotes = quotesData.results;
   } catch (error) {
     console.error("Error fetching quotes:", error);
   }
