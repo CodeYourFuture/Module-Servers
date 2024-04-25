@@ -41,12 +41,15 @@ app.get("/messages/:id", (req,res) => {
 app.post("/messages", (req,res) => {
   const newMessage = req.body;
   messages.push(newMessage);
-  res.send(newMessage)
+  res.send(newMessage);
 })
 
 //delete messages by id
-app.delete("/messages/id", (req,res) => {
-
+app.delete("/messages/:id", (req,res) => {
+  const messageID = Number(req.params.id);
+  const index = messages.findIndex((message) => message.id === messageID);
+  messages.splice(index, 1);
+  res.send();
 })
 
 app.listen(process.env.PORT, () => {
