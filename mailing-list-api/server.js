@@ -19,6 +19,16 @@ app.get("/lists/:name", (req, res) => {
     res.status(404).send("list not found");
   }
 });
+app.delete("/lists/:name", (req, res) => {
+  const name = req.params.name.toLowerCase();
+  if (lists.has(name)) {
+    lists.delete(name);
+    const updatedList = Array.from(lists.keys());
+    res.status(200).send(updatedList);
+  } else {
+    res.status(404).send("list not found");
+  }
+});
 
 app.listen(3000, () => {
   console.log("Server is listen to 3000");
