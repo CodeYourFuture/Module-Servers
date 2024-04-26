@@ -37,15 +37,20 @@ app.delete("/lists/:name", (req, res) => {
 
 // add or update a list
 app.put("/lists/:name", (req, res) => {
-  const name = req.params.name;
-  const members = req.body.members;
+  const pathName = req.params.name;
+  const { name, members } = req.body;
+
+  if (pathName !== name) {
+    res.status(400).json({ error: "Name in path does not match name in body" });
+    return;
+  }
 
   if (mailList[name]) {
     mailList[name] = members;
-    res.status(200).send();
+    res.status(200).json({ message: "List updated successfully." });
   } else {
     mailList[name] = members;
-    res.status(201).send();
+    res.status(201).json({ message: "New list created successfully." });
   }
 });
 
