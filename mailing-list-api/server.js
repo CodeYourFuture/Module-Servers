@@ -29,13 +29,25 @@ app.delete("/lists/:name", (req, res) => {
   const name = req.params.name;
   if (mailList[name]) {
     delete mailList[name];
-    res.status(204).send();
+    res.status(200).json({ message: "Successfully deleted" });
   } else {
-    res.status(404).json({ message: "Name not found for delete" });
+    res.status(404).json({ message: "Name not found for deletion" });
   }
 });
 
+// add or update a list
+app.put("/lists/:name", (req, res) => {
+  const name = req.params.name;
+  const members = req.body.members;
 
+  if (mailList[name]) {
+    mailList[name] = members;
+    res.status(200).send();
+  } else {
+    mailList[name] = members;
+    res.status(201).send();
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
