@@ -24,6 +24,19 @@ app.get("/lists/:name", (req, res) => {
   }
 });
 
+// delete a name
+app.delete("/lists/:name", (req, res) => {
+  const name = req.params.name;
+  if (mailList[name]) {
+    delete mailList[name];
+    res.status(204).send();
+  } else {
+    res.status(404).json({ message: "Name not found for delete" });
+  }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
