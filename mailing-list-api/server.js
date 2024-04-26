@@ -31,7 +31,7 @@ app.delete("/lists/:name", (req, res) => {
     delete mailList[name];
     res.status(200).json({ message: "Successfully deleted" });
   } else {
-    res.status(404).json({ message: "Name not found for deletion" });
+    res.status(404).json({ message: "Name not found for delete" });
   }
 });
 
