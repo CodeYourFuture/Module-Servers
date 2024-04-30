@@ -1,32 +1,58 @@
-// server.js
-// This is where your node app starts
-
-//load the 'express' module which makes writing webservers easy
 import express from "express";
-//load the quotes JSON
-import quotes from "./quotes.json" assert { type: "json" };
 
+const quotesApi = "https://api.quotable.io/quotes?page=1";
+const quotes = [];
 const app = express();
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
-app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+const port = process.env.PORT || 3001;
+
+fetch(quotesApi)
+  .then(response => response.json())
+  .then(data => {
+    data.results.forEach(quote => {
+      quotes.push({
+        quote: quote.content,
+        author: quote.author
+      })
+    })
+  })
+  .catch(error => {
+    console.log(error);
+  })
+
+app.listen(port, () => {
+  console.log(`Your app is listening on port ${port}`);
 });
 
-//START OF YOUR CODE...
+app.get("/quotes", (request, response) => {
+  response.json(quotes);
+})
 
-//...END OF YOUR CODE
+app.get("/quotes/random", (request, response) => {
+  response.json(pickQuoteFromArray(quotes));
+})
 
-//You can use this function to pick one element at random from a given array
-//example: pickFromArray([1,2,3,4]), or
-//example: pickFromArray(myContactsArray)
-//
-const pickFromArray = (arrayofQuotes) =>
-  arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
+app.get("/quotes/search", (request, response) => {
+  const searchTerm = request.query.term;
+  const searchResults = findQuoteByKeyword(searchTerm);
+  response.json(searchResults);
+})
 
-//Start our server so that it listens for HTTP requests!
-const listener = app.listen(3001, () => {
-  console.log("Your app is listening on port " + listener.address().port);
+function pickQuoteFromArray(arrayOfQuotes) {
+  return arrayOfQuotes[Math.floor(Math.random() * arrayOfQuotes.length)];
+}
+
+function findQuoteByKeyword(searchTerm) {
+  const searchTermLowerCase = searchTerm.toLowerCase();
+
+  const searchResults = quotes.filter(quote => {
+    const quoteLowerCase = quote.quote.toLowerCase();
+    const authorLowerCase = quote.author.toLowerCase();
+
+    return quoteLowerCase.includes(searchTermLowerCase) || authorLowerCase.includes(searchTermLowerCase);
+  });
+  return searchResults;
+}
+
+app.get("/", (request, response) => {
+  response.send("Pedro's Quote Server!  Ask me for /quotes/random, /quotes, or quotes/search?term='search term'");
 });
