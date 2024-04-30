@@ -68,7 +68,9 @@ app.post("/messages", (request, response) => {
     return;
   }
 
-  const lastId = messages[messages.length - 1].id;
+  const lastId = messages.reduce((max, message) => {
+    return Math.max(max, message.id);
+  }, 0);
   newMessage.id = lastId + 1;
   messages.push(newMessage);
 
