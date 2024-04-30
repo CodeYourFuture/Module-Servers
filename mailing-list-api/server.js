@@ -4,7 +4,7 @@ import staff from "./mailing-lists.js"
 const app = express()
 const port = process.env.PORT || 3000
 
-const listNames = Object.keys(staff);
+let listNames = Object.keys(staff);
 
 app.use(express.json())
 
@@ -15,7 +15,7 @@ app.get("/lists", (req, res) => {
   if (listNames.length > 0) {
     res.status(200).json(listNames);
   } else {
-    res.status(200).json([]);
+    res.status(200).json({ message: "No lists found" });
   }
 })
 
@@ -37,6 +37,7 @@ app.delete("/lists/:listName", (req, res) => {
   const listName = req.params.listName;
   if (staff[listName]) {
     delete staff[listName];
+    listNames = Object.keys(staff);
     res.status(200).json({
       message: `${listName} list deleted`
     })
