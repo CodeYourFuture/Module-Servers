@@ -1,6 +1,6 @@
 import express from "express";
 
-const quotesApi = "https://api.quotable.io/quotes?page=1"
+const quotesApi = "https://api.quotable.io/quotes?page=1";
 const quotes = [];
 const app = express();
 const port = process.env.PORT || 3001;
@@ -14,13 +14,14 @@ fetch(quotesApi)
         author: quote.author
       })
     })
-    app.listen(port, () => {
-      console.log(`Your app is listening on port ${port}`);
-    });
   })
   .catch(error => {
     console.log(error);
   })
+
+app.listen(port, () => {
+  console.log(`Your app is listening on port ${port}`);
+});
 
 app.get("/quotes", (request, response) => {
   response.json(quotes);
