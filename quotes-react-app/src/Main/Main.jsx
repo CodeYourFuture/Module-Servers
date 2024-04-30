@@ -13,8 +13,8 @@ export const Main = () => {
         const response = await fetch(quotesSource);
         const data = await response.json();
         setQuotes(data);
-        setIsLoading(false);
         setRandomQuote(pickRandomQuote(data));
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching quotes:", error);
       }
