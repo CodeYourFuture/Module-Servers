@@ -47,3 +47,25 @@ app.delete("/lists/:listName", (req, res) => {
     })
   }
 })
+
+app.put("/lists/:listName", (req, res) => {
+  const listName = req.params.listName;
+  const { name, members } = req.body;
+
+  if (!listName || !name || !members) {
+    return res.status(400).json({ error: "All fields are required" })
+  }
+
+  if (staff[name]) {
+    staff[name] = members
+    res.status(200).json({
+      message: `${name} list updated`,
+    })
+  } else {
+    staff[name] = members
+    listNames.push(name);
+    res.status(201).json({
+      message: `${name} list created`,
+    })
+  }
+})
