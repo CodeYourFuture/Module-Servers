@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   staff: ["talea@techtonica.org", "michelle@techtonica.org"],
   "cohort-h1-2020": [
     "ali@techtonica.org",
