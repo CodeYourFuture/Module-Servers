@@ -27,7 +27,7 @@ app.get("/quotes", (request, response) => {
 })
 
 app.get("/quotes/random", (request, response) => {
-  response.json(pickFromArray(quotes));
+  response.json(pickQuoteFromArray(quotes));
 })
 
 app.get("/quotes/search", (request, response) => {
@@ -36,14 +36,18 @@ app.get("/quotes/search", (request, response) => {
   response.json(searchResults);
 })
 
-function pickFromArray(arrayOfQuotes) {
+function pickQuoteFromArray(arrayOfQuotes) {
   return arrayOfQuotes[Math.floor(Math.random() * arrayOfQuotes.length)];
 }
 
 function findQuoteByKeyword(searchTerm) {
+  const searchTermLowerCase = searchTerm.toLowerCase();
+
   const searchResults = quotes.filter(quote => {
-    return quote.quote.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      quote.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const quoteLowerCase = quote.quote.toLowerCase();
+    const authorLowerCase = quote.author.toLowerCase();
+
+    return quoteLowerCase.includes(searchTermLowerCase) || authorLowerCase.includes(searchTermLowerCase);
   });
   return searchResults;
 }
