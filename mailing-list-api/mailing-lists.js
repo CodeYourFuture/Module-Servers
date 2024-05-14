@@ -6,3 +6,4 @@ module.exports = {
     "khadar@techtonica.org",
   ],
 };
+
