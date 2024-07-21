@@ -2,7 +2,8 @@
   "name": "@module-node/mailing-list-api",
   "version": "1.0.0",
   "license": "CC-BY-SA-4.0",
-  "description": "You must update this package",
+  "description": "Mailing List API",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },
@@ -16,5 +17,9 @@
   "homepage": "https://github.com/CodeYourFuture/CYF-Coursework-Template#readme",
   "devDependencies": {
     "jest": "^26.6.3"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4"
   }
 }
