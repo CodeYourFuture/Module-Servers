@@ -1,0 +1,145 @@
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+#root {
+  margin: 0px;
+  padding: 10px;
+  height: calc(100dvh - 20px);
+  width: calc(100vw - 20px);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+#chat-box {
+  max-width: 1200px;
+  flex-grow: 1;
+  border-radius: 30px;
+  background-color: #213547;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h1 {
+  padding: 0px 10px;
+  color: white;
+}
+#user-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border-radius: 20px;
+}
+
+.user-input {
+  width: 69%;
+  height: 50px;
+  border: 0;
+  border-radius: 5px 20px 10px 5px;
+  font-size: 1em;
+  text-indent: 20px;
+  max-width: 200px;
+}
+
+.send-button {
+  max-width: 100px;
+  width: 30%;
+  height: 50px;
+  border-radius: 5px 5px 15px 5px;
+  background-color: rgb(66, 113, 244);
+  color: white;
+  border: none;
+  margin: 0px 10px 0px 0px;
+}
+
+#message-box {
+  min-height: 60px;
+  /* background-color: #213547; */
+  background-color: white;
+  border-radius: 10px 10px 20px 20px;
+  display: flex;
+  gap: 5px;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#messages {
+  /* flex-shrink: 1;
+  flex-basis: 0;
+  flex-grow: 1; */
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  gap: 5px;
+}
+
+.message {
+  padding: 5px 15px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  max-width: 70vw;
+  width: fit-content;
+  background-color: white;
+}
+.message.right {
+  align-self: flex-end;
+}
+
+.from {
+  display: block;
+  opacity: 0.5;
+  font-size: 0.7em;
+  width: max-content;
+}
+
+#message-area {
+  flex-grow: 1;
+
+  height: 52px;
+  border: none;
+  border-radius: 5px 5px 5px 15px;
+  margin: 5px 5px;
+  padding: 5px;
+}
